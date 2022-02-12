@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> M2 PHP-HW</td></tr>
 <tr><td> <em>Student: </em> Joshua Quizon(jbq2)</td></tr>
-<tr><td> <em>Generated: </em> 2/11/2022 8:15:42 PM</td></tr>
+<tr><td> <em>Generated: </em> 2/12/2022 11:12:17 AM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IT202-010-S22/m2-php-hw/grade/jbq2" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <p>Make sure you have the dev/prod branches created before starting this assignment.</p>
 <p>Setup steps:</p>
@@ -96,16 +96,16 @@ You can find all 3 template files in this gist: <a href="https://gist.github.com
 <tr><td> <em>Sub-Task 2: </em> Describe how you solved the problem</td></tr>
 <tr><td> <em>Response:</em> <p>The final problem required some work around for dealing with non-primitive types (string<br>in this case).  The solution follows a similar structure to the other<br>solutions, requiring iteration of $arr.  The else block handles the case in<br>which the array value is an integer or float (the easy case). <br>The if block handles a case in which the value is a string.<br> To check for this, I used the strcmp function which compares two<br>strings.  I found that gettype returns the type of a value in<br>the form of a string.  From this, I decided to use strcmp<br>and have the arguments of gettype($arr[$i]) (returns the type of the array element)<br>and &quot;string&quot;.  If the array element is a string, gettype returns &quot;string&quot;,<br>which is compared to &quot;string&quot;.  If the two strings are equal (strcmp<br>returns a 0), then we enter the if statement.  The body of<br>the if block is nearly the same as the body of the else<br>block--the only difference being that the array element that is a string would<br>have to be first casted as an integer.  Inside each body, the<br>value is checked to be less than 0.  If so, we multiply<br>the array element by -1 (turning positive), then pushing it into $posArr. <br>Otherwise (it is already positive), we simply push the element to $posArr without<br>manipulating it.<br>Finally, the final for loop in this function echoes each element inside<br>of $posArr which at this point should contain of all positive values.<br></p><br></td></tr>
 </table></td></tr>
-<table><tr><td> <em>Deliverable 4: </em> Misc Items </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/ff0000/000000?text=Incomplete"></td></tr>
+<table><tr><td> <em>Deliverable 4: </em> Misc Items </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add the prod URL for problem1.php (remember you can assume this based on how the domain gets built (i.e., ucid-prod.herokuapp.com/...)</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://jbq2-prod.herokuapp.com/M2/problem1.php">https://jbq2-prod.herokuapp.com/M2/problem1.php</a> </td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add the prod URL for problem2.php (remember you can assume this based on how the domain gets built (i.e., ucid-prod.herokuapp.com/...)</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://jbq2-prod.herokuapp.com/M2/problem2.php">https://jbq2-prod.herokuapp.com/M2/problem2.php</a> </td></tr>
 <tr><td> <em>Sub-Task 3: </em> Add the prod URL for problem3.php (remember you can assume this based on how the domain gets built (i.e., ucid-prod.herokuapp.com/...)</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://jbq2-prod.herokuapp.com/M2/problem3.php">https://jbq2-prod.herokuapp.com/M2/problem3.php</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Pull Request URL for M2-PHP-HW to dev</td></tr>
-<tr><td>Not provided</td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/9">https://github.com/jbq2/IT202-010/pull/9</a> </td></tr>
 <tr><td> <em>Sub-Task 5: </em> Talk about what you learned, any issues you had, how you resolve them</td></tr>
-<tr><td> <em>Response:</em> <p>(missing)</p><br></td></tr>
+<tr><td> <em>Response:</em> <p>I believe my only major issue in this homework assignment was with problem<br>2.  I found that when you echo a float variable, the resulting<br>printed statement does not inlude trailing zeroes that the float has.  My<br>solution to this was to initially turn the contents of $total into a<br>string.  That block of code checks if there are two decimals after<br>the decimal point.  If not, the code would append zeroes to the<br>string.  However, I found another issue with printing a string, and it<br>was that var_export resulted in a print statement that enclosed the sum in<br>single quotes.  To fix this, I decided not to use var_export in<br>the echo statement.  This fixed the issue.  After printing the value,<br>I casted $total back to a float in case of future calculations with<br>it.<br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td><em>Grading Link: </em><a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IT202-010-S22/m2-php-hw/grade/jbq2" target="_blank">Grading</a></td></tr></table>
