@@ -16,6 +16,13 @@
                 console.log("running getCurrentSelection()");
 
                 var navLinks = document.getElementsByTagName('a');
+
+                /*
+                Joshua Quizon
+                UCID: jbq2
+                IT202-010
+                Date: 20 February 2022
+                */
                 
                 var selection;
                 navLinks[0].addEventListener("click", () => {
@@ -50,7 +57,7 @@
         }
 
         /*making horizontal navigation*/
-        nav ul {
+        nav > ul > li {
             list-style-type: none;
             margin: 0;
             padding: 0;
@@ -59,6 +66,13 @@
         nav ul li{
             float: left;
         }
+        /*line break after nav bar*/
+        nav::after{
+            font-size: 60px;
+            content: "\a";
+            white-space: pre;
+        }
+        
         nav ul li a{
             /*capitalizing first letter in nav bar (<a> tags)*/
             text-transform: capitalize;
@@ -75,8 +89,18 @@
             background-color: #2A2B32;
         }
 
+        /*
+        Joshua Quizon
+        UCID: jbq2
+        IT202-010
+        Date: 20 February 2022
+        */
+
         /*making bullet list checkmarks*/
         ul > li > ul > li{
+            list-style-type: '\2713';
+        }
+        ul > li {
             list-style-type: '\2713';
         }
 
