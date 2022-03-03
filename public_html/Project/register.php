@@ -1,7 +1,6 @@
 <?php
 require(__DIR__ . "/../../partials/nav.php");
 ?>
-
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
@@ -26,55 +25,62 @@ require(__DIR__ . "/../../partials/nav.php");
     }
 </script>
 <?php
- //TODO 2: add PHP Code
-    if(isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"])){
-        $email = se($_POST, "email", "", false);
-        $password = se($_POST, "password", "", false);
-        $confirm = se($_POST, "confirm", "", false);
-        
-        //TODO 3: validate/use
-        $hasError = false;
-        if(empty($email)){
-            echo "Email must not be empty";
-            $hasError = true;
-        }
-        //sanitize
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        //validate
-        if(empty($password)){
-            echo "Password must not be empty";
-            $hasError = true;
-        }
-        if(empty($confirm)){
-            echo "Confirm password must not be empty";
-            $hasError = true;
-        }
-        if(strlen($password) < 8){
-            echo "Password too short";
-            $hasError = true;
-        }
-        if(strlen($password) > 0 && $password !== $confirm){
-            //if password is greater than 0 and it does not equal confirm, then passwords don't match
-            //we check for equal type and content in password and confirm
-            //we check if password length is greater than 0 because then an empty password would bypass and empty confirm
-            echo "Passwords must match";
-            $hasError = true;
-        }
-        if(!$hasError){
-            echo "Welcome, $email";
-            
-            //TODO 4
-            $hash = password_hash($password, PASSWORD_BCRYPT);
-            $db = getDB();
-            $stmt = $db->prepare("INSERT INTO Users(email, password) VALUES(:email, :password)");
-            try{
-                $stmt->execute([":email" => $email, ":password" => $hash]);
-                echo "Successfully registered";
-            }
-            catch(Exception $e){
-                echo"There was a problem registering";
-                "<pre?>" . var_export($e, true) . "</pre>";
-            }
+//TODO 2: add PHP Code
+if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"])) {
+    $email = se($_POST, "email", "", false);
+    $password = se($_POST, "password", "", false);
+    $confirm = se(
+        $_POST,
+        "confirm",
+        "",
+        false
+    );
+    //TODO 3
+    $hasError = false;
+    if (empty($email)) {
+        flash("Email must not be empty");
+        $hasError = true;
+    }
+    //sanitize
+    $email = sanitize_email($email);
+    //validate
+    if (!is_valid_email($email)) {
+        flash("Invalid email address");
+        $hasError = true;
+    }
+    if (empty($password)) {
+        flash("password must not be empty");
+        $hasError = true;
+    }
+    if (empty($confirm)) {
+        flash("Confirm password must not be empty");
+        $hasError = true;
+    }
+    if (strlen($password) < 8) {
+        flash("Password too short");
+        $hasError = true;
+    }
+    if (
+        strlen($password) > 0 && $password !== $confirm
+    ) {
+        flash("Passwords must match");
+        $hasError = true;
+    }
+    if (!$hasError) {
+        //TODO 4
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $db = getDB();
+        $stmt = $db->prepare("INSERT INTO Users (email, password) VALUES(:email, :password)");
+        try {
+            $stmt->execute([":email" => $email, ":password" => $hash]);
+            flash("Successfully registered!");
+        } catch (Exception $e) {
+            flash("There was a problem registering");
+            flash("<pre>" . var_export($e, true) . "</pre>");
         }
     }
+}
+?>
+<?php
+require(__DIR__ . "/../../partials/flash.php");
 ?>
