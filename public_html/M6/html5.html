@@ -46,6 +46,7 @@ var bullet = makeSquare(0, 0, 10, 10);
 var enemies = [];
 
 // Add an enemy object to the array
+//UCID: jbq2; Date; 3-25-2022
 //CHANGE 1.1: enemyBaseSpeed is changed from 2 to 1.5
     //having a speed of 2 is quite fast for the rate at which enemies spawn
     //to compensate for the change in difficult from CHANGE 1.0, the speed was lowered
@@ -80,6 +81,7 @@ function isColliding(a, b) {
 // Track the user's score
 var score = 0;
 // The delay between enemies (in milliseconds)
+//UCID: jbq2; Date; 3-25-2022
 //CHANGE 1.0: time between enemies decreased
     //this allows for more enemies to spawn
     //more enemies to spawn makes game harder
@@ -167,6 +169,7 @@ function shoot() {
   }
 }
 
+//UCID: jbq2; Date; 3-25-2022
 //CHANGE 2.0: lives feature was added in order to compensate for 
 //          making the game overall harder in CHANGE 1
 var lives = 3;
@@ -178,6 +181,7 @@ function draw() {
   // Move and draw the enemies
   enemies.forEach(function(enemy) {
     enemy.x -= enemy.s;
+    //UCID: jbq2; Date; 3-25-2022
     //CHANGE 2.1: adjustments are made for to apply the lives feature from CHANGE 2.0
         //this commment block refers to the following if-else block
         //if condition:
@@ -202,6 +206,7 @@ function draw() {
   // Collide the ship with enemies
   enemies.forEach(function(enemy, i) {
     if (isColliding(enemy, ship)) {
+        //UCID: jbq2; Date; 3-25-2022
         //CHANGE 2.2: further adjustments are made to apply CHANGE 2.0
             //this comment block refers to enemies.splice and if-else statement block
             //the intention of having a lives variable is to give a player 3 lives
@@ -250,8 +255,9 @@ function draw() {
         enemies.splice(i, 1);
         score++;
         shooting = false;
+        //UCID: jbq2; Date; 3-25-2022
         // Make the game harder
-        //CHANGE 1.0: apply changes to timeBetweenEnemies from above
+        //CHANGE 1.1: apply changes to timeBetweenEnemies from above
             //the original base timeBetweenEnemies was changed
             //the "Make game harder" portion must be adjusted to fit that change
         if (score % 10 === 0 && timeBetweenEnemies > 250) {
