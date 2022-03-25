@@ -55,6 +55,15 @@ function makeEnemy() {
   enemies.push(makeSquare(enemyX, enemyY, enemySize, enemySpeed));
 }
 
+//CHANGE 1: MAKING A BOOST ENTITY
+var boosts = [];
+function makeBoost(){
+    var boostX = canvas.width;
+    var boostSize = Math.round((Math.random() * 15)) + 15;
+    var boostY = Math.round(Math.random() * (canvas.height - boostSize *2)) + boostSize;
+    boosts.push(makeBoost(boostX, boostSize, boostY));
+}
+
 // Check if number a is in the range b to c (exclusive)
 function isWithin(a, b, c) {
   return (a > b && a < c);
@@ -157,6 +166,8 @@ function shoot() {
   }
 }
 
+var lives = 3;
+
 // The main draw loop
 function draw() {
   erase();
@@ -164,8 +175,14 @@ function draw() {
   // Move and draw the enemies
   enemies.forEach(function(enemy) {
     enemy.x -= enemy.s;
-    if (enemy.x < 0) {
-      gameOver = true;
+    if(lives > 0){
+        if (enemy.x < 0) {
+            enemies.shift();
+            lives--;
+        }
+    }
+    else{
+        gameOver = true;
     }
     context.fillStyle = '#00FF00';
     enemy.draw();
@@ -173,7 +190,13 @@ function draw() {
   // Collide the ship with enemies
   enemies.forEach(function(enemy, i) {
     if (isColliding(enemy, ship)) {
-      gameOver = true;
+        enemies.splice(i, i+1);
+      if(lives > 0){
+          lives--;
+      }
+      else{
+          gameOver = true;
+      }
     }
   });
   // Move the ship
@@ -226,6 +249,7 @@ function draw() {
   context.font = '24px Arial';
   context.textAlign = 'left';
   context.fillText('Score: ' + score, 1, 25)
+  context.fillText('Lives: ' + lives, 150, 25)
   // End or continue the game
   if (gameOver) {
     endGame();
