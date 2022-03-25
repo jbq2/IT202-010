@@ -46,22 +46,19 @@ var bullet = makeSquare(0, 0, 10, 10);
 var enemies = [];
 
 // Add an enemy object to the array
-var enemyBaseSpeed = 2;
+//CHANGE 1.1: enemyBaseSpeed is changed from 2 to 1.5
+    //having a speed of 2 is quite fast for the rate at which enemies spawn
+    //to compensate for the change in difficult from CHANGE 1.0, the speed was lowered
+    //overall, CHANGE 1 allows for more enemeis to spawn at a given time
+    //more enemies appear active on the canvas at a given time
+    //this is likely to overwhelm the player
+var enemyBaseSpeed = 1.5;
 function makeEnemy() {
   var enemyX = canvas.width;
   var enemySize = Math.round((Math.random() * 15)) + 15;
   var enemyY = Math.round(Math.random() * (canvas.height - enemySize * 2)) + enemySize;
   var enemySpeed = Math.round(Math.random() * enemyBaseSpeed) + enemyBaseSpeed;
   enemies.push(makeSquare(enemyX, enemyY, enemySize, enemySpeed));
-}
-
-//CHANGE 1: MAKING A BOOST ENTITY
-var boosts = [];
-function makeBoost(){
-    var boostX = canvas.width;
-    var boostSize = Math.round((Math.random() * 15)) + 15;
-    var boostY = Math.round(Math.random() * (canvas.height - boostSize *2)) + boostSize;
-    boosts.push(makeBoost(boostX, boostSize, boostY));
 }
 
 // Check if number a is in the range b to c (exclusive)
@@ -83,7 +80,11 @@ function isColliding(a, b) {
 // Track the user's score
 var score = 0;
 // The delay between enemies (in milliseconds)
-var timeBetweenEnemies = 5 * 1000;
+//CHANGE 1.0: time between enemies decreased
+    //this allows for more enemies to spawn
+    //more enemies to spawn makes game harder
+    //more enemies are actively moving on the canvas
+var timeBetweenEnemies = 5 * 250;
 // ID to track the spawn timeout
 var timeoutId = null;
 
@@ -166,6 +167,8 @@ function shoot() {
   }
 }
 
+//CHANGE 2.0: lives feature was added in order to compensate for 
+//          making the game overall harder in CHANGE 1
 var lives = 3;
 
 // The main draw loop
@@ -175,6 +178,15 @@ function draw() {
   // Move and draw the enemies
   enemies.forEach(function(enemy) {
     enemy.x -= enemy.s;
+    //CHANGE 2.1: adjustments are made for to apply the lives feature from CHANGE 2.0
+        //this commment block refers to the following if-else block
+        //if condition:
+            //the if condition checks if the player still has lives
+            //a second condition is checked to see if an enemy has reached the player wall
+            //if both these conditions are met, lives is decremented
+        //else condition:
+            //this section is stepped into if the player has no more lives
+            //if so, gameOver is set to true;
     if(lives > 0){
         if (enemy.x < 0) {
             enemies.shift();
@@ -190,7 +202,18 @@ function draw() {
   // Collide the ship with enemies
   enemies.forEach(function(enemy, i) {
     if (isColliding(enemy, ship)) {
-        enemies.splice(i, i+1);
+        //CHANGE 2.2: further adjustments are made to apply CHANGE 2.0
+            //this comment block refers to enemies.splice and if-else statement block
+            //the intention of having a lives variable is to give a player 3 lives
+            //3 chances to get hit and not end the game
+            //this referes to the change in CHANGE 2.0
+            //enemies.splice line: 
+                //enemies.splice ensures that the enemy is deleted as soon as it collides with the ship
+                //by doing this, the if-else block is read only once
+            //if-else block:
+                //the first condition decrements the lives variable as long as the player has lives
+                //if the player has no more lives, gameOver is set to true
+      enemies.splice(i, i+1);
       if(lives > 0){
           lives--;
       }
@@ -219,6 +242,7 @@ function draw() {
   // Move and draw the bullet
   if (shooting) {
     // Move the bullet
+    var angle = 25;
     bullet.x += bullet.s;
     // Collide the bullet with enemies
     enemies.forEach(function(enemy, i) {
@@ -227,9 +251,12 @@ function draw() {
         score++;
         shooting = false;
         // Make the game harder
-        if (score % 10 === 0 && timeBetweenEnemies > 1000) {
+        //CHANGE 1.0: apply changes to timeBetweenEnemies from above
+            //the original base timeBetweenEnemies was changed
+            //the "Make game harder" portion must be adjusted to fit that change
+        if (score % 10 === 0 && timeBetweenEnemies > 250) {
           clearInterval(timeoutId);
-          timeBetweenEnemies -= 1000;
+          timeBetweenEnemies -= 250;
           timeoutId = setInterval(makeEnemy, timeBetweenEnemies);
         } else if (score % 5 === 0) {
           enemyBaseSpeed += 1;
