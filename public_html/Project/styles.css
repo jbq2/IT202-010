@@ -1,23 +1,34 @@
 .alert-success {
-    background-color: green
+    background-color: darkgreen
 }
 
 .alert-warning {
-    background-color: yellow;
+    background-color: orange;
 }
 
 .alert-danger {
-    background-color: red;
+    background-color: darkred;
 }
 
 .alert-info {
-    background-color: teal;
+    background-color: darkblue;
 }
-nav li{display: inline; background-color: rebeccapurple;}
-nav li a{color: hotpink}
-input{border-radius: 50%;}
+nav li{
+    display: inline; 
+    background-color: #31374D;
+}
+nav li a{
+    color: #FFDAB5
+}
+nav ul li a:hover{
+    background-color: #2A2B32;
+}
+input{
+    border-radius: 0%;
+}
 body{
-    background-color: hotpink;
-    color: rgb(153, 0, 153);
+    background-color: #41485F;
+    font-family: "Courier";
+    color: #D7C0A9;
 
 }
