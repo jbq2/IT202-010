@@ -28,6 +28,7 @@ div{
 form div{
     padding-top:10px;
 }
+
 input[type=email]{
     padding: 5px;
     border: 2px solid #2A2B32;
@@ -59,11 +60,13 @@ input[type=submit]{
     -o-transition: all .2s ease-in;
     -webkit-transition: all .2s ease-in;
     transition: all .2 ease-in;
-    padding:5px 15px;
+    padding:10px 20px;
     background-color: #625178;
     color: #D7C0A9;
     margin-left:50px;
     margin-top: 10px;
+    font-family: 'Courier';
+    border-radius:8px;
 }
 input[type=submit]:hover{
     background-color: #453954;
