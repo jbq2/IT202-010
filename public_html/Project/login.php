@@ -8,7 +8,7 @@ require(__DIR__ . "/../../partials/nav.php");
     </div>
     <div>
         <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
+        <input type="password" id="pw" name="password" />
     </div>
     <input type="submit" value="Login" />
 </form>
@@ -16,10 +16,41 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        let pw = form.password.value;
+        console.log(typeof pw)
+        let emailuser = form.email.value;
+        let isValid = true;
+        if(/[@]/.test(emailuser) && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(emailuser)){
+            let flash = document.getElementById("flash");
+            let outerDiv = document.createElement("div");
+            outerDiv.clssName = "row justify-content-center";
+            let innerDiv = document.createElement("div");
+            
+            innerDiv.className = "alert alert-warning";
+            innerDiv.innerText = "Invalid email address";
+            outerDiv.appendChild(innerDiv);
+            flash.appendChild(outerDiv);
 
+            isValid = false;
+        }
+        else{
+            if(String(pw).length < 8){
+                let flash = document.getElementById("flash");
+                let outerDiv = document.createElement("div");
+                outerDiv.className = "row justify-content-center";
+                let innerDiv = document.createElement("div");
+
+                innerDiv.className = "alert alert-warning";
+                innerDiv.innerText = "Password is too short";
+                outerDiv.appendChild(innerDiv);
+                flash.appendChild(outerDiv);
+
+                isValid = false;
+            }
+        }
         //TODO update clientside validation to check if it should
         //valid email or username
-        return true;
+        return isValid;
     }
 </script>
 <?php
@@ -95,7 +126,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                         flash("Invalid password");
                     }
                 } else {
-                    flash("Email not found");
+                    flash("Email/Username not found");
                 }
             }
         } catch (Exception $e) {
