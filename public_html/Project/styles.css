@@ -1,27 +1,103 @@
 .alert-success {
-    background-color: darkgreen
+    background-color: darkgreen;
+    width: 300px;
+    padding: 5px 5px;
 }
 
 .alert-warning {
-    background-color: orange;
+    background-color: orangered;
+    width: 300px;
+    padding: 5px 5px;
 }
 
 .alert-danger {
     background-color: darkred;
+    width: 300px;
+    padding: 5px 5px;
 }
 
 .alert-info {
     background-color: darkblue;
+    width: 300px;
+    padding: 5px 5px;
+}
+
+div{
+    margin-left:50px;
+}
+form div{
+    padding-top:10px;
+}
+input[type=email]{
+    padding: 5px;
+    border: 2px solid #2A2B32;
+    border-radius: 5px;
+}
+input[type=text]{
+    padding:5px;
+    border:2px solid #2A2B32;
+    border-radius: 5px;
+}
+input[input=text]:focus{
+    border-color: #31374D;
+}
+input[type=password]{
+    padding:3px;
+    border:2px solid #2A2B32;
+    border-radius: 5px;
+}
+input[input=password]:focus{
+    border-color: #31374D;
+}
+input, textarea{
+    background-color: #333437;
+    color: #fee9d4;
+
+}
+input[type=submit]{
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    transition: all .2 ease-in;
+    padding:5px 15px;
+    background-color: #625178;
+    color: #D7C0A9;
+    margin-left:50px;
+    margin-top: 10px;
+}
+input[type=submit]:hover{
+    background-color: #453954;
 }
 nav li{
     display: inline; 
     background-color: #31374D;
 }
 nav li a{
-    color: #FFDAB5
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    transition: all .2 ease-in;
+    color: #FFDAB5;
+    float: left;
+    display: block;
+    padding: 20px 75px;
+    background-color: #31374D;
 }
-nav ul li a:hover{
+nav li a:first-of-type{
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+nav li a:last-of-type{
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+nav li a:hover{
     background-color: #2A2B32;
+}
+nav::after{
+    font-size: 60px;
+    content: "\a";
+    white-space: pre;
 }
 input{
     border-radius: 0%;
