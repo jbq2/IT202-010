@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IT202 Milestone1 Deliverable</td></tr>
 <tr><td> <em>Student: </em> Joshua Quizon(jbq2)</td></tr>
-<tr><td> <em>Generated: </em> 4/2/2022 12:17:11 PM</td></tr>
+<tr><td> <em>Generated: </em> 4/2/2022 12:58:18 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IT202-010-S22/it202-milestone1-deliverable/grade/jbq2" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol>
 <li>Checkout Milestone1 branch</li>
@@ -117,6 +117,7 @@
 </table></td></tr>
 <tr><td> <em>Sub-Task 3: </em> Add the related pull request(s) for this feature</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/21">https://github.com/jbq2/IT202-010/pull/21</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/22">https://github.com/jbq2/IT202-010/pull/22</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Explain briefly how the process/code works</td></tr>
 <tr><td> <em>Response:</em> <p>Though logout.php is extremely short, it possesses a key security feature through the<br>usage of the reset_session function.  We define this function in reset_session.php. <br>The following sequence of instructions is run: the session is unset (session is<br>cleared from usage), destroyed (destroys data from session), and a new session is<br>started (we end up on the default page for non-logged in users beacuse<br>all session information has been removed).<br></p><br></td></tr>
 </table></td></tr>
