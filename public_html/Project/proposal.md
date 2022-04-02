@@ -1,7 +1,7 @@
-# Project Name: (Which Project)
-## Project Summary: (Copy from proposal)
+# Project Name: Simple Shop
+## Project Summary: This project will create a simple e-commerce site for users. Administrators or store owners will be able to manage inventory and users will be able to manage their cart and place orders.
 ## Github Link: https://github.com/jbq2/IT202-010/tree/prod/public_html/Project
-## Project Board Link: 
+## Project Board Link: https://github.com/jbq2/IT202-010/projects/1
 ## Website Link: https://jbq2-prod.herokuapp.com/Project
 ## Your Name: Joshua Quizon
 
@@ -17,24 +17,51 @@
 ### Proposal Checklist and Evidence
 
 - Milestone 1
-  - [ ] \(mm/dd/yyyy of completion) User will be able to register a new account
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) User will be able to login to their account (given they enter the correct credentials)
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) User will be able to logout
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) Basic security rules implemented
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) Basic Roles implemented
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) Site should have basic styles/theme applied; everything should be styled
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) Any output messages/errors should be “user friendly”
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) User will be able to see their profile
-    -  Link to related .md file: [Link Name](link url)
-  - [ ] \(mm/dd/yyyy of completion) User will be able to edit their profile
-    -  Link to related .md file: [Link Name](link url)
+  - [x] \(04/01/2022) User will be able to register a new account
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [register.php](https://jbq2-prod.herokuapp.com/Project/register.php)
+  - [x] \(03/31/2022) User will be able to login to their account (given they enter the correct credentials)
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [login.php](https://jbq2-prod.herokuapp.com/Project/login.php)
+  - [x] \(02/24/2022) User will be able to logout
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [logout.php](https://jbq2-prod.herokuapp.com/Project/logout.php)
+  - [x] \(03/31/2022) Basic security rules implemented
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [home.php](https://jbq2-prod.herokuapp.com/Project/home.php)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php)
+    -  Link to Feature Implementation: [create_role.php](https://jbq2-prod.herokuapp.com/Project/admin/create_role.php)
+    -  Link to Feature Implementation: [list_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/list_roles.php)
+    -  Link to Feature Implementation: [assign_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/assign_roles.php)
+  - [x] \(03/31/2022) Basic Roles implemented
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [create_role.php](https://jbq2-prod.herokuapp.com/Project/admin/create_role.php)
+    -  Link to Feature Implementation: [list_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/list_roles.php)
+    -  Link to Feature Implementation: [assign_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/assign_roles.php)
+  - [x] \(04/01/2022) Site should have basic styles/theme applied; everything should be styled
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [register.php](https://jbq2-prod.herokuapp.com/Project/register.php)
+    -  Link to Feature Implementation: [home.php](https://jbq2-prod.herokuapp.com/Project/home.php)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php)
+    -  Link to Feature Implementation: [create_role.php](https://jbq2-prod.herokuapp.com/Project/admin/create_role.php)
+    -  Link to Feature Implementation: [list_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/list_roles.php)
+    -  Link to Feature Implementation: [assign_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/assign_roles.php)
+    -  Link to Feature Implementation: [logout.php](https://jbq2-prod.herokuapp.com/Project/logout.php)
+  - [x] \(03/02/2022) Any output messages/errors should be “user friendly”
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [register.php](https://jbq2-prod.herokuapp.com/Project/register.php)
+    -  Link to Feature Implementation: [home.php](https://jbq2-prod.herokuapp.com/Project/home.php)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php)
+    -  Link to Feature Implementation: [create_role.php](https://jbq2-prod.herokuapp.com/Project/admin/create_role.php)
+    -  Link to Feature Implementation: [list_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/list_roles.php)
+    -  Link to Feature Implementation: [assign_roles.php](https://jbq2-prod.herokuapp.com/Project/admin/assign_roles.php)
+    -  Link to Feature Implementation: [logout.php](https://jbq2-prod.herokuapp.com/Project/logout.php)
+  - [x] \(03/31/2022) User will be able to see their profile
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php)
+  - [x] \(03/31/2022) User will be able to edit their profile
+    -  Link to related .md file: [Link to milestone1.md](https://github.com/jbq2/IT202-010/blob/Milestone1/public_html/Project/milestone1.md)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php)
 - Milestone 2
   - (duplicate template here for Milestone 1 features)
 - Milestone 3
