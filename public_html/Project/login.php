@@ -23,7 +23,7 @@ require(__DIR__ . "/../../partials/nav.php");
         if(/[@]/.test(emailuser) && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(emailuser)){
             let flash = document.getElementById("flash");
             let outerDiv = document.createElement("div");
-            outerDiv.clssName = "row justify-content-center";
+            outerDiv.className = "row justify-content-center";
             let innerDiv = document.createElement("div");
             
             innerDiv.className = "alert alert-warning";
@@ -34,20 +34,35 @@ require(__DIR__ . "/../../partials/nav.php");
             isValid = false;
         }
         else{
-            if(String(pw).length < 8){
+            if(!(/^[a-z0-9_-]{3,16}$/.test(emailuser))){
                 let flash = document.getElementById("flash");
                 let outerDiv = document.createElement("div");
                 outerDiv.className = "row justify-content-center";
                 let innerDiv = document.createElement("div");
 
                 innerDiv.className = "alert alert-warning";
-                innerDiv.innerText = "Password is too short";
-                outerDiv.appendChild(innerDiv);
+                innerDiv.innerText = "Invalid username";
+                outDiv.appendChild(innerDiv);
                 flash.appendChild(outerDiv);
 
                 isValid = false;
             }
         }
+
+        if(String(pw).length < 8){
+            let flash = document.getElementById("flash");
+            let outerDiv = document.createElement("div");
+            outerDiv.className = "row justify-content-center";
+            let innerDiv = document.createElement("div");
+
+            innerDiv.className = "alert alert-warning";
+            innerDiv.innerText = "Password is too short";
+            outerDiv.appendChild(innerDiv);
+            flash.appendChild(outerDiv);
+
+            isValid = false;
+        }
+        
         //TODO update clientside validation to check if it should
         //valid email or username
         return isValid;
