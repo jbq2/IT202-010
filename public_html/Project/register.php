@@ -5,19 +5,19 @@ reset_session();
 <form onsubmit="return validate(this)" method="POST">
     <div>
         <label for="email">Email</label>
-        <input type="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '' ?>" required />
+        <input type="email" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : '' ?>" />
     </div>
     <div>
         <label for="username">Username</label>
-        <input type="text" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : '' ?>" required maxlength="30" />
+        <input type="text" name="username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : '' ?>"  />
     </div>
     <div>
         <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
+        <input type="password" id="pw" name="password" />
     </div>
     <div>
         <label for="confirm">Confirm</label>
-        <input type="password" name="confirm" required minlength="8" />
+        <input type="password" name="confirm" />
     </div>
     <input type="submit" value="Register" />
 </form>
@@ -25,8 +25,38 @@ reset_session();
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        document.getElementById("flash").innerHTML = "";
+        let isValid = true;
 
-        return true;
+        let email = form.email.value;
+        if(/[@]/.test(email) && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)){
+            flash("Invalid email", "warning");
+
+            isValid = false;
+        }
+
+        let usern = form.username.value;
+        if(!(/^[a-z0-9_-]{3,16}$/.test(usern))){
+            flash("Invalid username", "warning");
+
+            isValid = false;
+        }
+
+        let pw = form.password.value;
+        if(String(pw).length < 8){
+            flash("Password is too short", "warning");
+
+            isValid = false;
+        }
+
+        let con = form.confirm.value;
+        if(pw !== con){
+            flash("Passwords must match", "warning");
+
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 <?php
