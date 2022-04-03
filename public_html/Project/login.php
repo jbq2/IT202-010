@@ -16,49 +16,27 @@ require(__DIR__ . "/../../partials/nav.php");
     function validate(form) {
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
+        document.getElementById("flash").innerHTML = "";
         let pw = form.password.value;
-        console.log(typeof pw)
         let emailuser = form.email.value;
         let isValid = true;
-        if(/[@]/.test(emailuser) && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(emailuser)){
-            let flash = document.getElementById("flash");
-            let outerDiv = document.createElement("div");
-            outerDiv.className = "row justify-content-center";
-            let innerDiv = document.createElement("div");
-            
-            innerDiv.className = "alert alert-warning";
-            innerDiv.innerText = "Invalid email address";
-            outerDiv.appendChild(innerDiv);
-            flash.appendChild(outerDiv);
+        if(emailuser.includes("@")){
+            if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(emailuser)){
+                flash("Invalid email address", "warning");
 
-            isValid = false;
+                isValid = false;
+            }
         }
         else{
             if(!(/^[a-z0-9_-]{3,16}$/.test(emailuser))){
-                let flash = document.getElementById("flash");
-                let outerDiv = document.createElement("div");
-                outerDiv.className = "row justify-content-center";
-                let innerDiv = document.createElement("div");
-
-                innerDiv.className = "alert alert-warning";
-                innerDiv.innerText = "Invalid username";
-                outDiv.appendChild(innerDiv);
-                flash.appendChild(outerDiv);
+                flash("Invalid username", "warning");
 
                 isValid = false;
             }
         }
 
         if(String(pw).length < 8){
-            let flash = document.getElementById("flash");
-            let outerDiv = document.createElement("div");
-            outerDiv.className = "row justify-content-center";
-            let innerDiv = document.createElement("div");
-
-            innerDiv.className = "alert alert-warning";
-            innerDiv.innerText = "Password is too short";
-            outerDiv.appendChild(innerDiv);
-            flash.appendChild(outerDiv);
+            flash("Password is too short", "warning");
 
             isValid = false;
         }

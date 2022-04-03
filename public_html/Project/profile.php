@@ -116,10 +116,39 @@ $username = get_username();
 
 <script>
     function validate(form) {
-        let pw = form.newPassword.value;
-        let con = form.confirmPassword.value;
+        document.getElementById("flash").innerHTML = "";
         let isValid = true;
         //TODO add other client side validation....
+
+        let email = form.email.value;
+        if(/[@]/.test(email) && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)){
+            flash("Invalid email", "warning");
+
+            isValid = false;
+        }
+
+        console.log("reached username check");
+        let usern = form.username.value;
+        if(!(/^[a-z0-9_-]{3,16}$/.test(usern))){
+            flash("Invalid username", "warning");
+
+            isValid = false;
+        }
+
+        let currpw = form.currentPassword.value;
+        if(String(currpw).length < 8){
+            flash("Current password is too short", "warning");
+
+            isValid = false;
+        }
+
+        let pw = form.newPassword.value;
+        if(String(pw).length < 8){
+            flash("New password is too short", "warning");
+
+            isValid = false;
+        }
+        let con = form.confirmPassword.value;
 
         //example of using flash via javascript
         //find the flash container, create a new element, appendChild
