@@ -127,7 +127,6 @@ $username = get_username();
             isValid = false;
         }
 
-        console.log("reached username check");
         let usern = form.username.value;
         if(!(/^[a-z0-9_-]{3,16}$/.test(usern))){
             flash("Invalid username", "warning");
