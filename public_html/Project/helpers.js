@@ -1,4 +1,4 @@
-function flash(message = "", color = "info") {
+function flash(message = "", color = "info") {//UCID: jbq2; IT202-010
     let flash = document.getElementById("flash");
     //create a div (or whatever wrapper we want)
     let outerDiv = document.createElement("div");
