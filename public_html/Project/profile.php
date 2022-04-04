@@ -115,59 +115,39 @@ $username = get_username();
 </form>
 
 <script>
-    function validate(form) {
+    function validate(form) {//UCID: jbq2; IT202-010
         document.getElementById("flash").innerHTML = "";
         let isValid = true;
         //TODO add other client side validation....
 
         let email = form.email.value;
-        if(/[@]/.test(email) && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)){
-            flash("Invalid email", "warning");
-
+        if(!isValidEmail(email)){
             isValid = false;
+            flash("Invalid email", "warning");
         }
 
         let usern = form.username.value;
-        if(!(/^[a-z0-9_-]{3,16}$/.test(usern))){
-            flash("Invalid username", "warning");
-
+        if(!isValidUsername(usern)){
             isValid = false;
+            flash("Username must include 3-16 characters from a-z (lowercase), 0-9, _, or -", "warning");
         }
 
         let currpw = form.currentPassword.value;
-        if(String(currpw).length < 8){
-            flash("Current password is too short", "warning");
-
+        if(!isValidPassword(currpw)){
             isValid = false;
+            flash("Current password is too short", "warning");
         }
 
         let pw = form.newPassword.value;
-        if(String(pw).length < 8){
+        if(!isValidPassword(pw)){
+            isValid = false;
             flash("New password is too short", "warning");
-
-            isValid = false;
         }
+        
         let con = form.confirmPassword.value;
-
-        //example of using flash via javascript
-        //find the flash container, create a new element, appendChild
-        if (pw !== con) {
-            //find the container
-            let flash = document.getElementById("flash");
-            //create a div (or whatever wrapper we want)
-            let outerDiv = document.createElement("div");
-            outerDiv.className = "row justify-content-center";
-            let innerDiv = document.createElement("div");
-
-            //apply the CSS (these are bootstrap classes which we'll learn later)
-            innerDiv.className = "alert alert-warning";
-            //set the content
-            innerDiv.innerText = "Password and Confirm password must match";
-
-            outerDiv.appendChild(innerDiv);
-            //add the element to the DOM (if we don't it merely exists in memory)
-            flash.appendChild(outerDiv);
+        if(!isMatchingPasswords(pw, con)){
             isValid = false;
+            flash("Passwords must match", "warning");
         }
         return isValid;
     }
