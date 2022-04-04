@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IT202 Milestone1 Deliverable</td></tr>
 <tr><td> <em>Student: </em> Joshua Quizon(jbq2)</td></tr>
-<tr><td> <em>Generated: </em> 4/3/2022 7:41:09 PM</td></tr>
+<tr><td> <em>Generated: </em> 4/3/2022 10:54:17 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IT202-010-S22/it202-milestone1-deliverable/grade/jbq2" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol>
 <li>Checkout Milestone1 branch</li>
@@ -33,17 +33,17 @@
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161342675-94c4108b-5849-42dd-86c2-71410e104a33.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Register Fields<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161342739-cb5e25ef-6fd6-4971-a526-0c66c479a88c.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Email Validate<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463101-ec382a9a-7067-4429-9aaa-c3a2e70760d6.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Invalid Email<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161342781-7321e8f3-58dc-44c2-b3f3-98d6dfc027ef.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Required Username<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463133-e4c187e7-6cc1-4337-a38e-65e918a28269.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Invalid Username<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161342842-a8465b70-dbc5-45af-b746-22f19ad8c265.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Passwords do not match<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463161-0a826f7d-27c3-4dd0-b80e-c854a870c1dc.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Password too short<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161342890-d8faa993-93a2-4380-92ad-364733e7a47a.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Hashed Passwords<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463188-5a541aed-71ec-4d55-879f-ee0a28626625.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Passwords must match<br></p>
 </td></tr>
 <tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161342944-9c3006b2-e961-4223-8f87-ad4cf7634830.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Unavailable Email (not unique)<br></p>
@@ -51,8 +51,8 @@
 <tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161342999-76b3a95e-ee2f-49e7-9386-5e9ca88d0926.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Unavailable Username (not unique). For the unavailable email/username pictures, it can be seen<br>that the field retains whatever the user entered prior to clicking register.<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161453608-a02000be-762f-403e-bd29-37996e7d57ee.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Screenshot of validate function for register.php<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464332-ac6dabda-f44c-40f5-9a72-7595d9c169a6.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Validate Function<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add a screenshot of the Users table with data in it</td></tr>
@@ -64,41 +64,42 @@
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/15">https://github.com/jbq2/IT202-010/pull/15</a> </td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/45">https://github.com/jbq2/IT202-010/pull/45</a> </td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/56">https://github.com/jbq2/IT202-010/pull/56</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/59">https://github.com/jbq2/IT202-010/pull/59</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Explain briefly how the process/code works</td></tr>
-<tr><td> <em>Response:</em> <EXPLAIN VALIDATE FUNCTION><br><br><p>In register.php, a set of conditions are checked to ensure that<br>information entered inside the form is valid and in correct format.  Firstly,<br>the program checks if all fields are filled with some sort of text.<br> If this is satisfied, then each field is validated.  For email,<br>the is_valid_email function is used to run the string through a regex that<br>contains a basic template for conventional emails.  Emails have text followed by<br>an &#39;@&#39; symbol, followed by some text, then a &#39;.&#39; followed by some<br>more text.  For username, the same is checked.  Usernames should not<br>have any special characters and have a length limit.  A check on<br>empty password fields is checked.  If this is passed, then the &#39;password&#39;<br>word field is validated with is_valid_password and is then matched with the input<br>for the &#39;confirm field&#39;.  If any of the previously mentioned checks fail,<br>the entire form is invalid.  If all checks succeed, the program hashes<br>the password and a final check for username and email uniqueness is made.<br> This is performed through a try catch when executing a query. <br>A failed case occurs when the query fails because the username and email<br>columsn are unique, and so inserting a duplicate email or username is prohibited.<br></p><br></td></tr>
+<tr><td> <em>Response:</em> <p>For the validate function, it uses the functions isValidUsername, isValidEmail, isValidPassword, and<br>isMatchingPasswords defined in helpers.js.  These subfunctions essentially do what their names say.<br> IsValidUsername and isValidEmail check for the validity of a username/email based on<br>regex comparison.  isValidPassword checks if the input password is at least 8<br>characters, and isMatchingPasswords checks if two inputted passwords match.</p><br><p>In register.php, a set of<br>conditions are checked to ensure that information entered inside the form is valid<br>and in correct format.  Firstly, the program checks if all fields are<br>filled with some sort of text.  If this is satisfied, then each<br>field is validated.  For email, the is_valid_email function is used to run<br>the string through a regex that contains a basic template for conventional emails.<br> Emails have text followed by an &#39;@&#39; symbol, followed by some text,<br>then a &#39;.&#39; followed by some more text.  For username, the same<br>is checked.  Usernames should not have any special characters and have a<br>length limit.  A check on empty password fields is checked.  If<br>this is passed, then the &#39;password&#39; word field is validated with is_valid_password and<br>is then matched with the input for the &#39;confirm field&#39;.  If any<br>of the previously mentioned checks fail, the entire form is invalid.  If<br>all checks succeed, the program hashes the password and a final check for<br>username and email uniqueness is made.  This is performed through a try<br>catch when executing a query.  A failed case occurs when the query<br>fails because the username and email columsn are unique, and so inserting a<br>duplicate email or username is prohibited.<br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 2: </em> Feature: User will be able to login to their account </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add one or more screenshots of the application showing the form and validation errors per the feature requirements</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335532-7e097e49-2ed7-48d1-92a3-215dae37ebc1.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Email (presubmit)<br></p>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463934-c9d78b7d-387b-4126-809b-fe5c4fc79fe9.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Logging in with email (presubmit)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335577-0b913d76-9c5f-4d92-bb0a-c811e7f2d030.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Email (postsubmit) <br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463947-18d7e24d-3942-42b7-b5eb-422391a9db93.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Logging in with email (postsubmit)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335646-69660b1d-5ed5-47cb-b0de-11abe5943fdf.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Username (presubmit)<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463977-01397d91-3102-4890-8052-91cd11184b97.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Logging in with username (presubmit)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335662-afa03d56-0aeb-4a49-bcf2-3c2ff6efd287.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Username (postsubmit<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161463997-d586b30b-219b-4186-b378-08a7dfaafbcc.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Logging in with username (postsubmit)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335773-f9e74f75-d7ed-4d23-82a2-edff204a17ba.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Non-existing Account (presubmit)<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464046-9e2182dc-f8d0-4203-a9e5-65fe85da242a.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Logging in with invalid email<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335809-a0646626-ff2b-43bd-a1b1-048336f8b8bc.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Non-existing Account (postsubmit)<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464096-1d0772f2-66b9-403d-9c34-33d542b0d3c7.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Logging in with invalid username<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335944-1c1e23e2-7897-48f6-85ee-933454b3116b.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Wrong Password (presubmit)<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464224-6217907f-d572-4b9a-97e8-70a8c223d55d.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Logging in with short password<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335979-07ae2cac-2683-4c4d-8844-15420eb4432c.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Logging in With Wrong Password (postsubmit)<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464291-1d769540-cd51-4560-9bbf-de80f800c2d3.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Attempting to access destination page (home.php)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161453727-d8a2d8e8-3815-49de-aa23-5e2c0de4a8a6.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Screenshot of validate function for login.php<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464370-3a3e4411-0a7d-4387-b267-11867f9632bf.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Validate function<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add a screenshot of successful login</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161335662-afa03d56-0aeb-4a49-bcf2-3c2ff6efd287.png"/></td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464579-c6ad510f-737b-43c4-8b00-248712d35d34.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Successful Login Leads to Home Page<br></p>
 </td></tr>
 </table></td></tr>
@@ -108,8 +109,9 @@
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/43">https://github.com/jbq2/IT202-010/pull/43</a> </td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/52">https://github.com/jbq2/IT202-010/pull/52</a> </td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/55">https://github.com/jbq2/IT202-010/pull/55</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/59">https://github.com/jbq2/IT202-010/pull/59</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Explain briefly how the process/code works</td></tr>
-<tr><td> <em>Response:</em> <p>IMPORTANT NOTE: Pull request 55 is tied to a branch that was mainly<br>for creating the validation code for profile.php.  However, I made fixed an<br>error that I had noticed in login.php while I was working on this<br>branch.  Sorry if this caused any confusion.</p><br><p>Upon form submission (onsubmit), the validate<br>javascript function is called.  In this function, a check of the email/username<br>field is made.  In short, the program runs a regex comparison for<br>the entered information.  If it has an &#39;@&#39; symbol, but still does<br>not follow conventional email format, then a flash message is shown saying &quot;Invalid<br>email address.&quot;  If the field contains information that does not have an<br>&#39;@&#39; symbol, then the check for valid username is made.  The same<br>process is used in this section of the code--the only differenc is the<br>regex.  We compare the textfield to see if it contains letters, numbers,<br>underscores, or dashes, and if it is between 3 to 16 characters. <br>As for a password validation, the entered information is checked to be at<br>least 8 characters in length.  If not, a flash message is shown<br>saying &quot;Password is too short.&quot;  If either condition is failed, the return<br>value of the validation function is false.  Otherwise, it returns true.</p><br><p>For the<br>PHP code, there are a set of checks made that are very similar<br>in structure to the set of changes in registration.php.  Fields are initially<br>checked to be empty.  If they are filled, the email/username field is<br>checked.  If it contains an &#39;@&#39; symbol, then the email check is<br>performed using is_valid_email.  Otherwise, a username check is performed using is_valid_username. <br>A password check is then made, initially checking if the field is empty.<br> If it is populated, is_valid_password is used to validate the length of<br>the password.  If all these checks are successful, the program moves on<br>to the query phase.</p><br><p>For the code screenshot, a query is prepared and executed<br>in the try statement.  In short, the entered username is first checked<br>if it exists in the database, and if so, the password is checked.<br> If the password matches (through password_verify, which compares hashes), the roles of<br>the user are fetched.  Once all this goes through successfully, the user<br>and user roles are saved to the session and the appropriate navbar and<br>welcome message is shown.<br></p><br></td></tr>
+<tr><td> <em>Response:</em> <p>IMPORTANT NOTE: Pull request 55 is tied to a branch that was mainly<br>for creating the validation code for profile.php.  However, I made fixed an<br>error that I had noticed in login.php while I was working on this<br>branch.  Sorry if this caused any confusion.</p><br><p>Upon form submission (onsubmit), the validate<br>javascript function is called.  In this function, a check of the email/username<br>field is made.  In short, the program runs a regex comparison for<br>the entered information.  If it has an &#39;@&#39; symbol, but still does<br>not follow conventional email format, then a flash message is shown saying &quot;Invalid<br>email address.&quot;  If the field contains information that does not have an<br>&#39;@&#39; symbol, then the check for valid username is made.  The same<br>process is used in this section of the code--the only difference is the<br>regex.  We compare the textfield to see if it contains lowercase letters,<br>numbers, underscores, or dashes, and if it is between 3 to 16 characters.<br> As for a password validation, the entered information is checked to be<br>at least 8 characters in length.  If not, a flash message is<br>shown saying &quot;Password is too short.&quot;  If either condition is failed, the<br>return value of the validation function is false.  Otherwise, it returns true.<br> The subfunctions for the username/email and password checks are defined in helpers.js.</p><br><p>For<br>the PHP code, there are a set of checks made that are very<br>similar in structure to the set of changes in registration.php.  Fields are<br>initially checked to be empty.  If they are filled, the email/username field<br>is checked.  If it contains an &#39;@&#39; symbol, then the email check<br>is performed using is_valid_email.  Otherwise, a username check is performed using is_valid_username.<br> A password check is then made, initially checking if the field is<br>empty.  If it is populated, is_valid_password is used to validate the length<br>of the password.  If all these checks are successful, the program moves<br>on to the query phase.</p><br><p>For the code screenshot, a query is prepared and<br>executed in the try statement.  In short, the entered username is first<br>checked if it exists in the database, and if so, the password is<br>checked.  If the password matches (through password_verify, which compares hashes), the roles<br>of the user are fetched.  Once all this goes through successfully, the<br>user and user roles are saved to the session and the appropriate navbar<br>and welcome message is shown.<br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 3: </em> Feat: Users will be able to logout </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot showing the successful logout message</td></tr>
@@ -189,14 +191,14 @@
 <tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391403-fb1adf45-fd77-441e-9211-4a416a797419.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Successful Logout<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161336747-3ceb007e-6a77-4a89-9dc7-59bd24fd2dd4.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Code of flash_messages.php:<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161467075-54e55d1d-2393-45b8-abf5-b221f947ba54.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Code of helpers.js<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add a related pull request</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/23">https://github.com/jbq2/IT202-010/pull/23</a> </td></tr>
 <tr><td> <em>Sub-Task 3: </em> Briefly explain how you made messages user friendly</td></tr>
-<tr><td> <em>Response:</em> <p>The above code is the php file that populates the screen with an<br>appopriate flash message when it is called.  The flash function accepts 2<br>parameters: the actual message and the kind of error to display.  This<br>information is pushed to an array which is then returned by the getMessages<br>function, which is accepted by flash.php to show each flash message in the<br>array.<br></p><br></td></tr>
+<tr><td> <em>Response:</em> <p>The above code is the js file that populates the screen with an<br>appopriate flash message when it is called.  The flash function accepts 2<br>parameters: the actual message and the kind of error to display.  This<br>information is essentially placed into a div to be displayed at the<br>top of the page.<br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 7: </em> Feature: Users will be able to see their profile </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add screenshots of the User Profile page</td></tr>
@@ -207,51 +209,49 @@
 <tr><td> <em>Sub-Task 2: </em> Add the related pull request(s) for this feature</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/42">https://github.com/jbq2/IT202-010/pull/42</a> </td></tr>
 <tr><td> <em>Sub-Task 3: </em> Explain briefly how the process/code works (view only)</td></tr>
-<tr><td> <em>Response:</em> <p>IMPORTANT NOTE: the pull request that I linked to this issue is one<br>through Feat-UserLoginEnhancement. This is because I made a mistake during the user profile<br>lecture where I copy and pasted the wrong code into profile.php. I noticed<br>it was incorrect during the lecture where we worked on the Feat-UserLoginEnhancement branch<br>and I corrected my error. Sorry if this causes any sort of confusion.</p><br><p>Initially,<br>the the program checks if the user is logged in.  If not,<br>we terminate the later script and redirect the user back to login.php. <br>If they are logged in, we continue.  The page is populated with<br>a list of fields that the user can enter information into the make<br>changes to their profile.  By default, the username and email fields are<br>already filled with the current user&#39;s information. <br></p><br></td></tr>
+<tr><td> <em>Response:</em> <p>IMPORTANT NOTE: the pull request that I linked to this issue is one<br>through Feat-UserLoginEnhancement. This is because I made a mistake during the user profile<br>lecture where I copy and pasted the wrong code into profile.php. I noticed<br>it was incorrect during the lecture where we worked on the Feat-UserLoginEnhancement branch<br>and I corrected my error. Sorry if this causes any sort of confusion.</p><br><p>Initially,<br>the program checks if the user is logged in.  If not,<br>we terminate the later script and redirect the user back to login.php. <br>If they are logged in, we continue.  The page is populated with<br>a list of fields that the user can enter information into to make<br>changes to their profile.  By default, the username and email fields are<br>already filled with the current user&#39;s information. <br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 8: </em> Feature: User will be able to edit their profile </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add screenshots of the User Profile page validation messages and success messages</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391539-5caca9b2-90fb-4e0c-8517-46ed87683cda.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Error Message When Entered Current Password is Wrong<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391592-7225cc65-4280-407e-bfbd-eea2e8295795.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Error Message When New Password and Confirm Password Do Not Match<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391690-eea1f9d7-6e50-415c-b035-4a42f065f841.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Successful Username and Password Change<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391758-baa5f322-c396-44c6-bc0a-28131debfc45.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Duplicate Email Error<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391770-1a4d8d2c-1e62-4e22-8578-0ad06b1655af.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Duplicate Username Error<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161453851-85691855-838b-4198-81c6-4008af7e333b.png"/></td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464854-454e02ec-2bf5-4778-9666-5b5b102cda09.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Invalid Email<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161453864-24df4d79-c1b1-4996-aa22-7be44f5b333d.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464884-bf523053-bc17-4052-a5ba-8913fa1bd89c.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Invalid Username<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161453905-0d6e8303-e6ad-4ed3-b77f-75c75c151d63.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Screenshot 1 of validate function for profile.php<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464917-be81652e-2365-4a71-9996-553e5aebb6ae.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Wrong Current Password<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161453934-ca5b63e1-63c0-48cf-8857-a97534b7ea72.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Screenshot 2 of validate function for profile.php<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161464972-ff4a0073-1c90-4023-b73d-aa91b0429e26.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>New and Confirm Passwords do not match<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161465101-d845bc60-7e5c-40b1-a124-4a64701f2829.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Taken email<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161465127-88d56976-9332-4576-96d3-9e8eae2f78c2.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Taken username<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161465320-7facd11f-cb90-42b8-a5f5-28f471154438.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Successful Profile Change (joshquizon to jbquizon20)<br></p>
+</td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161465731-df9b35c1-2611-4b94-bd5f-eb8d75510b67.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Screenshot of validate function<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add before and after screenshots of the Users table when a user edits their profile</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391646-22cb819b-45eb-4207-93dc-092925607261.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Before Update Profile User Table<br></p>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161465256-123bbc49-3d02-4fb1-bcd3-5f1986f675df.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Users table before profile change (joshquizon to jbquizon20)<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161391724-5891b867-162e-4c73-98ad-fc259d2defce.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>After Update Profile User Table<br></p>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161465349-7e4e9c4d-7fa8-45e0-8968-fe18057cedb6.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Users table after profile change (joshquizon to jbquizon20)<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 3: </em> Add the related pull request(s) for this feature</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/42">https://github.com/jbq2/IT202-010/pull/42</a> </td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/55">https://github.com/jbq2/IT202-010/pull/55</a> </td></tr>
+<tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/59">https://github.com/jbq2/IT202-010/pull/59</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Explain briefly how the process/code works (edit only)</td></tr>
-<tr><td> <em>Response:</em> <p>IMPORTANT NOTE: the pull request that I linked to this issue is one<br>through Feat-UserLoginEnhancement. This is because I made a mistake during the user profile<br>lecture where I copy and pasted the wrong code into profile.php. I noticed<br>it was incorrect during the lecture where we worked on the Feat-UserLoginEnhancement branch<br>and I corrected my error. Sorry if this causes any sort of confusion.<br></p><br><EXPLAIN VALIDATE FUNCTION><br><br><p>The user can enter changes he or she wants to make<br>into the fields.  The username and email fields are already populated with<br>the current user&#39;s username and email.  This is a quality of life<br>feature.  If the user decides to change either his or her email/username,<br>a check to see if the newly inputted information is unique in the<br>database.  This is done through catching a &#39;1062&#39; error.  If this<br>error is caught, this signfies a duplicate entry error, which we handle by<br>sending a user-friendly error message.  Secondly, the user can also change their<br>password.  For this part of the code, an initial check is made<br>to see whether or not all password fields are empty.  If they<br>are empty, the user is alerted that they need to be filled out.<br> If they are not empty, the following checks are made: check if<br>the current password matches the user information (through password verify).  If so,<br>check if the new password and confirm password match.  If so, all<br>the newly entered information is saved into the database and the session is<br>refreshed with the new data in the table.  If one of the<br>checks fail, then a proper user-friendly flash message is shown.<br></p><br></td></tr>
+<tr><td> <em>Response:</em> <p>IMPORTANT NOTE: the pull request that I linked to this issue is one<br>through Feat-UserLoginEnhancement. This is because I made a mistake during the user profile<br>lecture where I copy and pasted the wrong code into profile.php. I noticed<br>it was incorrect during the lecture where we worked on the Feat-UserLoginEnhancement branch<br>and I corrected my error. Sorry if this causes any sort of confusion.<br></p><br><p>The validate function of profile.php uses the functions isValidEmail, isValidUsername, isValidPassword, and isMatchingPasswords.<br> These subfunctions have been defined in helpers.js.  Essentially, isValidEmail and isValidUsername<br>compare an input string to a regex that assesses their validity.  IsValidPassword<br>checks if the input string is at least 8 characters.  Finally, isMatchingPasswords<br>compares 2 input strings to see if they are matching.  Once these<br>tests pass, the form is validated.</p><br><p>The user can enter changes he or she<br>wants to make into the fields.  The username and email fields are<br>already populated with the current user&#39;s username and email.  This is a<br>quality of life feature.  If the user decides to change either his<br>or her email/username, a check to see if the newly inputted information is<br>unique in the database.  This is done through catching a &#39;1062&#39; error.<br> If this error is caught, this signfies a duplicate entry error, which<br>we handle by sending a user-friendly error message.  Secondly, the user can<br>also change their password.  For this part of the code, an initial<br>check is made to see whether or not all password fields are empty.<br> If they are empty, the user is alerted that they need to<br>be filled out.  If they are not empty, the following checks are<br>made: check if the current password matches the user information (through password verify).<br> If so, check if the new password and confirm password match. <br>If so, all the newly entered information is saved into the database and<br>the session is refreshed with the new data in the table.  If<br>one of the checks fail, then a proper user-friendly flash message is shown.<br></p><br></td></tr>
 </table></td></tr>
 <table><tr><td> <em>Deliverable 9: </em> Proposal and Issues </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add screenshots showing your updated proposal.md file with checkmarks, dates, and link to milestone1.md accordingly and a direct link to the path on heroku prod (see instructions)</td></tr>
@@ -272,10 +272,10 @@
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add screenshots showing which issues are done/closed (project board) Incomplete Issues should not be closed</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161388986-4fa35125-9181-4cdc-99b5-98830b383639.png"/></td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161466167-2507815c-0741-4cd8-9382-e9c70c09af74.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Done Issues 1<br></p>
 </td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161389020-a82c1a83-3cac-4146-9f7b-a03bbf510b3c.png"/></td></tr>
+<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161466224-2cd4df99-96d4-44c1-9d32-e6b4af66d697.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Done Issues 2<br></p>
 </td></tr>
 <tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161389038-ca98808a-4aa9-4367-978a-8fcf757ca289.png"/></td></tr>
