@@ -22,38 +22,34 @@ reset_session();
     <input type="submit" value="Register" />
 </form>
 <script>
-    function validate(form) {
+    function validate(form) {//UCID: jbq2; IT202-010
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
         document.getElementById("flash").innerHTML = "";
         let isValid = true;
 
         let email = form.email.value;
-        if(/[@]/.test(email) && !/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)){
-            flash("Invalid email", "warning");
-
+        if(!isValidEmail(email)){
             isValid = false;
+            flash("Invalid email", "warning");
         }
 
         let usern = form.username.value;
-        if(!(/^[a-z0-9_-]{3,16}$/.test(usern))){
-            flash("Invalid username", "warning");
-
+        if(!isValidUsername(usern)){
             isValid = false;
+            flash("Username must include 3-16 characters from a-z (lowercase), 0-9, _, or -", "warning");
         }
 
         let pw = form.password.value;
-        if(String(pw).length < 8){
-            flash("Password is too short", "warning");
-
+        if(!isValidPassword(pw)){
             isValid = false;
+            flash("Password is too short", "warning");
         }
 
         let con = form.confirm.value;
-        if(pw !== con){
-            flash("Passwords must match", "warning");
-
+        if(!isMatchingPasswords(pw, con)){
             isValid = false;
+            flash("Passwords must match", "warning");
         }
 
         return isValid;
