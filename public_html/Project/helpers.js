@@ -14,3 +14,31 @@ function flash(message = "", color = "info") {
     //add the element to the DOM (if we don't it merely exists in memory)
     flash.appendChild(outerDiv);
 }
+
+function isValidEmail(email){
+    if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(email)){
+        return false;
+    }
+    return true;
+}
+
+function isValidUsername(username){
+    if(!/^[a-z0-9_-]{3,16}$/.test(username)){
+        return false;
+    }
+    return true;
+}
+
+function isValidPassword(password){
+    if(String(password).length < 8){
+        return false;
+    }
+    return true;
+}
+
+function isMatchingPasswords(p1, p2){
+    if(p1 !== p2){
+        return false;
+    }
+    return true;
+}

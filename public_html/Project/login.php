@@ -13,7 +13,7 @@ require(__DIR__ . "/../../partials/nav.php");
     <input type="submit" value="Login" />
 </form>
 <script>
-    function validate(form) {
+    function validate(form) {//UCID: jbq2; IT202-010
         //TODO 1: implement JavaScript validation
         //ensure it returns false for an error and true for success
         document.getElementById("flash").innerHTML = "";
@@ -21,24 +21,20 @@ require(__DIR__ . "/../../partials/nav.php");
         let emailuser = form.email.value;
         let isValid = true;
         if(emailuser.includes("@")){
-            if(!/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/.test(emailuser)){
-                flash("Invalid email address", "warning");
-
+            if(!isValidEmail(emailuser)){
                 isValid = false;
+                flash("Invalid email", "warning");
             }
         }
         else{
-            if(!(/^[a-z0-9_-]{3,16}$/.test(emailuser))){
-                flash("Invalid username", "warning");
-
+            if(!isValidUsername(emailuser)){
                 isValid = false;
+                flash("Username must include 3-16 characters from a-z (lowercase), 0-9, _, or -", "warning");
             }
         }
-
-        if(String(pw).length < 8){
-            flash("Password is too short", "warning");
-
+        if(!isValidPassword(pw)){
             isValid = false;
+            flash("Password is too short", "warning");
         }
         
         //TODO update clientside validation to check if it should
