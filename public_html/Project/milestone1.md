@@ -255,20 +255,8 @@
 </table></td></tr>
 <table><tr><td> <em>Deliverable 9: </em> Proposal and Issues </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add screenshots showing your updated proposal.md file with checkmarks, dates, and link to milestone1.md accordingly and a direct link to the path on heroku prod (see instructions)</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161388711-298bc85f-969e-450d-adb7-39a9d6c76327.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>proposal.md Update 1<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161388743-493cf6cb-e60a-4eae-aae4-e977171d2484.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>proposal.md Update 2<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161388775-e0aa7061-3e07-487d-a024-ead70326895e.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>proposal.md Update 3<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161388815-5bb4a715-3498-40a7-96c3-bc1fb1319aca.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>proposal.md Preview 1<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161388836-62535fd2-69b2-4ba0-a580-71c36fd3075f.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>proposal.md Preview 2<br></p>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161470351-84490a18-1cc4-4b4a-86a4-c950ac540ba2.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>proposal.md Milestone1<br></p>
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Add screenshots showing which issues are done/closed (project board) Incomplete Issues should not be closed</td></tr>
@@ -277,9 +265,6 @@
 </td></tr>
 <tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161466224-2cd4df99-96d4-44c1-9d32-e6b4af66d697.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Done Issues 2<br></p>
-</td></tr>
-<tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/161389038-ca98808a-4aa9-4367-978a-8fcf757ca289.png"/></td></tr>
-<tr><td> <em>Caption:</em> <p>Done Issues 3<br></p>
 </td></tr>
 </table></td></tr>
 </table></td></tr>
