@@ -31,7 +31,7 @@ session_start();
 <script src="<?php echo get_url('helpers.js'); ?>"></script>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Home</a>
+        <a class="navbar-brand" href="<?php echo get_url('home.php'); ?>">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -45,6 +45,10 @@ session_start();
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('login.php'); ?>">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('register.php'); ?>">Register</a></li>
                 <?php endif; ?>
+                <!-- if user is Admin/Shop Owner, make admin_products accessible -->
+                <?php if(has_role("Shop Owner") || has_role("Admin")) : ?> 
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('admin/admin_products.php'); ?>">Add Product</a></li>
+                <?php endif; ?> 
                 <?php if (has_role("Admin")) : ?>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="rolesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS Products(
     CHECK (`unit_price` >= 0.00)
 );
 
---foreign key constraint on 'category' field in products table
 ALTER TABLE Products
 ADD FOREIGN KEY(`category`) REFERENCES Category(`name`)
 ON UPDATE CASCADE
