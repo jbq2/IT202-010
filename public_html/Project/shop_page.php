@@ -23,41 +23,60 @@ require(__DIR__ . "/../../partials/nav.php");
             }
             $count++;
         }
-        // foreach($products as $item){
-        //     if(se($item, "stock") > 0){
-        //         $item["stock"] = "Yes";
-        //     }
-        //     else{
-        //         $item["stock"] = "No";
-        //     }
-        // }
     }
  }
  catch(PDOException $e){
     flash(var_export($e->errorInfo,true), "danger");
  }
+
+$categories = [];
+$db = getDB();
+$statement = $db->prepare("SELECT * FROM Category");
+try{
+    $statement->execute();
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    if($results){
+        $categories = $results;
+    }
+}
+catch(PDOException $e){
+    flash(var_export($e->errorInfo, true), "danger");
+}
 ?>
 
 <h1>List of Products</h1>
-<div class=productsListDiv>
-    <table style="margin-bottom:30px;">
-        <thead>
-            <th>Name</th>
-            <th>Descripion</th>
-            <th>Price</th>
-            <th>Stock</th>
-        </thead>
-        <tbody>
-            <?php foreach($toDisplay as $item) : ?>
-                <tr>
-                    <td><?php se($item, "name") ?></td>
-                    <td><?php se($item, "description") ?></td>
-                    <td><?php se($item, "unit_price") ?></td>
-                    <td><?php se($item, "stock") ?></td>
-                </tr>
+<form class="formFilters">
+    <div class="filterDiv">
+        <label for="search">Search: </label>
+        <input type="text" name="search">
+    </div>
+    <div class="filterDiv">
+        <label for="catFilter">Filter By Category: </label>
+        <select name="catFilter">
+            <?php foreach ($categories as $cat) : ?>
+                <option id="<?php se($cat, "name") ?>" name="categories[]" value="<?php se($cat, "name") ?> "> <?php se($cat, "name") ?> </option>
             <?php endforeach; ?>
-        </tbody>
-    </table>
+        </select>
+    </div>
+    <div class="filterDiv">
+        <label for="priceFilter">Filter By Price: </label>
+        <select name="priceFilter">
+            <option value="ASC">Increasing</option>
+            <option value="DESC">Decreasing</option>
+        </select>
+    </div>
+</form>
+
+<div class=productsListDiv>
+    <?php foreach($toDisplay as $item) : ?>
+        <div class="itemCard">
+            <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
+            <div class="itemContainer">
+                <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
+                <p>$<?php se($item, "unit_price") ?></p>
+            </div>
+        </div>
+    <?php endforeach; ?>
 </div>
 
 

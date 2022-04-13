@@ -27,7 +27,7 @@
 }
 
 div{
-    margin-left:50px;
+    margin-left:35px;
 }
 form div{
     padding-top:10px;
@@ -42,6 +42,7 @@ input[type=text]{
     padding:5px;
     border:2px solid #2A2B32;
     border-radius: 5px;
+    width:400px;
 }
 input[input=text]:focus{
     border-color: #31374D;
@@ -123,4 +124,37 @@ th, td{
     text-align:center;
     border:1px solid rgb(255, 240, 220);
     padding:5px;
+}
+
+.filterDiv{
+    display:inline-block;
+}
+
+h1{
+    margin-left:40px;
+    margin-top:20px;
+}
+
+.itemCard{
+    text-align:left;
+    background-color: #3c404f;
+    display:inline-block;
+    box-shadow: 0 4px 8px 0 rgb(29, 29, 29);
+    transition: 0.3s;
+    border-radius: 5px;
+    width: 300px;
+    margin-top:25px;
+}
+
+.itemCard:hover{
+    box-shadow: 0 8px 16px 0 rgb(29, 29, 29);
+}
+
+.itemContainer{
+    text-align:left;
+}
+
+img{
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
 }
