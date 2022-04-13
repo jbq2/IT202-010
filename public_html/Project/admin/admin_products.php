@@ -27,7 +27,7 @@ catch(PDOException $e){
 ?>
 
 <div class="outestDiv">
-    <h1>Enter Product</h1>
+    <h1 style="margin-top: 20px">Add Product</h1>
 
     <form onsubmit="return validate(this)" method="POST">
         <div class="textbox" id="nameDiv">
@@ -180,8 +180,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
     }
 
     if(!$hasError){
-        //TODO insert into products
-        var_dump("no errors");
+        //TODO check if insert works
         if($vis == "vis"){
             $vis = 1;
         }
