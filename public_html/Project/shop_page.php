@@ -3,7 +3,7 @@ require(__DIR__ . "/../../partials/nav.php");
 ?>
 
 <?php
- $products = [];
+ $toDisplay = [];
  $db = getDB();
  $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
  WHERE visibility=1");
@@ -11,10 +11,8 @@ require(__DIR__ . "/../../partials/nav.php");
     $statement->execute();
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     if($results){
-        $products = $results;
-        $toDisplay = [];
         $count = 0;
-        foreach($products as $item){
+        foreach($results as $item){
             if($count < 10){
                 $toDisplay[$count] = $item;
             }
@@ -48,7 +46,7 @@ catch(PDOException $e){
 <form onsubmit="return validate(this)" class="formFilters" method="POST">
     <div class="filterSearch">
         <label for="search">Search: </label>
-        <input type="text" name="search">
+        <input type="text" name="search" value="">
     </div>
     <div class="filterDrop">
         <label for="catFilter">Filter By Category: </label>
@@ -91,7 +89,6 @@ catch(PDOException $e){
 
 <?php 
 //TODO apply filters
-$toDisplay = [];
 $filterList = ["applySearch" => false, "applyCategory" => false, "applyPrice" => false];
 
 if($_POST(["search"]) != ""){
@@ -104,33 +101,188 @@ if($_POST(["priceFilter"]) != "none"){
     $filterList["applyPrice"] = true;
 }
 
+$db = getDB();
+$toDisplay = [];
 if($filterList["applySearch"]){
+    $search = $_POST(["search"]);
     if($filterList["applyCategory"]){
+        $category = $_POST(["catFilter"]);
         if($filterList["applyPrice"]){//if all 3 filters are applied
             //TODO write query to populate toDisplay
+            $price = $_POST(["priceFilter"]);
+
+            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            WHERE visibility = 1 AND name LIKE '%:name%' AND category = :category
+            ORDER BY unit_price :price");
+
+            try{
+                $statement->execute([":name" => $search, ":category" => $category, ":price" => $price]);
+                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $count = 0;
+                foreach($results as $filteredItem){
+                    if($count < 10){
+                        $toDisplay[$count] = $filteredItem;
+                    }
+                    else{
+                        break;
+                    }
+                    $count++;
+                }
+            }
+            catch(PDOException $e){
+                flash(var_export($e->errorInfo, true), "danger");
+            }
         }
         else{//if only search and category are filtered
             //TODO write query to populate toDisplay
+            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            WHERE visibility = 1 AND name LIKE '%:name%' AND category = :category");
+
+            try{
+                $statement->execute([":name" => $search, ":category" => $category]);
+                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $count = 0;
+                foreach($results as $filteredItem){
+                    if($count < 10){
+                        $toDisplay[$count] = $filteredItem;
+                    }
+                    else{
+                        break;
+                    }
+                    $count++;
+                }
+            }
+            catch(PDOException $e){
+                flash(var_export($e->errorInfo, true), "danger");
+            }
         }
     }
     else{//if only search is filtered
-        
+        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        WHERE visibility = 1 AND name LIKE '%:name%'");
+
+        try{
+            $statement->execute([":name" => $search]);
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $count = 0;
+            foreach($results as $filteredItem){
+                if($count < 10){
+                    $toDisplay[$count] = $filteredItem;
+                }
+                else{
+                    break;
+                }
+                $count++;
+            }
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo, true), "danger");
+        }
     }
 }
 else if($filterList["applyCategory"]){
+    $category = $_POST(["catFilter"]);
     if($filterList["applyPrice"]){//if price and category are filtered
         //TODO write query to populate toDisplay
+        $price = $_POST(["priceFilter"]);
+        
+        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        WHERE visibility = 1 AND category = :category
+        ORDER BY unit_price :price");
+        
+        try{
+            $statement->execute([":category" => $category, ":price" => $price]);
+            $results = $statements->fetchAll(PDO::FETCH_ASSOC);
+            $count = 0;
+            foreach($results as $filteredItem){
+                if($count < 10){
+                    $toDisplay[$count] = $filteredItem;
+                }
+                else{
+                    break;
+                }
+                $count++;
+            }
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo, true), "danger");
+        }
     }
     else{//if only category filtered
         //TODO write query to populate toDisplay
+        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        WHERE visibility = 1 AND category = :category");
+        
+        try{
+            $statement->execute([":category" => $category]);
+            $results = $statements->fetchAll(PDO::FETCH_ASSOC);
+            $count = 0;
+            foreach($results as $filteredItem){
+                if($count < 10){
+                    $toDisplay[$count] = $filteredItem;
+                }
+                else{
+                    break;
+                }
+                $count++;
+            }
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo, true), "danger");
+        }
     }
 }
 else if($filterList["applyPrice"]){//if only price filtered
     //TODO write query to populate toDisplay
+    $price = $_POST(["priceFilter"]);
+    
+    $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+    WHERE visibility = 1
+    ORDER BY unit_price :price");
+
+    try{
+        $statement->execute([":price" => $price]);
+        $results = $statements->fetchAll(PDO::FETCH_ASSOC);
+        $count = 0;
+        foreach($results as $filteredItem){
+            if($count < 10){
+                $toDisplay[$count] = $filteredItem;
+            }
+            else{
+                break;
+            }
+            $count++;
+        }
+    }
+    catch(PDOException $e){
+        flash(var_export($e->errorInfo, true), "danger");
+    }
 }
 else{
     //TODO display normally
     //TODO write query to populate toDisplay
+    $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
+    WHERE visibility = 1");
+
+    try{
+       $statement->execute();
+       $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+       if($results){
+           $count = 0;
+           foreach($results as $item){
+               if($count < 10){
+                   $toDisplay[$count] = $item;
+               }
+               else{
+                   break;
+               }
+               $count++;
+           }
+       }
+    }
+    catch(PDOException $e){
+       flash(var_export($e->errorInfo,true), "danger");
+    }
 }
 
 ?>
