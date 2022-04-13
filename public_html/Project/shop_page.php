@@ -46,11 +46,11 @@ catch(PDOException $e){
 
 <h1>List of Products</h1>
 <form class="formFilters">
-    <div class="filterDiv">
+    <div class="filterSearch">
         <label for="search">Search: </label>
         <input type="text" name="search">
     </div>
-    <div class="filterDiv">
+    <div class="filterDrop">
         <label for="catFilter">Filter By Category: </label>
         <select name="catFilter">
             <?php foreach ($categories as $cat) : ?>
@@ -58,7 +58,7 @@ catch(PDOException $e){
             <?php endforeach; ?>
         </select>
     </div>
-    <div class="filterDiv">
+    <div class="filterDrop">
         <label for="priceFilter">Filter By Price: </label>
         <select name="priceFilter">
             <option value="ASC">Increasing</option>
