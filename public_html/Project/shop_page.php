@@ -83,7 +83,22 @@ catch(PDOException $e){
 <script>
     //TODO check if any other checks are necessary on client side
     function validate(form){
-        return true;
+        let inSearch = form.search.value;
+        let inCategory = form.catFilter.value;
+        let inPrice = form.priceFilter.value;
+        isValid = true;
+
+        if(empty(inSearch)){
+            isValid = false;
+        }
+        if(empty(inCategory)){
+            isValid = false;
+        }
+        if(empty(inPrice)){
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 
