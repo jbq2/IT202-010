@@ -1,6 +1,5 @@
 <?php
 require(__DIR__ . "/../../../partials/nav.php");
-
 if(!is_logged_in()){
     flash("You must be logged in to view this page", "warning");
     die(header("Location: " . get_url("login.php")));
@@ -84,6 +83,7 @@ catch(PDOException $e){
 <script>
     //TODO function validate
     function validate(form){
+        document.getElementById("flash").innerHTML = "";
         let name = form.name.value;
         let desc = form.desc.value;
         let cate = form.cate.value;
@@ -118,7 +118,7 @@ catch(PDOException $e){
         }
 
         if(price != "" && !/^[0-9]{1,8}\.[0-9]{1,2}/.test(price)){
-            flash("Entered price is invalid (valid example: 10.00)", "warning");
+            flash("Entered price is invalid (valid example: 10.00, must be less than 10000000.00)", "warning");
             isValid = false;
         }
         if(stock != "" && !/^[0-9]+/.test(stock)){
@@ -162,7 +162,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
     }
 
     if(!preg_match('/^[0-9]{1,8}\.[0-9]{1,2}/', $price)){
-        flash("Please enter a valid price (valid example: 20.00)", "warning");
+        flash("Entered price is invalid (valid example: 10.00, must be less than 10000000.00)", "warning");
         $hasError = true;
     }
     if(!preg_match('/^[0-9]+/', $stock)){
@@ -170,6 +170,14 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
         $hasError = true;
     }
 
+    if(floatval($price) > 10000000.00){
+        flash("Entered price exceeds max.  Price was set to 10000000.00", "info");
+        $price = 10000000.00;
+    }
+    if(floatval($price) < 0.00){
+        flash("Entered price exceeds minimum.  Price was set to 0.00", "info");
+        $price = 0.00;
+    }
     if(intval($stock) > 200000000){
         flash("Entered stock exceeds max. Stock was set to 200000000", "info");
         $stock = "200000000";
@@ -200,6 +208,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
         }
     }
 }
+
 ?>
 
 <?php
