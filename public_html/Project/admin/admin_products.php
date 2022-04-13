@@ -29,7 +29,7 @@ catch(PDOException $e){
 <div class="outestDiv">
     <h1>Enter Product</h1>
 
-    <form onsubmit="return true" method="POST">
+    <form onsubmit="return validate(this)" method="POST">
         <div class="textbox" id="nameDiv">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" />
@@ -82,12 +82,54 @@ catch(PDOException $e){
 <script>
     //TODO function validate
     function validate(form){
-        
+        let name = form.name.value;
+        let desc = form.desc.value;
+        let cate = form.cate.value;
+        let price = form.price.value;
+        let stock = form.stock.value;
+        let vis = form.vis.value;
+        let isValid = true;
+
+        if(name == ""){
+            flash("Name must not be empty", "warning");
+            isValid = false;
+        }
+        if(desc == ""){
+            flash("Description must not be empty", "warning");
+            isValid = false;
+        }
+        if(cate == ""){
+            flash("The product must belong to a category", "warning");
+            isValid = false;
+        }
+        if(price == ""){
+            flash("Price must not be empty", "warning");
+            isValid = false;
+        }
+        if(stock == ""){
+            flash("Stock must not be empty", "warning");
+            isValid = false;
+        }
+        if(vis == ""){
+            flash("Choose a visibility option", "warning");
+            isValid = false;
+        }
+
+        if(price != "" && !/^[0-9]{1,8}.[0-9]{1,2}/.test(price)){
+            flash("Entered price is invalid (exclude the $ symbol)", "warning");
+            isValid = false;
+        }
+        if(stock != "" && !/^[0-9]+/.test(stock)){
+            flash("Entered stock is invalid", "warning");
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 
 <?php
-if(isset($_POST["name"]) && isset($_POST["desc"]) && isset($_POST["cate"]) && isset($_POST["price"]) && isset($_POST["stock"]) && isset($_POST["vis"])){
+if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && isset($_POST["stock"]) && isset($_POST["vis"])){
     $name = se($_POST, "name", "", false);
     $desc = se($_POST, "desc", "", false);
     $cate = se($_POST, "cate", "", false);
