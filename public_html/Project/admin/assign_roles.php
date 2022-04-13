@@ -2,9 +2,14 @@
 //note we need to go up 1 more directory
 require(__DIR__ . "/../../../partials/nav.php");
 
+if(!is_logged_in()){
+    flash("You must be logged in to view this page", "warning");
+    die(header("Location: " . get_url("login.php")));
+}
+
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
-    die(header("Location: $BASE_PATH" . "home.php"));
+    die(header("Location: " . get_url("home.php")));
 }
 //attempt to apply
 if (isset($_POST["users"]) && isset($_POST["roles"])) {
