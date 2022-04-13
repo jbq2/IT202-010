@@ -45,7 +45,7 @@ catch(PDOException $e){
 ?>
 
 <h1>List of Products</h1>
-<form class="formFilters">
+<form onsubmit="return validate(this)" class="formFilters" method="POST">
     <div class="filterSearch">
         <label for="search">Search: </label>
         <input type="text" name="search">
@@ -53,6 +53,7 @@ catch(PDOException $e){
     <div class="filterDrop">
         <label for="catFilter">Filter By Category: </label>
         <select name="catFilter">
+            <option id="none" value="none">None</option>
             <?php foreach ($categories as $cat) : ?>
                 <option id="<?php se($cat, "name") ?>" name="categories[]" value="<?php se($cat, "name") ?> "> <?php se($cat, "name") ?> </option>
             <?php endforeach; ?>
@@ -61,10 +62,12 @@ catch(PDOException $e){
     <div class="filterDrop">
         <label for="priceFilter">Filter By Price: </label>
         <select name="priceFilter">
+            <option id="none" value="none">None</option>
             <option value="ASC">Increasing</option>
             <option value="DESC">Decreasing</option>
         </select>
     </div>
+    <div><input type="submit" value="Submit"></div>
 </form>
 
 <div class=productsListDiv>
@@ -79,6 +82,58 @@ catch(PDOException $e){
     <?php endforeach; ?>
 </div>
 
+<script>
+    //TODO check if any other checks are necessary on client side
+    function validate(form){
+        return true;
+    }
+</script>
+
+<?php 
+//TODO apply filters
+$toDisplay = [];
+$filterList = ["applySearch" => false, "applyCategory" => false, "applyPrice" => false];
+
+if($_POST(["search"]) != ""){
+    $filterList["applySearch"] = true;
+}
+if($_POST(["catFilter"]) != "none"){
+    $filterList["applyCategory"] = true;
+}
+if($_POST(["priceFilter"]) != "none"){
+    $filterList["applyPrice"] = true;
+}
+
+if($filterList["applySearch"]){
+    if($filterList["applyCategory"]){
+        if($filterList["applyPrice"]){//if all 3 filters are applied
+            //TODO write query to populate toDisplay
+        }
+        else{//if only search and category are filtered
+            //TODO write query to populate toDisplay
+        }
+    }
+    else{//if only search is filtered
+        
+    }
+}
+else if($filterList["applyCategory"]){
+    if($filterList["applyPrice"]){//if price and category are filtered
+        //TODO write query to populate toDisplay
+    }
+    else{//if only category filtered
+        //TODO write query to populate toDisplay
+    }
+}
+else if($filterList["applyPrice"]){//if only price filtered
+    //TODO write query to populate toDisplay
+}
+else{
+    //TODO display normally
+    //TODO write query to populate toDisplay
+}
+
+?>
 
 <?php
 require(__DIR__ . "/../../partials/flash.php");
