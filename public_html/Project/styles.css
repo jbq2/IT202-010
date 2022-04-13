@@ -114,5 +114,13 @@ th{
     color:white;
 }
 td{
-    color:white;
+    margin-left:60px;
+    margin-right:60px;
+    color:rgb(255, 255, 255);
+}
+th, td{
+    width:225px;
+    text-align:center;
+    border:1px solid rgb(255, 240, 220);
+    padding:5px;
 }
