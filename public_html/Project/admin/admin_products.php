@@ -161,7 +161,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
         $hasError = true;
     }
 
-    if(!preg_match('/^[0-9]{1,8}.[0-9]{1,2}/', $price)){
+    if(!preg_match('/^[0-9]{1,8}\.[0-9]{1,2}/', $price)){
         flash("Please enter a valid price (valid example: 20.00)", "warning");
         $hasError = true;
     }
