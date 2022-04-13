@@ -33,11 +33,13 @@ catch(PDOException $e){
         <div class="textbox" id="nameDiv">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" />
+            <!--  value="<?php echo isset($_POST['name']) ? $_POST['name'] : '' ?>" -->
         </div>
 
         <div class="textbox" id="descDiv">
             <label for="desc">Description:</label>
             <textarea id="desc" name="desc" ></textarea>
+            <!-- value="<?php echo isset($_POST['desc']) ? $_POST['desc'] : '' ?>" -->
         </div>
 
         <div class="textbox" id="categoryDiv">
@@ -68,10 +70,10 @@ catch(PDOException $e){
 
         <div>
         <h6>Choose Visiblity:</h6>
-            <input type="radio" id="y" name="vis" value="1"/>
+            <input type="radio" name="vis" value="vis"/>
             <label for="y">Visible</label>
             <br>
-            <input type="radio" id="n" name="vis" value="0"/>
+            <input type="radio" name="vis" value="invis"/>
             <label for="n">Invisible</label>
         </div>
 
@@ -115,8 +117,8 @@ catch(PDOException $e){
             isValid = false;
         }
 
-        if(price != "" && !/^[0-9]{1,8}.[0-9]{1,2}/.test(price)){
-            flash("Entered price is invalid (exclude the $ symbol)", "warning");
+        if(price != "" && !/^[0-9]{1,8}\.[0-9]{1,2}/.test(price)){
+            flash("Entered price is invalid (valid example: 10.00)", "warning");
             isValid = false;
         }
         if(stock != "" && !/^[0-9]+/.test(stock)){
@@ -160,7 +162,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
     }
 
     if(!preg_match('/^[0-9]{1,8}.[0-9]{1,2}/', $price)){
-        flash("Please enter a valid price (excluding $ symbol)", "warning");
+        flash("Please enter a valid price (valid example: 20.00)", "warning");
         $hasError = true;
     }
     if(!preg_match('/^[0-9]+/', $stock)){
@@ -179,6 +181,24 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
 
     if(!$hasError){
         //TODO insert into products
+        var_dump("no errors");
+        if($vis == "vis"){
+            $vis = 1;
+        }
+        else{
+            $vis = 0;
+        }
+
+        $db = getDB();
+        $statement = $db->prepare("INSERT INTO Products(name, description, category, stock, unit_price, visibility)
+        VALUES (:name, :desc, :cate, :stock, :price, :vis)");
+        try{
+            $statement->execute([":name" => $name, ":desc" => $desc, ":cate" => $cate, ":stock" => $stock, ":price" => $price, ":vis" => $vis]);
+            flash("Successfully added product $name!", "success");
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo, true), "danger");
+        }
     }
 }
 ?>
