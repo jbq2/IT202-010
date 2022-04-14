@@ -51,6 +51,7 @@ input[type=password]{
     padding:3px;
     border:2px solid #2A2B32;
     border-radius: 5px;
+    width:350px;
 }
 input[input=password]:focus{
     border-color: #31374D;

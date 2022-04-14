@@ -3,30 +3,6 @@ require(__DIR__ . "/../../partials/nav.php");
 ?>
 
 <?php
- $toDisplay = [];
- $db = getDB();
- $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
- WHERE visibility=1");
- try{
-    $statement->execute();
-    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-    if($results){
-        $count = 0;
-        foreach($results as $item){
-            if($count < 10){
-                $toDisplay[$count] = $item;
-            }
-            else{
-                break;
-            }
-            $count++;
-        }
-    }
- }
- catch(PDOException $e){
-    flash(var_export($e->errorInfo,true), "danger");
- }
-
 $categories = [];
 $db = getDB();
 $statement = $db->prepare("SELECT * FROM Category");
@@ -39,6 +15,243 @@ try{
 }
 catch(PDOException $e){
     flash(var_export($e->errorInfo, true), "danger");
+}
+
+//TODO apply filters
+$filterList = ["applySearch" => false, "applyCategory" => false, "applyPrice" => false];
+$search = se($_POST, "search", "", false);
+$category = se($_POST, "catFilter", "", false);
+$price = se($_POST, "priceFilter", "", false);
+
+$db = getDB();
+$toDisplay = [];
+if(!empty($search)){
+    if($category != "none"){
+        if($price != "none"){//all 3 filers
+            if($price == "ASC"){
+                $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+                WHERE visibility = 1 AND category = :category AND name LIKE :name
+                ORDER BY unit_price ASC");
+            }
+            else if($price == "DESC"){
+                $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+                WHERE visibility = 1 AND category = :category AND name LIKE :name
+                ORDER BY unit_price DESC");
+            }
+
+            try{
+                $statement->execute([":category" => $category, ":name" => "%" . $search . "%"]);
+                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                if($results){
+                    $count = 0;
+                    foreach($results as $item){
+                        if($count < 10){
+                            $toDisplay[$count] = $item;
+                        }
+                        else{
+                            break;
+                        }
+                        $count++;
+                    }
+                }
+            }
+            catch(PDOException $e){
+                flash(var_export($e->errorInfo,true), "danger");
+            }
+        }
+        else{//only category and search
+            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            WHERE visibility = 1 AND category = :category AND name LIKE :name");
+        
+            try{
+                $statement->execute([":category" => $category, ":name" => "%" . $search . "%"]);
+                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+                if($results){
+                    $count = 0;
+                    foreach($results as $item){
+                        if($count < 10){
+                            $toDisplay[$count] = $item;
+                        }
+                        else{
+                            break;
+                        }
+                        $count++;
+                    }
+                }
+            }
+            catch(PDOException $e){
+                flash(var_export($e->errorInfo,true), "danger");
+            }
+        }
+    }
+    else if($price != "none"){//only search and price
+        if($price == "ASC"){
+            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            WHERE visibility = 1 AND name LIKE :name
+            ORDER BY unit_price ASC");
+        }
+        else if($price == "DESC"){
+            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            WHERE visibility = 1 AND name LIKE :name
+            ORDER BY unit_price DESC");
+        }
+
+        try{
+            $statement->execute([":name" => "%" . $search . "%"]);
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if($results){
+                $count = 0;
+                foreach($results as $item){
+                    if($count < 10){
+                        $toDisplay[$count] = $item;
+                    }
+                    else{
+                        break;
+                    }
+                    $count++;
+                }
+            }
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo,true), "danger");
+        }
+    }
+    else{//only search
+        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        WHERE visibility = 1 AND name LIKE :name");
+    
+        try{
+            $statement->execute([":name" => "%" . $search . "%"]);
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if($results){
+                $count = 0;
+                foreach($results as $item){
+                    if($count < 10){
+                        $toDisplay[$count] = $item;
+                    }
+                    else{
+                        break;
+                    }
+                    $count++;
+                }
+            }
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo,true), "danger");
+        }
+    }
+}
+else if($category != "none"){
+    if($price != "none"){//only category and price
+        if($price == "ASC"){
+            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            WHERE visibility = 1 AND category = :category
+            ORDER BY unit_price ASC");
+        }
+        else if($price == "DESC"){
+            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            WHERE visibility = 1 AND category = :category
+            ORDER BY unit_price DESC");
+        }
+
+        try{
+            $statement->execute([":category" => $category]);
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if($results){
+                $count = 0;
+                foreach($results as $item){
+                    if($count < 10){
+                        $toDisplay[$count] = $item;
+                    }
+                    else{
+                        break;
+                    }
+                    $count++;
+                }
+            }
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo,true), "danger");
+        }
+    }
+    else{//only category
+        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
+        WHERE visibility = 1 AND category = :category");
+        try{
+            $statement->execute([":category" => $category]);
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if($results){
+                $count = 0;
+                foreach($results as $item){
+                    if($count < 10){
+                        $toDisplay[$count] = $item;
+                    }
+                    else{
+                        break;
+                    }
+                    $count++;
+                }
+            }
+        }
+        catch(PDOException $e){
+            flash(var_export($e->errorInfo,true), "danger");
+        }
+    }
+}
+else if($price != "none"){//only price
+    if($price == "ASC"){
+        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        WHERE visibility = 1
+        ORDER BY unit_price ASC");
+    }
+    else if($price == "DESC"){
+        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        WHERE visibility = 1
+        ORDER BY unit_price DESC");
+    }
+
+    try{
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results){
+            $count = 0;
+            foreach($results as $item){
+                if($count < 10){
+                    $toDisplay[$count] = $item;
+                }
+                else{
+                    break;
+                }
+                $count++;
+            }
+        }
+    }
+    catch(PDOException $e){
+        flash(var_export($e->errorInfo,true), "danger");
+    }
+}
+else{//no filters
+    $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
+    WHERE visibility=1");
+    try{
+       $statement->execute();
+       $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+       if($results){
+           $count = 0;
+           foreach($results as $item){
+               if($count < 10){
+                   $toDisplay[$count] = $item;
+               }
+               else{
+                   break;
+               }
+               $count++;
+           }
+       }
+    }
+    catch(PDOException $e){
+       flash(var_export($e->errorInfo,true), "danger");
+    }
 }
 ?>
 
@@ -103,251 +316,6 @@ catch(PDOException $e){
 </script>
 
 <?php 
-//TODO apply filters
-$filterList = ["applySearch" => false, "applyCategory" => false, "applyPrice" => false];
-$search = se($_POST, "search", "", false);
-$category = se($_POST, "catFilter", "", false);
-$price = se($_POST, "priceFilter", "", false);
-
-$db = getDB();
-if($category != "none"){
-    $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
-    WHERE visibility=1 AND category = :category");
-    try{
-        $statement->execute([":category" => $category]);
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($results);
-    }
-    catch(PDOException $e){
-        flash(var_export($e->errorInfo,true), "danger");
-    }
-}
-if($price != "none"){
-    if($price == "ASC"){
-        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-        WHERE visibility = 1
-        ORDER BY unit_price ASC");
-    }
-    else if($price == "DESC"){
-        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-        WHERE visibility = 1
-        ORDER BY unit_price DESC");
-    }
-
-    try{
-        $statement->execute();
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        var_dump($results);
-    }
-    catch(PDOException $e){
-        flash(var_export($e->errorInfo,true), "danger");
-    }
-}
-
-//TODO apply above logic for price filter to commented block of code
-
-// if(!empty($search)){
-//     $filterList["applySearch"] = true;
-// }
-// if(!empty($category)){
-//     $filterList["applyCategory"] = true;
-// }
-// if(!empty($price)){
-//     $filterList["applyPrice"] = true;
-// }
-
-// $db = getDB();
-// $toDisplay = [];
-// if($filterList["applySearch"]){
-//     if($filterList["applyCategory"]){
-//         if($filterList["applyPrice"]){//if all 3 filters are applied
-//             //TODO write query to populate toDisplay
-
-//             $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-//             WHERE visibility = 1 AND name LIKE '%:name%' AND category = :category
-//             ORDER BY unit_price :price");
-
-//             try{
-//                 if($price == "ASC"){
-//                     $statement->execute([":name" => $search, ":category" => $category, ":price" => "ASC"]);
-//                 }
-//                 else if($price == "DESC"){
-//                     $statement->execute([":name" => $search, ":category" => $category, ":price" => "DESC"]);
-//                 }
-//                 $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-//                 $count = 0;
-//                 foreach($results as $filteredItem){
-//                     if($count < 10){
-//                         $toDisplay[$count] = $filteredItem;
-//                     }
-//                     else{
-//                         break;
-//                     }
-//                     $count++;
-//                 }
-//             }
-//             catch(PDOException $e){
-//                 flash(var_export($e->errorInfo, true), "danger");
-//             }
-//         }
-//         else{//if only search and category are filtered
-//             //TODO write query to populate toDisplay
-//             $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-//             WHERE visibility = 1 AND name LIKE '%:name%' AND category = :category");
-
-//             try{
-//                 $statement->execute([":name" => $search, ":category" => $category]);
-//                 $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-//                 $count = 0;
-//                 foreach($results as $filteredItem){
-//                     if($count < 10){
-//                         $toDisplay[$count] = $filteredItem;
-//                     }
-//                     else{
-//                         break;
-//                     }
-//                     $count++;
-//                 }
-//             }
-//             catch(PDOException $e){
-//                 flash(var_export($e->errorInfo, true), "danger");
-//             }
-//         }
-//     }
-//     else{//if only search is filtered
-//         $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-//         WHERE visibility = 1 AND name LIKE '%:name%'");
-
-//         try{
-//             $statement->execute([":name" => $search]);
-//             $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-//             $count = 0;
-//             foreach($results as $filteredItem){
-//                 if($count < 10){
-//                     $toDisplay[$count] = $filteredItem;
-//                 }
-//                 else{
-//                     break;
-//                 }
-//                 $count++;
-//             }
-//         }
-//         catch(PDOException $e){
-//             flash(var_export($e->errorInfo, true), "danger");
-//         }
-//     }
-// }
-// else if($filterList["applyCategory"]){
-//     if($filterList["applyPrice"]){//if price and category are filtered
-//         //TODO write query to populate toDisplay
-        
-//         $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-//         WHERE visibility = 1 AND category = :category
-//         ORDER BY unit_price :price");
-        
-//         try{
-//             if($price == "ASC"){
-//                 $statement->execute([":name" => $search, ":category" => $category, ":price" => "ASC"]);
-//             }
-//             else if($price == "DESC"){
-//                 $statement->execute([":name" => $search, ":category" => $category, ":price" => "DESC"]);
-//             }
-//             $results = $statements->fetchAll(PDO::FETCH_ASSOC);
-//             $count = 0;
-//             foreach($results as $filteredItem){
-//                 if($count < 10){
-//                     $toDisplay[$count] = $filteredItem;
-//                 }
-//                 else{
-//                     break;
-//                 }
-//                 $count++;
-//             }
-//         }
-//         catch(PDOException $e){
-//             flash(var_export($e->errorInfo, true), "danger");
-//         }
-//     }
-//     else{//if only category filtered
-//         //TODO write query to populate toDisplay
-//         $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-//         WHERE visibility = 1 AND category = :category");
-        
-//         try{
-//             $statement->execute([":category" => $category]);
-//             $results = $statements->fetchAll(PDO::FETCH_ASSOC);
-//             $count = 0;
-//             foreach($results as $filteredItem){
-//                 if($count < 10){
-//                     $toDisplay[$count] = $filteredItem;
-//                 }
-//                 else{
-//                     break;
-//                 }
-//                 $count++;
-//             }
-//         }
-//         catch(PDOException $e){
-//             flash(var_export($e->errorInfo, true), "danger");
-//         }
-//     }
-// }
-// else if($filterList["applyPrice"]){//if only price filtered
-//     //TODO write query to populate toDisplay
-    
-//     $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
-//     WHERE visibility = 1
-//     ORDER BY unit_price :price");
-
-//     try{
-//         if($price == "ASC"){
-//             $statement->execute([":name" => $search, ":category" => $category, ":price" => "ASC"]);
-//         }
-//         else if($price == "DESC"){
-//             $statement->execute([":name" => $search, ":category" => $category, ":price" => "DESC"]);
-//         }
-//         $results = $statements->fetchAll(PDO::FETCH_ASSOC);
-//         $count = 0;
-//         foreach($results as $filteredItem){
-//             if($count < 10){
-//                 $toDisplay[$count] = $filteredItem;
-//             }
-//             else{
-//                 break;
-//             }
-//             $count++;
-//         }
-//     }
-//     catch(PDOException $e){
-//         flash(var_export($e->errorInfo, true), "danger");
-//     }
-// }
-// else{
-//     //TODO display normally
-//     //TODO write query to populate toDisplay
-//     $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
-//     WHERE visibility = 1");
-
-//     try{
-//        $statement->execute();
-//        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-//        if($results){
-//            $count = 0;
-//            foreach($results as $item){
-//                if($count < 10){
-//                    $toDisplay[$count] = $item;
-//                }
-//                else{
-//                    break;
-//                }
-//                $count++;
-//            }
-//        }
-//     }
-//     catch(PDOException $e){
-//        flash(var_export($e->errorInfo,true), "danger");
-//     }
-// }
 
 ?>
 
