@@ -47,11 +47,6 @@ catch(PDOException $e){
                 <?php foreach ($categories as $cat) : ?>
                     <option id="<?php se($cat, "name") ?>" name="categories[]" value="<?php se($cat, "name") ?> "> <?php se($cat, "name") ?> </option>
                 <?php endforeach; ?>
-                <!-- for each to get all category options
-                select distinct cateogry from products
-                for each option 
-                value will be category name
-                -->
             </select>
         </div>
 

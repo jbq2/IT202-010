@@ -1,33 +1,33 @@
 .alert-success {
     background-color: darkgreen;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
 
 .alert-warning {
     background-color: rgb(188, 69, 0);
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
 
 .alert-danger {
     background-color: darkred;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
 
 .alert-info {
     background-color: darkblue;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
 
 div{
-    margin-left:50px;
+    margin-left:35px;
 }
 form div{
     padding-top:10px;
@@ -37,11 +37,13 @@ input[type=email]{
     padding: 5px;
     border: 2px solid #2A2B32;
     border-radius: 5px;
+    width: 350px;
 }
 input[type=text]{
     padding:5px;
     border:2px solid #2A2B32;
     border-radius: 5px;
+    width:350px;
 }
 input[input=text]:focus{
     border-color: #31374D;
@@ -50,6 +52,7 @@ input[type=password]{
     padding:3px;
     border:2px solid #2A2B32;
     border-radius: 5px;
+    width:350px;
 }
 input[input=password]:focus{
     border-color: #31374D;
@@ -114,5 +117,47 @@ th{
     color:white;
 }
 td{
-    color:white;
+    margin-left:60px;
+    margin-right:60px;
+    color:rgb(255, 255, 255);
+}
+th, td{
+    width:225px;
+    text-align:center;
+    border:1px solid rgb(255, 240, 220);
+    padding:5px;
+}
+
+.formFilters div{
+    display:inline-block;
+}
+
+h1{
+    margin-left:40px;
+    margin-top:20px;
+}
+
+.itemCard{
+    text-align:left;
+    background-color: #3c404f;
+    display:inline-block;
+    box-shadow: 0 4px 8px 0 rgb(29, 29, 29);
+    transition: 0.3s;
+    border-radius: 5px;
+    width: 300px;
+    margin-top:25px;
+    margin-bottom:20px;
+}
+
+.itemCard:hover{
+    box-shadow: 0 8px 16px 0 rgb(29, 29, 29);
+}
+
+.itemContainer{
+    text-align:left;
+}
+
+img{
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
 }
