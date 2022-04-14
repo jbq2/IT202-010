@@ -1,27 +1,27 @@
 .alert-success {
     background-color: darkgreen;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
 
 .alert-warning {
     background-color: rgb(188, 69, 0);
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
 
 .alert-danger {
     background-color: darkred;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
 
 .alert-info {
     background-color: darkblue;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
     color:white;
 }
@@ -37,6 +37,7 @@ input[type=email]{
     padding: 5px;
     border: 2px solid #2A2B32;
     border-radius: 5px;
+    width: 350px;
 }
 input[type=text]{
     padding:5px;

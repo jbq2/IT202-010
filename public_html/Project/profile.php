@@ -100,7 +100,8 @@ $username = get_username();
             <input class="form-control" type="text" name="username" id="username" value="<?php se($username); ?>" />
         </div>
         <!-- DO NOT PRELOAD PASSWORD -->
-        <div class="mb-3">Password Reset</div>
+        <h3 style="margin-top:25px">Password Reset</h3>
+        <div class="mb-3"></div>
         <div class="mb-3">
             <label class="form-label" for="cp">Current Password</label>
             <input class="form-control" type="password" name="currentPassword" id="cp" />
