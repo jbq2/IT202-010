@@ -24,29 +24,27 @@ $category = se($_POST, "catFilter", "", false);
 $price = se($_POST, "priceFilter", "", false);
 $toDisplay = [];
 
-$statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
-WHERE visibility=1");
-if(empty($search) && $price == "none" && $category == "none"){
+if(empty($empty) && empty($category) && empty($price)){
     $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
     WHERE visibility=1");
     try{
-       $statement->execute();
-       $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-       if($results){
-           $count = 0;
-           foreach($results as $item){
-               if($count < 10){
-                   $toDisplay[$count] = $item;
-               }
-               else{
-                   break;
-               }
-               $count++;
-           }
-       }
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results){
+            $count = 0;
+            foreach($results as $item){
+                if($count < 10){
+                    $toDisplay[$count] = $item;
+                }
+                else{
+                    break;
+                }
+                $count++;
+            }
+        }
     }
     catch(PDOException $e){
-       flash(var_export($e->errorInfo,true), "danger");
+        flash(var_export($e->errorInfo,true), "danger");
     }
 }
 else if(!empty($search)){
@@ -254,6 +252,7 @@ else if($price != "none"){//only price
         flash(var_export($e->errorInfo,true), "danger");
     }
 }
+
 ?>
 
 <h1>List of Products</h1>
