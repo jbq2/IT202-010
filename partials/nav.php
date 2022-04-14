@@ -37,17 +37,18 @@ session_start();
         </button>
         <div class="collapse navbar-collapse" id="navContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="<?php echo get_url('shop_page.php'); ?>">Products</a></li>
-                <?php if (is_logged_in()) : ?>
-
+                <?php if (is_logged_in() && !(has_role("Shop Owner") || has_role("Admin"))) : ?>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('shop_page.php'); ?>">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
                 <?php endif; ?>
                 <?php if (!is_logged_in()) : ?>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('shop_page.php'); ?>">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('login.php'); ?>">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('register.php'); ?>">Register</a></li>
                 <?php endif; ?>
                 <!-- if user is Admin/Shop Owner, make admin_products accessible -->
                 <?php if(has_role("Shop Owner") || has_role("Admin")) : ?> 
+                    <li class="nav-item"><a class="nav-link" href="<?php echo get_url('admin/admin_shop_page.php'); ?>">Products (Admin/Shop Owner View)</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('admin/admin_products.php'); ?>">Add Product</a></li>
                 <?php endif; ?> 
                 <?php if (has_role("Admin")) : ?>
