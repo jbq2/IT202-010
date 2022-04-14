@@ -26,7 +26,7 @@ $toDisplay = [];
 
 $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
 WHERE visibility=1");
-if(empty($search) && $price != "none" && $category != "none"){
+if(empty($search) && $price == "none" && $category == "none"){
     $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
     WHERE visibility=1");
     try{
@@ -172,7 +172,7 @@ else if($category != "none"){
             WHERE visibility = 1 AND category = :category
             ORDER BY unit_price ASC");
         }
-        else if($price == "DESC"){
+        else{
             $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
             WHERE visibility = 1 AND category = :category
             ORDER BY unit_price DESC");
@@ -315,10 +315,6 @@ else if($price != "none"){//only price
         return isValid;
     }
 </script>
-
-<?php 
-
-?>
 
 <?php
 require(__DIR__ . "/../../partials/flash.php");
