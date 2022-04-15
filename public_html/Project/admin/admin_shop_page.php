@@ -307,9 +307,21 @@ else{
     <div><input type="submit" value="Submit"></div>
 </form>
 
+<style>
+    .editButton{
+        margin-bottom:10px;
+        height:px;
+        padding-top:0px;
+        padding-bottom:0px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+</style>
+
 <div class=productsListDiv>
     <?php foreach($toDisplay as $item) : ?>
         <div class="itemCard">
+            <button class="editButton" type="submit" name="Edit" onclick="location.href='admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
             <a href="admin_product_info.php?id=<?php se($item, "id") ?>" style="text-decoration:none; color:white" value="<?php se($item, "name") ?>">
                 <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
                 <div class="itemContainer">
