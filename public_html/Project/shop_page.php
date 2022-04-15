@@ -275,7 +275,6 @@ else{
         flash(var_export($e->errorInfo,true), "danger");
     }
 }
-
 ?>
 
 <h1>List of Products</h1>

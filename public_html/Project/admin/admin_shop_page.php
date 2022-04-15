@@ -27,13 +27,13 @@ catch(PDOException $e){
 
 //TODO apply filters
 $filterList = ["applySearch" => false, "applyCategory" => false, "applyPrice" => false];
-$search = se($_POST, "search", "", false);
-$category = se($_POST, "catFilter", "", false);
-$price = se($_POST, "priceFilter", "", false);
+$search = se($_GET, "search", "", false);
+$category = se($_GET, "catFilter", "", false);
+$price = se($_GET, "priceFilter", "", false);
 $toDisplay = [];
 
 if(empty($empty) && empty($category) && empty($price)){
-    $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products");
+    $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products");
     try{
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -58,12 +58,12 @@ else if(!empty($search)){
     if($category != "none"){
         if($price != "none"){//all 3 filers
             if($price == "ASC"){
-                $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+                $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
                 WHERE category = :category AND name LIKE :name
                 ORDER BY unit_price ASC");
             }
             else if($price == "DESC"){
-                $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+                $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
                 WHERE category = :category AND name LIKE :name
                 ORDER BY unit_price DESC");
             }
@@ -89,7 +89,7 @@ else if(!empty($search)){
             }
         }
         else{//only category and search
-            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
             WHERE category = :category AND name LIKE :name");
         
             try{
@@ -115,12 +115,12 @@ else if(!empty($search)){
     }
     else if($price != "none"){//only search and price
         if($price == "ASC"){
-            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
             WHERE name LIKE :name
             ORDER BY unit_price ASC");
         }
         else if($price == "DESC"){
-            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
             WHERE name LIKE :name
             ORDER BY unit_price DESC");
         }
@@ -146,7 +146,7 @@ else if(!empty($search)){
         }
     }
     else{//only search
-        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
         WHERE name LIKE :name");
     
         try{
@@ -173,12 +173,12 @@ else if(!empty($search)){
 else if($category != "none"){
     if($price != "none"){//only category and price
         if($price == "ASC"){
-            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
             WHERE category = :category
             ORDER BY unit_price ASC");
         }
         else{
-            $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
             WHERE category = :category
             ORDER BY unit_price DESC");
         }
@@ -204,7 +204,7 @@ else if($category != "none"){
         }
     }
     else{//only category
-        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products 
+        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products 
         WHERE category = :category");
         try{
             $statement->execute([":category" => $category]);
@@ -229,11 +229,11 @@ else if($category != "none"){
 }
 else if($price != "none"){//only price
     if($price == "ASC"){
-        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
         ORDER BY unit_price ASC");
     }
     else if($price == "DESC"){
-        $statement = $db->prepare("SELECT name, description, category, stock, unit_price, visibility FROM Products
+        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
         ORDER BY unit_price DESC");
     }
 
@@ -257,10 +257,32 @@ else if($price != "none"){//only price
         flash(var_export($e->errorInfo,true), "danger");
     }
 }
+else{
+    $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products");
+    try{
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($results){
+            $count = 0;
+            foreach($results as $item){
+                if($count < 10){
+                    $toDisplay[$count] = $item;
+                }
+                else{
+                    break;
+                }
+                $count++;
+            }
+        }
+    }
+    catch(PDOException $e){
+        flash(var_export($e->errorInfo,true), "danger");
+    }
+}
 ?>
 
 <h1>List of Products (Admin/Shop Owner View)</h1>
-<form onsubmit="return validate(this)" class="formFilters" method="POST">
+<form onsubmit="return validate(this)" class="formFilters" method="GET">
     <div class="filterSearch">
         <label for="search">Search: </label>
         <input type="text" name="search" value="">
@@ -285,14 +307,28 @@ else if($price != "none"){//only price
     <div><input type="submit" value="Submit"></div>
 </form>
 
+<style>
+    .editButton{
+        margin-bottom:10px;
+        height:px;
+        padding-top:0px;
+        padding-bottom:0px;
+        padding-left:10px;
+        padding-right:10px;
+    }
+</style>
+
 <div class=productsListDiv>
     <?php foreach($toDisplay as $item) : ?>
         <div class="itemCard">
-            <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
-            <div class="itemContainer">
-                <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
-                <p>$<?php se($item, "unit_price") ?></p>
-            </div>
+            <button class="editButton" type="submit" name="Edit" onclick="location.href='admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
+            <a href="admin_product_info.php?id=<?php se($item, "id") ?>" style="text-decoration:none; color:white" value="<?php se($item, "name") ?>">
+                <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
+                <div class="itemContainer">
+                    <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
+                    <p>$<?php se($item, "unit_price") ?></p>
+                </div>
+            </a>
         </div>
     <?php endforeach; ?>
 </div>
