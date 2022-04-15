@@ -29,7 +29,7 @@ catch(PDOException $e){
     }
 </style>
 <div class="OuterPartitionDiv" id="topHalfDiv">
-    <h1 style="margin-top:25px; margin-bottom:35px">Product Information</h1>
+    <h1 style="margin-top:25px; margin-bottom:35px">Product Details</h1>
     <div class="InnerPartitionDiv" id="prodPic"><img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png"></div>
 
     <div class="InnerPartitionDiv" id="prodInfo">
