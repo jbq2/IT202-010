@@ -282,7 +282,7 @@ else{
 ?>
 
 <h1>List of Products (Admin/Shop Owner View)</h1>
-<form onsubmit="return validate(this)" class="formFilters" method="POST">
+<form onsubmit="return validate(this)" class="formFilters" method="GET">
     <div class="filterSearch">
         <label for="search">Search: </label>
         <input type="text" name="search" value="">
@@ -310,11 +310,13 @@ else{
 <div class=productsListDiv>
     <?php foreach($toDisplay as $item) : ?>
         <div class="itemCard">
-            <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
-            <div class="itemContainer">
-                <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
-                <p>$<?php se($item, "unit_price") ?></p>
-            </div>
+            <a href="admin_product_info.php?id=<?php se($item, "id") ?>" style="text-decoration:none; color:white" value="<?php se($item, "name") ?>">
+                <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
+                <div class="itemContainer">
+                    <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
+                    <p>$<?php se($item, "unit_price") ?></p>
+                </div>
+            </a>
         </div>
     <?php endforeach; ?>
 </div>

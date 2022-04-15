@@ -1,9 +1,19 @@
 <?php
-require_once(__DIR__ . "/../../partials/nav.php");
+require(__DIR__ . "/../../../partials/nav.php");
+
+if(!is_logged_in()){
+    flash("You must be logged in to view this page", "warning");
+    die(header("Location: " . get_url("login.php")));
+}
+
+if(!has_role("Admin") && !has_role("Shop Owner")){
+    flash("You don't have permission to view this page", "warning");
+    die(header("Location: $BASE_PATH" . "/home.php"));
+}
 
 $itemID = $_GET["id"];
 $db = getDB();
-$statement = $db->prepare("SELECT id, name, description, category, unit_price, stock FROM Products 
+$statement = $db->prepare("SELECT id, name, description, category, unit_price, stock, visibility FROM Products 
 WHERE id = :id");
 try{
     $statement->execute(["id" => $itemID]);
@@ -14,6 +24,7 @@ catch(PDOException $e){
     flash(var_export($e->errorInfo,true), "danger");
 }
 ?>
+
 <style>
     .InnerPartitionDiv{
         display:inline-block;
@@ -57,11 +68,12 @@ catch(PDOException $e){
 </div>
 <div class="OuterPartitionDiv" id="bottomHalfDiv">
     <form class="ProductInfoOptions">
+        <input style="display:block; margin:30px" type="submit" name="BuyNow" value="Edit">
         <input style="display:block; margin:30px" type="submit" name="BuyNow" value="Buy Now">
         <input style="display:block; margin:30px" type="submit" name="AddToCart" value="Add to Cart">
     </form>
 </div>
 
 <?php
-require(__DIR__ . "/../../partials/flash.php");
+require(__DIR__ . "/../../../partials/flash.php");
 ?>
