@@ -82,6 +82,22 @@ input[type=submit]{
 input[type=submit]:hover{
     background-color: #453954;
 }
+button{
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    transition: all .2 ease-in;
+    padding:10px 20px;
+    background-color: #625178;
+    color: white;
+    margin-left:30px;
+    margin-top: 10px;
+    font-family: 'Gadugi';
+    border-radius:8px;
+}
+button:hover{
+    background-color: #453954;
+}
 nav li{
     display: inline; 
     background-color: #f8f9fa;
@@ -164,4 +180,11 @@ h1{
 img{
     border-top-left-radius:5px;
     border-top-right-radius:5px;
+}
+
+textarea{
+    width:310px;
+    border-radius:5px;
+    padding-left:10px;
+    padding-right:10px;
 }

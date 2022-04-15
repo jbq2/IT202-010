@@ -276,6 +276,7 @@ else{
     }
 }
 
+var_dump($toDisplay);
 ?>
 
 <h1>List of Products</h1>

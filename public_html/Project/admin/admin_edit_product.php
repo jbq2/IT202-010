@@ -23,42 +23,50 @@ try{
 catch(PDOException $e){
     flash(var_export($e->errorInfo, true), "danger");
 }
+
+$itemID = $_GET["id"];
+$statement = $db->prepare("SELECT id, name, description, category, unit_price, stock, visibility FROM Products 
+WHERE id = :id");
+try{
+    $statement->execute(["id" => $itemID]);
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $item = $results[0];
+}
+catch(PDOException $e){
+    flash(var_export($e->errorInfo,true), "danger");
+}
 ?>
 
-<div class="outestDiv">
-    <h1 style="margin-top: 20px">Add Product</h1>
-
+<h1>Editing Product: <?php se($item, "name")?> (ID: <?php se($item, "id") ?>)</h1>
+<div>
     <form onsubmit="return validate(this)" method="POST">
-        <div class="textbox" id="nameDiv">
+        <div class="textbox">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" />
-            <!--  value="<?php echo isset($_POST['name']) ? $_POST['name'] : '' ?>" -->
+            <input type="text" name="name" value="<?php se($item, "name")?>">
         </div>
 
-        <div class="textbox" id="descDiv">
+        <div class="textbox">
             <label for="desc">Description:</label>
-            <textarea id="desc" name="desc" ></textarea>
-            <!-- value="<?php echo isset($_POST['desc']) ? $_POST['desc'] : '' ?>" -->
+            <textarea name="desc" ><?php se($item, "description")?></textarea>
         </div>
 
-        <div class="textbox" id="categoryDiv">
+        <div class="textbox">
             <label for="cate">Category:</label>
-            <select id="cate" name="cate" >
+            <select name="cate">
                 <?php foreach ($categories as $cat) : ?>
-                    <option id="<?php se($cat, "name") ?>" name="categories[]" value="<?php se($cat, "name") ?> "> <?php se($cat, "name") ?> </option>
+                    <option id="<?php se($cat, "name") ?>" name="categories[]" value="<?php se($cat, "name") ?>" ><?php se($cat, "name") ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
 
-        <div class="textbox" id="priceDiv">
+        <div class="textbox">
             <label for="price">Price:</label>
-            <input type="text" id="price" name="price" />
-            <!-- require that the input is a number -->
+            <input type="text" name="price" value="<?php se($item, "unit_price")?>" >
         </div>
 
-        <div class="textbox" id="stockDiv">
+        <div class="textbox" >
             <label for="stock">Stock:</label>
-            <input type="text" id="stock" name="stock" />
+            <input type="text" name="stock" value="<?php se($item, "stock")?>" />
             <!-- require that the input is a number -->
         </div>
 
@@ -71,7 +79,7 @@ catch(PDOException $e){
             <label for="n">Invisible</label>
         </div>
 
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Submit">
     </form>
 </div>
 
@@ -125,11 +133,11 @@ catch(PDOException $e){
     }
 </script>
 
-<?php
+<?php 
 if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && isset($_POST["stock"]) && isset($_POST["vis"])){
     $name = se($_POST, "name", "", false);
     $desc = se($_POST, "desc", "", false);
-    $cate = se($_POST, "cate", "", false);
+    $cate = se($_POST, "cate", "", false) . " ";
     $price = se($_POST, "price", "", false);
     $stock = se($_POST, "stock", "", false);
     $vis = se($_POST, "vis", "", false);
@@ -183,7 +191,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
     }
 
     if(!$hasError){
-        //TODO check if insert works
+        //TODO update statement
         if($vis == "vis"){
             $vis = 1;
         }
@@ -192,13 +200,15 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
         }
 
         $db = getDB();
-        $statement = $db->prepare("INSERT INTO Products(name, description, category, stock, unit_price, visibility)
-        VALUES (:name, :desc, :cate, :stock, :price, :vis)");
+        $statement = $db->prepare("UPDATE Products 
+        SET name = :name, description = :desc, category = :category, unit_price = :price, stock = :stock, visibility = :vis
+        WHERE id = :id");
         try{
-            $statement->execute([":name" => $name, ":desc" => $desc, ":cate" => $cate, ":stock" => $stock, ":price" => $price, ":vis" => $vis]);
-            flash("Successfully added product $name!", "success");
+            $statement->execute([":name" => $name, ":desc" => $desc, ":category" => $cate, ":price" => $price, ":stock" => $stock, ":vis" => $vis, ":id" => $itemID]);
+            flash("Successfully edited product $name!", "success");
         }
         catch(PDOException $e){
+            flash("Query error occured", "danger");
             flash(var_export($e->errorInfo, true), "danger");
         }
     }
