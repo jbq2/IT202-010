@@ -1,13 +1,28 @@
 <?php 
 require_once(__DIR__ . "/../../partials/nav.php");
 
+$db = getDB();
+$userID = get_user_id();
+$clear = se($_POST, "clear", "", false);
+if(!empty($clear)){
+    $statement = $db->prepare("DELETE FROM Cart
+    WHERE user_id = :userID");
+    try{
+        $statement->execute([":userID" => $userID]);
+        flash("Cart has been cleared", "success");
+    }
+    catch(PDOException $e){
+        flash("<pre>" . var_export($e, true) . "</pre>");
+    }
+}
+?>
+
+<?php 
 if (!is_logged_in()) {
     flash("You must be logged in to view this page.", "warning");
     die(header("Location: login.php"));
 }
 
-$db = getDB();
-$userID = get_user_id();
 $statement = $db->prepare("SELECT C.product_id, C.desired_quantity, P.name, (C.desired_quantity*P.unit_price) as subtotal FROM Cart C INNER JOIN Products P
 ON C.product_id = P.id
 WHERE user_id = :userID");
@@ -39,12 +54,16 @@ foreach($results as $cartItem){
                 <tr>
                     <td style="width:40%">
                         <button onclick="" style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black">X</button>
-                        <div style="display:inline-block; margin:0px;"><?php se($cartItem, "name") ?></div>
+                        <a style="display:inline-block; margin:0px; text-decoration:none; color:white;" href="product_info.php?id=<?php se($cartItem, "product_id") ?>">
+                            <div style="display:inline-block; margin:0px;"><?php se($cartItem, "name") ?></div>
+                        </a>
                     </td>
                     <td>
                         <?php se($cartItem, "desired_quantity") ?>
-                        <button style="margin-left:20px" class="changeQuantBtn" id="sub" onclick="decQuantity()"> - </button>
-                        <button class="changeQuantBtn" id="add" onclick="incQuantity()">+</button>
+                        <button class="changeQuantBtn" id="sub" onclick="decQuantity()"
+                        style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black"> - </button>
+                        <button class="changeQuantBtn" id="add" onclick="incQuantity()"
+                        style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black">+</button>
                     </td>
                     <td>$<?php se($cartItem, "subtotal") ?></td>
                 </tr>
@@ -55,6 +74,10 @@ foreach($results as $cartItem){
             <input type="submit" name="clear" value="Clear Cart" />
         </form>
     <?php else : ?>
-        <h4 style="margin-left:30px; margin-top:20px">There is nothing in your cart</h4>
+        <h4 style="margin-left:30px; margin-top:20px"><i>There is nothing in your cart</i></h4>
     <?php endif; ?>
 </div>
+
+<?php
+require(__DIR__ . "/../../partials/flash.php");
+?>
