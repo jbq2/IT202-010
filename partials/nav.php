@@ -40,6 +40,7 @@ session_start();
                 <?php if (is_logged_in() && !(has_role("Shop Owner") || has_role("Admin"))) : ?>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('shop_page.php'); ?>">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
+                    <li clas="nam-tem"><a class="nav-link" href="<?php echo get_url('cart_page.php'); ?>">View Cart</a></li>
                 <?php endif; ?>
                 <?php if (!is_logged_in()) : ?>
                     <li class="nav-item"><a class="nav-link" href="<?php echo get_url('shop_page.php'); ?>">Products</a></li>

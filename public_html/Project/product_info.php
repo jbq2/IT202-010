@@ -15,10 +15,6 @@ catch(PDOException $e){
 }
 ?>
 
-<?php if(is_logged_in()) : ?>
-    <?php require(__DIR__ . "/../../partials/cart.php") ?>
-<?php endif; ?>
-
 <style>
     .InnerPartitionDiv{
         display:inline-block;
@@ -34,6 +30,7 @@ catch(PDOException $e){
         border-radius: 5px;
     }
 </style>
+
 <div class="OuterPartitionDiv" id="topHalfDiv">
     <h1 style="margin-top:25px; margin-bottom:35px">Product Details</h1>
     <div class="InnerPartitionDiv" id="prodPic"><img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png"></div>
@@ -69,20 +66,40 @@ catch(PDOException $e){
 </div>
 
 <?php
-
+$add = se($_POST, "AddToCart", "", false);
 if(!empty($add)){
     if(!is_logged_in()){
         flash("You must be logged in to view this page.", "warning");
         die(header("Location: login.php"));
     }
 
-    addToCart($itemID, se($item, "unit_price"));
+    $db = getDB();
+    $userID = get_user_id();
+    $itemPrice = $item["unit_price"];
+    $statement = $db->prepare("SELECT * FROM Cart
+    WHERE product_id = :itemID AND user_id = :userID");
+    try{
+        $statement->execute([":itemID" => $itemID, ":userID" => $userID]);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if(count($result) == 0){
+            $statement = $db->prepare("INSERT INTO Cart (product_id, user_id, desired_quantity, unit_price)
+            VALUES (:itemID, :userID, :quant, :price)");
+            try{
+                $statement->execute([":itemID" => $itemID, ":userID" => $userID, ":quant" => 1, ":price" => $itemPrice]);
+                flash("Successfully added item to your cart!", "success");
+            }
+            catch(PDOException $e){
+                flash("<pre>" . var_export($e, true) . "</pre>");
+            }
+        }
+        else{
+            flash("This item is already in your cart", "info");
+        }
+    }
+    catch(PDOException $e){
+        flash("<pre>" . var_export($e, true) . "</pre>");
+    }
 }
-
-//TODO implement buy condition
-// if(!empty($buy)){
-
-// }
 ?>
 
 <?php
