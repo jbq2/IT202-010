@@ -14,6 +14,11 @@ catch(PDOException $e){
     flash(var_export($e->errorInfo,true), "danger");
 }
 ?>
+
+<?php if(is_logged_in()) : ?>
+    <?php require(__DIR__ . "/../../partials/cart.php") ?>
+<?php endif; ?>
+
 <style>
     .InnerPartitionDiv{
         display:inline-block;
@@ -21,6 +26,7 @@ catch(PDOException $e){
     .OuterPartitionDiv{
         display:inline-block;
         margin:25px;
+        margin-top:0px;
     }
     img{
         margin-left:20px; 
@@ -56,11 +62,28 @@ catch(PDOException $e){
     </div>
 </div>
 <div class="OuterPartitionDiv" id="bottomHalfDiv">
-    <form class="ProductInfoOptions">
+    <form class="ProductInfoOptions" method="POST">
         <input style="display:block; margin:30px" type="submit" name="BuyNow" value="Buy Now">
         <input style="display:block; margin:30px" type="submit" name="AddToCart" value="Add to Cart">
     </form>
 </div>
+
+<?php
+
+if(!empty($add)){
+    if(!is_logged_in()){
+        flash("You must be logged in to view this page.", "warning");
+        die(header("Location: login.php"));
+    }
+
+    addToCart($itemID, se($item, "unit_price"));
+}
+
+//TODO implement buy condition
+// if(!empty($buy)){
+
+// }
+?>
 
 <?php
 require(__DIR__ . "/../../partials/flash.php");
