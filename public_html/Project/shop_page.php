@@ -2,6 +2,12 @@
 require(__DIR__ . "/../../partials/nav.php");
 ?>
 
+<?php if(is_logged_in()) : ?>
+    <div>
+        <?php require(__DIR__ . "/../../partials/cart.php") ?>
+    </div>
+<?php endif; ?>
+
 <?php
 $categories = [];
 $db = getDB();
