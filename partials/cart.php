@@ -2,6 +2,8 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <h2 style="margin-left:40px">Cart</h2>
     <h4 style="margin-left:40px">Total:</h4>
+    <!-- table of stuff -->
+    <button class="clrbtn">Clear Cart</button>
 </div>
 
 <div id="main">
@@ -79,13 +81,13 @@
 
 <script>
 function openNav() {
-    document.getElementById("mySidebar").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
+    document.getElementById("mySidebar").style.width = "350px";
+    document.getElementById("main").style.marginLeft = "350px";
 }
 
 /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
 function closeNav() {
     document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
+    document.getElementById("main").style.marginLeft = "40px";
 }
 </script>
