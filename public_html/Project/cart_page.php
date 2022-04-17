@@ -1,10 +1,18 @@
 <?php 
 require_once(__DIR__ . "/../../partials/nav.php");
 
+if (!is_logged_in()) {
+    flash("You must be logged in to view this page.", "warning");
+    die(header("Location: login.php"));
+}
+
 $db = getDB();
 $userID = get_user_id();
 $clear = se($_POST, "clear", "", false);
-if(!empty($clear)){
+$removeItem = se($_GET, "remItem", "", false);
+$increment = se($_GET, "inc", "", false);
+$decrement = se($_GET, "dec", "", false);
+if(!empty($clear)){//works
     $statement = $db->prepare("DELETE FROM Cart
     WHERE user_id = :userID");
     try{
@@ -15,12 +23,49 @@ if(!empty($clear)){
         flash("<pre>" . var_export($e, true) . "</pre>");
     }
 }
-?>
-
-<?php 
-if (!is_logged_in()) {
-    flash("You must be logged in to view this page.", "warning");
-    die(header("Location: login.php"));
+if(!empty($removeItem)){//works
+    $statement = $db->prepare("DELETE FROM Cart
+    WHERE user_id = :userID AND product_id = :itemID");
+    try{
+        $statement->execute([":userID" => $userID, ":itemID" => $removeItem]);
+    }
+    catch(PDOException $e){
+        flash("<pre>" . var_export($e, true) . "</pre>");
+    }
+}
+if(!empty($increment)){//works
+    $statement = $db->prepare("UPDATE Cart
+    SET desired_quantity = desired_quantity + 1
+    WHERE user_id = :userID AND product_id = :itemID");
+    try{
+        $statement->execute([":userID" => $userID, ":itemID" => $increment]);
+    }
+    catch(PDOException $e){
+        flash("<pre>" . var_export($e, true) . "</pre>");
+    }
+}
+if(!empty($decrement)){
+    $statement = $db->prepare("UPDATE Cart
+    SET desired_quantity = desired_quantity - 1
+    WHERE user_id = :userID AND product_id = :itemID");
+    try{
+        $statement->execute([":userID" => $userID, ":itemID" => $decrement]);
+    }
+    catch(PDOException $e){
+        if($e->getCode() == "HY000"){
+            $statement = $db->prepare("DELETE FROM Cart
+            WHERE user_id = :userID AND product_id = :itemID");
+            try{
+                $statement->execute([":userID" => $userID, ":itemID" => $decrement]);
+            }
+            catch(PDOException $e){
+                flash("<pre>" . var_export($e, true) . "</pre>");
+            }
+        }
+        else{
+            flash("<pre>" . var_export($e, true) . "</pre>");
+        }
+    }
 }
 
 $statement = $db->prepare("SELECT C.product_id, C.desired_quantity, P.name, (C.desired_quantity*P.unit_price) as subtotal FROM Cart C INNER JOIN Products P
@@ -53,17 +98,25 @@ foreach($results as $cartItem){
             <?php foreach($results as $cartItem) : ?>
                 <tr>
                     <td style="width:40%">
-                        <button onclick="" style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black">X</button>
+                        <form style="display:inline-block;" class="removeItem" method="GET">
+                            <button style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black" type="submit" value="<?php se($cartItem, "product_id") ?>" name="remItem">
+                                X
+                            </button>
+                        </form>
                         <a style="display:inline-block; margin:0px; text-decoration:none; color:white;" href="product_info.php?id=<?php se($cartItem, "product_id") ?>">
                             <div style="display:inline-block; margin:0px;"><?php se($cartItem, "name") ?></div>
                         </a>
                     </td>
                     <td>
                         <?php se($cartItem, "desired_quantity") ?>
-                        <button class="changeQuantBtn" id="sub" onclick="decQuantity()"
-                        style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black"> - </button>
-                        <button class="changeQuantBtn" id="add" onclick="incQuantity()"
-                        style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black">+</button>
+                        <form style="display:inline-block;" class="changeQuantity" method="GET">
+                            <button style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black" type="submit" value="<?php se($cartItem, "product_id") ?>" name="dec"> 
+                                - 
+                            </button>
+                            <button style="display:inline-block; padding-top:0px; padding-bottom:0px; background-color:black" type="submit" value="<?php se($cartItem, "product_id") ?>" name="inc">
+                                +
+                            </button>
+                        </form>
                     </td>
                     <td>$<?php se($cartItem, "subtotal") ?></td>
                 </tr>
