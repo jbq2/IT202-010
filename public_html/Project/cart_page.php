@@ -44,7 +44,7 @@ if(!empty($increment)){//works
         flash("<pre>" . var_export($e, true) . "</pre>");
     }
 }
-if(!empty($decrement)){
+if(!empty($decrement)){//UCID: jbq2; IT202-010
     $statement = $db->prepare("UPDATE Cart
     SET desired_quantity = desired_quantity - 1
     WHERE user_id = :userID AND product_id = :itemID");

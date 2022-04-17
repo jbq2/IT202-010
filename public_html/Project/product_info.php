@@ -59,6 +59,9 @@ catch(PDOException $e){
     </div>
 </div>
 <div class="OuterPartitionDiv" id="bottomHalfDiv">
+    <?php if(is_logged_in() && (has_role("Admin") || has_role("Shop Owner"))) : ?>
+        <button class="ProductInfoOptions" type="submit" name="Edit" onclick="location.href='admin/admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
+    <?php endif; ?>
     <form class="ProductInfoOptions" method="POST">
         <input style="display:block; margin:30px" type="submit" name="BuyNow" value="Buy Now">
         <input style="display:block; margin:30px" type="submit" name="AddToCart" value="Add to Cart">
@@ -69,7 +72,7 @@ catch(PDOException $e){
 $add = se($_POST, "AddToCart", "", false);
 if(!empty($add)){
     if(!is_logged_in()){
-        flash("You must be logged in to view this page.", "warning");
+        flash("You must be logged in to add items to cart", "warning");
         die(header("Location: login.php"));
     }
 
