@@ -71,11 +71,46 @@ catch(PDOException $e){
     <button class="ProductInfoOptions" type="submit" name="Edit" onclick="location.href='admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
     <form class="ProductInfoOptions">
         <input style="display:block; margin:30px" type="submit" name="BuyNow" value="Buy Now">
-    </form>
-    <form class="ProductInfoOptions">
         <input style="display:block; margin:30px" type="submit" name="AddToCart" value="Add to Cart">
     </form>
 </div>
+
+<?php
+$add = se($_POST, "AddToCart", "", false);
+if(!empty($add)){
+    if(!is_logged_in()){
+        flash("You must be logged in to view this page.", "warning");
+        die(header("Location: login.php"));
+    }
+
+    $db = getDB();
+    $userID = get_user_id();
+    $itemPrice = $item["unit_price"];
+    $statement = $db->prepare("SELECT * FROM Cart
+    WHERE product_id = :itemID AND user_id = :userID");
+    try{
+        $statement->execute([":itemID" => $itemID, ":userID" => $userID]);
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if(count($result) == 0){
+            $statement = $db->prepare("INSERT INTO Cart (product_id, user_id, desired_quantity, unit_price)
+            VALUES (:itemID, :userID, :quant, :price)");
+            try{
+                $statement->execute([":itemID" => $itemID, ":userID" => $userID, ":quant" => 1, ":price" => $itemPrice]);
+                flash("Successfully added item to your cart!", "success");
+            }
+            catch(PDOException $e){
+                flash("<pre>" . var_export($e, true) . "</pre>");
+            }
+        }
+        else{
+            flash("This item is already in your cart", "info");
+        }
+    }
+    catch(PDOException $e){
+        flash("<pre>" . var_export($e, true) . "</pre>");
+    }
+}
+?>
 
 <?php
 require(__DIR__ . "/../../../partials/flash.php");
