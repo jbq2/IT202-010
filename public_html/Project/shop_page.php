@@ -323,11 +323,11 @@ else{
                 <div class="itemContainer">
                     <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
                     <p>$<?php se($item, "unit_price") ?></p>
-                    <?php if(is_logged_in() && (has_role("Admin") || has_role("Shop Owner"))) : ?>
-                        <button style="display:inline-block" class="editButton" type="submit" name="Edit" onclick="location.href='admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
-                    <?php endif; ?>
                 </div>
             </a>
+            <?php if(is_logged_in() && (has_role("Admin") || has_role("Shop Owner"))) : ?>
+                <button style="margin-left:20px;display:inline-block" class="editButton" type="submit" name="Edit" onclick="location.href='/Project/admin/admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
+            <?php endif; ?>
         </div>
     <?php endforeach; ?>
 </div>
