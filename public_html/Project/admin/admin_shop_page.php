@@ -223,19 +223,19 @@ else{
 <div class=productsListDiv>
     <?php foreach($toDisplay as $item) : ?>
         <div class="itemCard">
-            <a href="admin_product_info.php?id=<?php se($item, "id") ?>" style="text-decoration:none; color:white" value="<?php se($item, "name") ?>">
+            <a href="/Project/product_info.php?id=<?php se($item, "id") ?>" style="display:inline-block;text-decoration:none; color:white" value="<?php se($item, "name") ?>">
                 <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
                 <div class="itemContainer">
                     <h5 style="margin-top:10px; display:inline-block" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
                     <p>$<?php se($item, "unit_price") ?></p>
-                    <button style="display:inline-block" class="editButton" type="submit" name="Edit" onclick="location.href='admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
-                    <?php if($item["visibility"] == 1) : ?>
-                        <p style="display:inline-block"><i>(Visible)</i></p>
-                    <?php else : ?>
-                        <p style="display:inline-block"><i>(Invisible)</i></p>
-                    <?php endif; ?>
                 </div>
             </a>
+            <button style="margin-left:20px;display:inline-block" class="editButton" type="submit" name="Edit" onclick="location.href='admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
+            <?php if($item["visibility"] == 1) : ?>
+                <p style="margin-left:10px;display:inline-block"><i>(Visible)</i></p>
+            <?php else : ?>
+                <p style="margin-left:10px;display:inline-block"><i>(Invisible)</i></p>
+            <?php endif; ?>
         </div>
     <?php endforeach; ?>
 </div>
