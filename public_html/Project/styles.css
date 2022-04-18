@@ -1,29 +1,37 @@
 .alert-success {
+    text-align:center;
     background-color: darkgreen;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
+    color:white;
 }
 
 .alert-warning {
-    background-color: orangered;
-    width: 300px;
+    text-align:center;
+    background-color: rgb(188, 69, 0);
+    width: 500px;
     padding: 5px 5px;
+    color:white;
 }
 
 .alert-danger {
+    text-align:center;
     background-color: darkred;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
+    color:white;
 }
 
 .alert-info {
+    text-align:center;
     background-color: darkblue;
-    width: 300px;
+    width: 500px;
     padding: 5px 5px;
+    color:white;
 }
 
 div{
-    margin-left:50px;
+    margin-left:35px;
 }
 form div{
     padding-top:10px;
@@ -33,11 +41,13 @@ input[type=email]{
     padding: 5px;
     border: 2px solid #2A2B32;
     border-radius: 5px;
+    width: 350px;
 }
 input[type=text]{
     padding:5px;
     border:2px solid #2A2B32;
     border-radius: 5px;
+    width:350px;
 }
 input[input=text]:focus{
     border-color: #31374D;
@@ -46,6 +56,7 @@ input[type=password]{
     padding:3px;
     border:2px solid #2A2B32;
     border-radius: 5px;
+    width:350px;
 }
 input[input=password]:focus{
     border-color: #31374D;
@@ -62,40 +73,52 @@ input[type=submit]{
     transition: all .2 ease-in;
     padding:10px 20px;
     background-color: #625178;
-    color: #D7C0A9;
+    color: white;
     margin-left:50px;
     margin-top: 10px;
-    font-family: 'Courier';
+    font-family: 'Gadugi';
     border-radius:8px;
 }
 input[type=submit]:hover{
     background-color: #453954;
 }
+button{
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    transition: all .2 ease-in;
+    padding:10px 20px;
+    background-color: #625178;
+    color: white;
+    margin-left:30px;
+    margin-top: 10px;
+    font-family: 'Gadugi';
+    border-radius:8px;
+}
+button:hover{
+    background-color: #453954;
+}
 nav li{
     display: inline; 
-    background-color: #31374D;
+    background-color: #f8f9fa;
 }
 nav li a{
     -moz-transition: all .2s ease-in;
     -o-transition: all .2s ease-in;
     -webkit-transition: all .2s ease-in;
     transition: all .2 ease-in;
-    color: #FFDAB5;
+    color: white;
     float: left;
     display: block;
-    padding: 20px 75px;
-    background-color: #31374D;
+    margin-left:7px;
+    margin-right:7px;
+    background-color: #f8f9fa;
 }
-nav li a:first-of-type{
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-}
-nav li a:last-of-type{
-    border-top-right-radius: 15px;
-    border-bottom-right-radius: 15px;
+.dropdown-item{
+    width:145px;
 }
 nav li a:hover{
-    background-color: #2A2B32;
+    background-color: #edeff1;
 }
 nav::after{
     font-size: 60px;
@@ -107,7 +130,63 @@ input{
 }
 body{
     background-color: #41485F;
-    font-family: "Courier";
-    color: #D7C0A9;
+    font-family: "Gadugi";
+    color: white;
+}
+th{
+    color:white;
+}
+td{
+    margin-left:60px;
+    margin-right:60px;
+    color:rgb(255, 255, 255);
+}
+th, td{
+    width:225px;
+    text-align:center;
+    border:2px solid rgb(57, 60, 71);
+    padding:5px;
+}
 
+
+
+.formFilters div{
+    display:inline-block;
+}
+
+h1{
+    margin-left:40px;
+    margin-top:20px;
+}
+
+.itemCard{
+    text-align:left;
+    background-color: #3c404f;
+    display:inline-block;
+    box-shadow: 0 4px 8px 0 rgb(29, 29, 29);
+    transition: 0.3s;
+    border-radius: 5px;
+    width: 300px;
+    margin-top:25px;
+    margin-bottom:20px;
+}
+
+.itemCard:hover{
+    box-shadow: 0 8px 16px 0 rgb(29, 29, 29);
+}
+
+.itemContainer{
+    text-align:left;
+}
+
+img{
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+
+textarea{
+    width:310px;
+    border-radius:5px;
+    padding-left:10px;
+    padding-right:10px;
 }
