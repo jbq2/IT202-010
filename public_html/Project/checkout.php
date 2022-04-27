@@ -209,6 +209,10 @@ $states = array(
         let city = form.city.value;
         let zip = form.zip.value;
         let money = form.money.value;
+        let total = document.getElementById("total").textContent;
+        total = total.substring(8, total.length);
+        money = parseFloat(money);
+        total = parseFloat(total);
 
         let isValid = true;
 
@@ -244,8 +248,16 @@ $states = array(
             isValid = false;
         }
 
-        if(money.length == 0 || !/[0-9]+\.[0-9]{2}/.test(money)){
-            flash("Invalid monetary input", "warning");
+        if(money.length == 0){
+            flash("Please enter a sufficient amount of money", "warning");
+            isValid = false;
+        }
+        else if(!/[0-9]+\.[0-9]{2}/.test(money)){
+            flash("Invalid monetary value", "warning");
+            isValid = false;
+        }
+        else if(parseFloat(money) < parseFloat(total)){
+            flash("Please enter a sufficient amount of money", "warning");
             isValid = false;
         }
 
