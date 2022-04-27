@@ -274,12 +274,12 @@ $states = array(
     }
 
     .flex-container {
+        margin:auto;
         display: flex;
     }
 
     .flex-child {
         flex: 1;
-        border: 2px solid yellow;
     }  
 
     #cartTable{
