@@ -197,3 +197,13 @@ textarea{
     padding-left:10px;
     padding-right:10px;
 }
+
+select,option{
+    width:175px;
+}
+
+option{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
