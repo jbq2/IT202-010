@@ -99,7 +99,7 @@ $states = array(
 <div class="flex-container">
 
     <div class="checkoutDiv">
-        <h1 style="margin-bottom: 30px">Checkout</h1>
+        <h1 style="margin-bottom: 0px; margin-left: 25px">Checkout</h1>
         <form onsubmit="return validate(this)" method="POST" >
             <div class="orderDetailsForm">
                 <label class="orderDetailsLabel" for="fname">First Name </label>
@@ -149,6 +149,22 @@ $states = array(
                 <input type="text" name="zip">
             </div>
 
+            <h2 style="margin-top:50px; margin-bottom: 5px; margin-left:25px">Payment Information</h2>
+            <div class="orderDetailsForm">
+                <label for="payType">Payment Type</label>
+                <select name="payType">
+                    <option>Visa</option>
+                    <option>Amex</option>
+                    <option>Mastercard</option>
+                    <option>Cash</option>
+                </select>
+            </div>
+            
+            <div class="orderDetailsForm">
+                <label for="money">Money</label>
+                <input type="text" name="money" style="width:175px"/>
+            </div>
+
             <div class="orderDetailsForm">
                 <input style="margin-left:0px" type="submit" value="Complete Purchase" />
             </div>
@@ -178,11 +194,8 @@ $states = array(
                 </tr>
             <?php endforeach; ?>
         </table>
-        <h4 style="margin-left:40px">Total: $<?php echo($total) ?></h4>
-        <button onclick="document.location.href='cart_page.php'">Edit Cart</button>
-
-        <h2 style="margin-top:50px;">Payment Information</h2>
-        <form></form>
+        <h4 id="total" style="margin-left:40px; margin-top:15px" value="<?php $total ?>">Total: $<?php echo($total) ?></h4>
+        <button onclick="document.location.href='cart_page.php'" style="margin-top:30px">Edit Cart</button>
     </div>
 
 </div>
@@ -195,6 +208,8 @@ $states = array(
         let aprt = form.apartment.value;
         let city = form.city.value;
         let zip = form.zip.value;
+        let money = form.money.value;
+
         let isValid = true;
 
         if(fn.length == 0 || !/\b([A-Za-zÀ-ÿ][-,a-z. ']+[ ]*)+/.test(fn)){
@@ -229,6 +244,11 @@ $states = array(
             isValid = false;
         }
 
+        if(money.length == 0 || !/[0-9]+\.[0-9]{2}/.test(money)){
+            flash("Invalid monetary input", "warning");
+            isValid = false;
+        }
+
         return isValid;
     }
 </script>
@@ -242,8 +262,8 @@ $states = array(
     }
 
     .flex-container {
-    display: flex;
-}
+        display: flex;
+    }
 
     .flex-child {
         flex: 1;
@@ -252,6 +272,14 @@ $states = array(
 
     #cartTable{
         margin-left:100px;
+    }
+
+    .paymentForm{
+        margin-left:15px;
+    }
+
+    td{
+        height:50px
     }
 </style>
 
