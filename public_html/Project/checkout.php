@@ -7,9 +7,13 @@ if(!is_logged_in()){
 }
 
 $userID = get_user_id();
-
 $db = getDB();
-$statement = $db->prepare("SELECT * FROM Cart WHERE user_id = :userID");
+$total = 0.00;
+
+$statement = $db->prepare("SELECT C. product_id, P.name, C.desired_quantity, (C.desired_quantity * P.unit_price) as subtotal
+FROM Cart C INNER JOIN Products P ON C.product_id = P.id
+WHERE user_id = :userID");
+
 try{
     $statement->execute([":userID" => $userID]);
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -18,7 +22,10 @@ try{
         die(header("Location: cart_page.php"));
     }
     else{
-        //proceed with filling cart
+        $cartItems = $results;
+        foreach($cartItems as $cartItem){
+            $total += $cartItem["subtotal"];
+        }
     }
 }
 catch(PDOException $e){
@@ -87,65 +94,97 @@ $states = array(
 	'WI'=>'WISCONSIN',
 	'WY'=>'WYOMING',
 );
-
-
 ?>
 
-<div>
-    <h1 style="margin-bottom: 30px">Checkout</h1>
-    <form onsubmit="return validate(this)" method="POST" >
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="fname">First Name </label>
-            <input type="text" name="fname">
-        </div>
+<div class="flex-container">
 
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="lname">Last Name </label>
-            <input type="text" name="lname">
-        </div>
+    <div class="checkoutDiv">
+        <h1 style="margin-bottom: 30px">Checkout</h1>
+        <form onsubmit="return validate(this)" method="POST" >
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="fname">First Name </label>
+                <input type="text" name="fname">
+            </div>
 
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="address">Address </label>
-            <input type="text" name="address">
-        </div>
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="lname">Last Name </label>
+                <input type="text" name="lname">
+            </div>
 
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="apartment">Apartment </label>
-            <input type="text" name="apartment">
-        </div>
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="address">Address </label>
+                <input type="text" name="address">
+            </div>
 
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="city">City </label>
-            <input type="text" name="city">
-        </div>
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="apartment">Apartment </label>
+                <input type="text" name="apartment">
+            </div>
 
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="state">State/Province </label>
-            <select name="state">
-                <?php foreach($states as $state) : ?>
-                    <option class="stateOption" id="<?php se($state, "name") ?>" name="states[]" value="<?php se($state, "name") ?>"> <?php se(ucwords(strtolower($state)), "name") ?> </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="city">City </label>
+                <input type="text" name="city">
+            </div>
 
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="country">Country </label>
-            <select name="country">
-                <?php foreach($countries as $country) : ?>
-                    <option id="<?php se($country, "name") ?>" name="countries[]" value="<?php se($country, "name") ?>" > <?php se($country, "name") ?> </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="state">State/Province </label>
+                <select name="state">
+                    <?php foreach($states as $state) : ?>
+                        <option class="stateOption" id="<?php se($state, "name") ?>" name="states[]" value="<?php se($state, "name") ?>"> <?php se(ucwords(strtolower($state)), "name") ?> </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-        <div class="orderDetailsForm">
-            <label class="orderDetailsLabel" for="zip">ZIP Code </label>
-            <input type="text" name="zip">
-        </div>
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="country">Country </label>
+                <select name="country">
+                    <?php foreach($countries as $country) : ?>
+                        <option id="<?php se($country, "name") ?>" name="countries[]" value="<?php se($country, "name") ?>" > <?php se($country, "name") ?> </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-        <div class="orderDetailsForm">
-            <input style="margin-left:0px" type="submit" value="Proceed" />
-        </div>
-    </form>
+            <div class="orderDetailsForm">
+                <label class="orderDetailsLabel" for="zip">ZIP Code </label>
+                <input type="text" name="zip">
+            </div>
+
+            <div class="orderDetailsForm">
+                <input style="margin-left:0px" type="submit" value="Complete Purchase" />
+            </div>
+        </form>
+    </div>
+
+    <div class="checkoutDiv" id="cartTable" style="margin-top: 30px">
+        <h2 style="margin-bottom:30px">Cart</h2>
+        <table class="cartTableInCheckout" style="margin:10px; width:100%">
+            <tr>
+                <td style="width:50%"><b>Item</b></td>
+                <td style="width:17%"><b>Quantity</b></td>
+                <td style="width:23%"><b>Subtotal</b></td>
+            </tr>
+            <?php foreach($cartItems as $cartItem) : ?>
+                <tr>
+                    <td style="width:25%">
+                        <a style="display:inline-block; margin:0px; text-decoration:none; color:white;" href="product_info.php?id=<?php se($cartItem, "product_id") ?>">
+                            <div style="display:inline-block; margin:0px;"><?php se($cartItem, "name") ?></div>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <?php se($cartItem, "desired_quantity") ?>
+                    </td>
+                    <td>$<?php se($cartItem, "subtotal") ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+        <h4 style="margin-left:40px">Total: $<?php echo($total) ?></h4>
+        <button onclick="document.location.href='cart_page.php'">Edit Cart</button>
+
+        <h2 style="margin-top:50px;">Payment Information</h2>
+        <form></form>
+    </div>
+
 </div>
 
 <script>
@@ -197,6 +236,22 @@ $states = array(
 <style>
     .orderDetailsForm{
         display:block;
+    }
+    .checkoutDiv{
+        display:block;
+    }
+
+    .flex-container {
+    display: flex;
+}
+
+    .flex-child {
+        flex: 1;
+        border: 2px solid yellow;
+    }  
+
+    #cartTable{
+        margin-left:100px;
     }
 </style>
 
