@@ -60,9 +60,4 @@ if(!is_logged_in()){
     .orderDetailsForm{
         display:block;
     }
-    
-    .orderDetailsLabel{
-        display:block;
-        margin-bottom:5px;
-    }
 </style>

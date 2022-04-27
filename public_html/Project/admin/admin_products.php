@@ -65,10 +65,10 @@ catch(PDOException $e){
         <div>
         <h6>Choose Visiblity:</h6>
             <input type="radio" name="vis" value="vis"/>
-            <label for="y">Visible</label>
+            <label class="visRadio" for="y">Visible</label>
             <br>
             <input type="radio" name="vis" value="invis"/>
-            <label for="n">Invisible</label>
+            <label class="visRadio" for="n">Invisible</label>
         </div>
 
         <input type="submit" value="Submit"/>
