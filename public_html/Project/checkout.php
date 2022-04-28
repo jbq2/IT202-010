@@ -347,8 +347,17 @@ try{
                 try{
                     $statement->execute([":quantity" => $quantity, ":prodID" => $prodID]);
 
-                    //clear cart
-                        //redirect to thank you page
+                    $statement = $db->prepare("DELETE FROM Cart
+                    WHERE user_id = :userID");
+                    try{
+                        $statement->execute([":userID" => $userID]);
+                        flash("Cart has been cleared", "success");
+                        
+                        die(header("Location: #"));//replace this with the thank you page
+                    }
+                    catch(PDOException $e){
+                        flash("Query error (clearing cart)", "danger");
+                    }
                 }
                 catch(PDOException $e){
                     flash("Query error (updating Product stock)", "danger");
