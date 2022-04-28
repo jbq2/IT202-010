@@ -325,7 +325,7 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["address"]) 
     try{
         $statement->execute([":userID" => $userID, ":total" => $total, ":address" => $fullAddress, ":payType" => $payType, ":money" => $money, ":customer_name" => $fullName]);
         
-        $statement = $db->prepare("SELECT MAX(id) as id FROM Orders
+        $statement = $db->prepare("SELECT MAX(id) AS id FROM Orders
         WHERE user_id = :userID");
         try{
             $statement->execute([":userID" => $userID]);
@@ -384,7 +384,7 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["address"]) 
 
     if($successOp){
         flash("Purchase operation was successful!", "success");
-        //TODO redirect to confirmation page
+        die(header("Location: order_confirmation.php"));
     }
 }
 
