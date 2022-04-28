@@ -24,7 +24,7 @@ try{
     else{
         $cartItems = $results;
         foreach($cartItems as $cartItem){
-            $total += $cartItem["subtotal"];
+            $total += $cartItem["subtotal"];//calculate cart items
         }
     }
 }
@@ -157,6 +157,7 @@ $states = array(
                     <option>Amex</option>
                     <option>Mastercard</option>
                     <option>Cash</option>
+                    <option>Arm and Leg</option>
                 </select>
             </div>
             
@@ -211,8 +212,8 @@ $states = array(
         let money = form.money.value;
         let total = document.getElementById("total").textContent;
         total = total.substring(8, total.length);
-        money = parseFloat(money);
-        total = parseFloat(total);
+        moneyf = parseFloat(money);
+        totalf = parseFloat(total);
 
         let isValid = true;
 
@@ -256,7 +257,7 @@ $states = array(
             flash("Invalid monetary value", "warning");
             isValid = false;
         }
-        else if(parseFloat(money) < parseFloat(total)){
+        else if(parseFloat(moneyf) < parseFloat(totalf)){
             flash("Please enter a sufficient amount of money", "warning");
             isValid = false;
         }
@@ -268,25 +269,19 @@ $states = array(
 <?php 
 
 $hasError = false;
-//perform server side validations
-    //calculate cart items (should be available in cartItems array as subtotal)
-
     //TODO verify current product price against the products table
         //this should be pulled already from the cartItems table
         //still perform a check in server side
 
         //if prices are different, show a message showing that price is different
+foreach($cartItems as $cartItem){ //below for each checks if item is in stock
+    $cartProdID = $cartItem["product_id"];
 
-    //check if desired quantity (Cart) <= stock (Products)
-        //if not above, then show message saying that their desired quantity is invalid
-        //redirect to cart page to allow them to edit their cart
-        //be specific with how many there are left in stock
-foreach($cartItems as $cartItem){ //TODO TEST THIS
-    $statement = $db->prepare("SELECT stock FROM Products WHERE id = :prodID");
+    $statement = $db->prepare("SELECT id, name, stock, unit_price FROM Products WHERE id = :prodID");
     try{
-        $statement->execute([":prodID" => $cartItem["product_id"]]);
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $stock = $results["stock"];
+        $statement->execute([":prodID" => $cartProdID]);
+        $res = $statement->fetch(PDO::FETCH_ASSOC);
+        $stock = $res["stock"];
 
         if($stock < $cartItem["desired_quantity"]){
             flash("Not enough " . $cartItem["name"] . " in stock ($stock left in stock)", "warning");
@@ -295,90 +290,104 @@ foreach($cartItems as $cartItem){ //TODO TEST THIS
         }
     }
     catch(PDOException $e){
-        flash("Query error", "danger");
+        flash($e, "danger");
         $hasError = true;
     }
 }
     
     //TODO perform other verifications (similar to the ones in client side)
-$fname = se($_POST, "fname", "", false);
-$lname = se($_POST, "lname", "", false);
-$addr = se($_POST, "address", "", false);
-$aprt = se($_POST, "apartment", "", false);
-$city = se($_POST, "city", "", false);
-$state = se($_POST, "state", "", false);
-$country = se($_POST, "country", "", false);
-$zip = se($_POST, "zip", "", false);
-$payType = se($_POST, "payType", "", false);
-$money = se($_POST, "money", "", false);
-
-$fullAddress = (!isset($_POST[$aprt])) ? "$addr, $city, $state $zip, $country" : "$addr, APT # $aprt, $city, $state $zip, $country";
 
     //TODO make entry into orders table
         //run query statement to INSERT INTO Orders a new row
         //run query to get the id of the last entered order by the user
             //most recent Orders id where user_id = :userID
-$statement = $db->prepare("INSERT INTO Orders (user_id, total_price, address, payment_method, money_received)
-VALUES (:userID, :total, :address, :payType, :money)");
-try{
-    $statement->execute([":userID" => $userID, ":total" => $total, ":address" => $fullAddress, ":payType" => $payType, ":money" => $money]);
+
+if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["address"]) && isset($_POST["city"]) && isset($_POST["state"]) && isset($_POST["country"]) && isset($_POST["zip"]) && isset($_POST["payType"]) && isset($_POST["money"])){
+    $fname = se($_POST, "fname", "", false);
+    $lname = se($_POST, "lname", "", false);
+    $addr = se($_POST, "address", "", false);
+    $aprt = se($_POST, "apartment", "", false);
+    $city = se($_POST, "city", "", false);
+    $state = se($_POST, "state", "", false);
+    $country = se($_POST, "country", "", false);
+    $zip = se($_POST, "zip", "", false);
+    $payType = se($_POST, "payType", "", false);
+    $money = se($_POST, "money", "", false);
+
+    $fullName = "$fname $lname";
+    $fullAddress = (!isset($_POST[$aprt])) ? "$addr, $city, $state $zip, $country" : "$addr, APT # $aprt, $city, $state $zip, $country";
     
-    $statement = $db->prepare("SELECT * FROM Orders
-    WHERE user_id = :userID AND id = MAX(id)");
+    $statement = $db->prepare("INSERT INTO Orders (user_id, total_price, address, payment_method, money_received, customer_name)
+    VALUES (:userID, :total, :address, :payType, :money, :customer_name)");
+
+    $successOp = true;
+
     try{
-        $statement->execute([":userID" => $userID]);
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $recentOrder = $results;
+        $statement->execute([":userID" => $userID, ":total" => $total, ":address" => $fullAddress, ":payType" => $payType, ":money" => $money, ":customer_name" => $fullName]);
         
-        $orderID = $recentOrder["id"];
-        foreach($cartItems as $cartItem){//TODO make entries into OrderItems table (foreach cartItems)
-            $prodID = $cartItem["product_id"];
-            $quantity = $cartItem["desired_quantity"];
-            $price = $cartItem["unit_price"];
+        $statement = $db->prepare("SELECT MAX(id) as id FROM Orders
+        WHERE user_id = :userID");
+        try{
+            $statement->execute([":userID" => $userID]);
+            $results = $statement->fetch(PDO::FETCH_ASSOC);
+            $orderID = $results["id"];
+            
+            foreach($cartItems as $cartItem){//TODO make entries into OrderItems table (foreach cartItems)
+                $prodID = $cartItem["product_id"];
+                $quantity = intval($cartItem["desired_quantity"]);
+                $price = $cartItem["unit_price"];
 
-            $statement = $db->prepare("INSERT INTO OrderItems (order_id, product_id, quantity, unit_price)
-            VALUES (:orderID, :prodID, :quantity, :price)");
-            try{//TODO run query statement to UPDATE TABLE Products (update stock)
-                $statement->execute([":orderID" => $orderID, ":prodID" => $prodID, ":quantity" => $quantity, ":price" => $price]);
-                
-                $statement = $db->prepare("UPDATE TABLE Products
-                SET stock = stock - :quantity
-                WHERE id = :prodID");
-                try{
-                    $statement->execute([":quantity" => $quantity, ":prodID" => $prodID]);
-
-                    $statement = $db->prepare("DELETE FROM Cart
-                    WHERE user_id = :userID");
+                $statement = $db->prepare("INSERT INTO OrderItems (order_id, product_id, quantity, unit_price)
+                VALUES (:orderID, :prodID, :quantity, :price)");
+                try{//TODO run query statement to UPDATE TABLE Products (update stock)
+                    $statement->execute([":orderID" => $orderID, ":prodID" => $prodID, ":quantity" => $quantity, ":price" => $price]);
+                    
+                    $statement = $db->prepare("UPDATE Products
+                    SET stock = stock - :quantity WHERE id = :prodID");
                     try{
-                        $statement->execute([":userID" => $userID]);
-                        flash("Cart has been cleared", "success");
-                        
-                        die(header("Location: #"));//replace this with the thank you page
+                        $statement->bindValue(":quantity", $quantity, PDO::PARAM_INT);
+                        $statement->bindValue(":prodID", $prodID, PDO::PARAM_STR);
+                        $statement->execute();
                     }
                     catch(PDOException $e){
-                        flash("Query error (clearing cart)", "danger");
+                        flash("Failure in updating products", "danger");
+                        $successOp = false;
                     }
                 }
                 catch(PDOException $e){
-                    flash("Query error (updating Product stock)", "danger");
+                    flash("Failure in purchasing products", "danger");
+                    $successOp = false;
                 }
             }
-            catch(PDOException $e){
-                flash("Query error (inserting into OrderItems table)", "danger");
-            }
+        }
+        catch(PDOException $e){
+            flash("Failure in finding order", "danger");
+            $successOp = false;
         }
     }
     catch(PDOException $e){
-        flash("Query error (obtaining most recent user order)", "danger");
+        flash("Failure in processing order", "danger");
+        $successOp = false;
+    }
+
+    if($successOp){
+        $statement = $db->prepare("DELETE FROM Cart
+        WHERE user_id = :userID");
+        try{
+            $statement->execute([":userID" => $userID]);
+        }
+        catch(PDOException $e){
+            flash("Failure in clearing cart (items already purchased)", "danger");
+            $successOp = false;
+        }
+    }
+
+    if($successOp){
+        flash("Purchase operation was successful!", "success");
+        //TODO redirect to confirmation page
     }
 }
-catch(PDOException $e){
-    flash("Query error (inserting into Orders table)", "danger");
-}
-    
-    //TODO clear user cart
-    
-    //TODO redirect to OrderConfirmation Page
+
 ?>
 
 <style>
