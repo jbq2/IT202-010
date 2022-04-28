@@ -10,7 +10,7 @@ $userID = get_user_id();
 $db = getDB();
 $total = 0.00;
 
-$statement = $db->prepare("SELECT C. product_id, P.name, C.desired_quantity, (C.desired_quantity * P.unit_price) as subtotal
+$statement = $db->prepare("SELECT C.product_id, P.name, C.desired_quantity, P.unit_price, (C.desired_quantity * P.unit_price) as subtotal
 FROM Cart C INNER JOIN Products P ON C.product_id = P.id
 WHERE user_id = :userID");
 
@@ -264,6 +264,113 @@ $states = array(
         return isValid;
     }
 </script>
+
+<?php 
+
+$hasError = false;
+//perform server side validations
+    //calculate cart items (should be available in cartItems array as subtotal)
+
+    //TODO verify current product price against the products table
+        //this should be pulled already from the cartItems table
+        //still perform a check in server side
+
+        //if prices are different, show a message showing that price is different
+
+    //check if desired quantity (Cart) <= stock (Products)
+        //if not above, then show message saying that their desired quantity is invalid
+        //redirect to cart page to allow them to edit their cart
+        //be specific with how many there are left in stock
+foreach($cartItems as $cartItem){ //TODO TEST THIS
+    $statement = $db->prepare("SELECT stock FROM Products WHERE id = :prodID");
+    try{
+        $statement->execute([":prodID" => $cartItem["product_id"]]);
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $stock = $results["stock"];
+
+        if($stock < $cartItem["desired_quantity"]){
+            flash("Not enough " . $cartItem["name"] . " in stock ($stock left in stock)", "warning");
+            $hasError = true;
+            die(header("Location: cart_page.php"));
+        }
+    }
+    catch(PDOException $e){
+        flash("Query error", "danger");
+        $hasError = true;
+    }
+}
+    
+    //TODO perform other verifications (similar to the ones in client side)
+$fname = se($_POST, "fname", "", false);
+$lname = se($_POST, "lname", "", false);
+$addr = se($_POST, "address", "", false);
+$aprt = se($_POST, "apartment", "", false);
+$city = se($_POST, "city", "", false);
+$state = se($_POST, "state", "", false);
+$country = se($_POST, "country", "", false);
+$zip = se($_POST, "zip", "", false);
+$payType = se($_POST, "payType", "", false);
+$money = se($_POST, "money", "", false);
+
+$fullAddress = (!isset($_POST[$aprt])) ? "$addr, $city, $state $zip, $country" : "$addr, APT # $aprt, $city, $state $zip, $country";
+
+    //TODO make entry into orders table
+        //run query statement to INSERT INTO Orders a new row
+        //run query to get the id of the last entered order by the user
+            //most recent Orders id where user_id = :userID
+$statement = $db->prepare("INSERT INTO Orders (user_id, total_price, address, payment_method, money_received)
+VALUES (:userID, :total, :address, :payType, :money)");
+try{
+    $statement->execute([":userID" => $userID, ":total" => $total, ":address" => $fullAddress, ":payType" => $payType, ":money" => $money]);
+    
+    $statement = $db->prepare("SELECT * FROM Orders
+    WHERE user_id = :userID AND id = MAX(id)");
+    try{
+        $statement->execute([":userID" => $userID]);
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $recentOrder = $results;
+        
+        $orderID = $recentOrder["id"];
+        foreach($cartItems as $cartItem){//TODO make entries into OrderItems table (foreach cartItems)
+            $prodID = $cartItem["product_id"];
+            $quantity = $cartItem["desired_quantity"];
+            $price = $cartItem["unit_price"];
+
+            $statement = $db->prepare("INSERT INTO OrderItems (order_id, product_id, quantity, unit_price)
+            VALUES (:orderID, :prodID, :quantity, :price)");
+            try{//TODO run query statement to UPDATE TABLE Products (update stock)
+                $statement->execute([":orderID" => $orderID, ":prodID" => $prodID, ":quantity" => $quantity, ":price" => $price]);
+                
+                $statement = $db->prepare("UPDATE TABLE Products
+                SET stock = stock - :quantity
+                WHERE id = :prodID");
+                try{
+                    $statement->execute([":quantity" => $quantity, ":prodID" => $prodID]);
+
+                    //clear cart
+                        //redirect to thank you page
+                }
+                catch(PDOException $e){
+                    flash("Query error (updating Product stock)", "danger");
+                }
+            }
+            catch(PDOException $e){
+                flash("Query error (inserting into OrderItems table)", "danger");
+            }
+        }
+    }
+    catch(PDOException $e){
+        flash("Query error (obtaining most recent user order)", "danger");
+    }
+}
+catch(PDOException $e){
+    flash("Query error (inserting into Orders table)", "danger");
+}
+    
+    //TODO clear user cart
+    
+    //TODO redirect to OrderConfirmation Page
+?>
 
 <style>
     .orderDetailsForm{
