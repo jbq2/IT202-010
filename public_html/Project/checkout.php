@@ -284,7 +284,7 @@ foreach($cartItems as $cartItem){ //below for each checks if item is in stock
         if($stock < $cartItem["desired_quantity"]){
             flash("Not enough " . $cartItem["name"] . " in stock ($stock left in stock)", "warning");
             $hasError = true;
-            die(header("Location: cart_page.php"));
+            redirect("cart_page.php");
         }
     }
     catch(PDOException $e){
