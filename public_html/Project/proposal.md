@@ -86,16 +86,16 @@
     -  Link to Feature Implementation: [cart_page.php](https://jbq2-prod.herokuapp.com/Project/cart_page.php)
 - Milestone 3
   - [ ] \(mm/dd/yyyy of completion) User will be able to purchase items in their Cart
-    -  [Link to milestone3.md]()
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
     -  Link to Feature Implementation: []()
   - [ ] \(mm/dd/yyyy of completion) Order Confirmation Page
-    -  [Link to milestone3.md]()
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
     -  Link to Feature Implementation: []()
   - [ ] \(mm/dd/yyyy of completion) User will be able to see their Purchase History
-    -  [Link to milestone3.md]()
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
     -  Link to Feature Implementation: []()
   - [ ] \(mm/dd/yyyy of completion) Store Owner will be able to see all Purchase History
-    -  [Link to milestone3.md]()
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
     -  Link to Feature Implementation: []()
 - Milestone 4
   - (duplicate template here for Milestone 1 features)
