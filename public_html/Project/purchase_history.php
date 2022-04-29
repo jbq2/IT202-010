@@ -8,13 +8,28 @@ if(!is_logged_in()){
 
 $userID = get_user_id();
 $db = getDB();
+$statement = "";
+$isStoreOwner = false;
 
-$statement = $db->prepare("SELECT id, created, total_price, money_received, payment_method
-FROM Orders
-WHERE user_id = :userID");
+if(has_role("Admin") || has_role("Store Owner")){
+    $statement = $db->prepare("SELECT id, created, total_price, money_received, payment_method
+    FROM Orders");
+    $isStoreOwner = true;
+}
+else{
+    $statement = $db->prepare("SELECT id, created, total_price, money_received, payment_method
+    FROM Orders
+    WHERE user_id = :userID");
+}
+
 $orders = [];
 try{
-    $statement->execute([":userID" => $userID]);
+    if($isStoreOwner){
+        $statement->execute();
+    }
+    else{
+        $statement->execute([":userID" => $userID]);
+    }
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $orders = $results;
 }

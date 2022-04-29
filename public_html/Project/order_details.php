@@ -6,22 +6,28 @@ if(!is_logged_in()){
     die(header("Location: login.php"));
 }
 
-$userID = get_user_id();
 $orderID = $_GET["id"];
 $db = getDB();
 
-$statement = $db->prepare("SELECT id, total_price, address, payment_method, money_received, customer_name 
-FROM Orders
-WHERE id = :orderID AND user_id = :userID");//max order id is the user's most recent order
+$statement = $db->prepare("SELECT * FROM Orders
+WHERE id = :orderID");//max order id is the user's most recent order
 
 $orderDetails = [];
 try{
-    $statement->execute([":orderID" => $orderID, ":userID" => $userID]);
+    $statement->execute([":orderID" => $orderID]);
     $results = $statement->fetch(PDO::FETCH_ASSOC);
     $orderDetails = $results;
 }
 catch(PDOException $e){
     flash("Failure in retrieving most recent order $e", "warning");
+}
+
+if(!has_role("Admin") && !has_role("Store Owner")){
+    $currUserID = get_user_id();
+    if($currUserID != $orderDetails["user_id"]){
+        flash("You cannot access this user's order details", "warning");
+        redirect("home.php");
+    }
 }
 
 $statement = $db->prepare("SELECT O.order_id, O.product_id, O.quantity, O.unit_price, (O.quantity * O.unit_price) as subtotal, P.id, P.name 
@@ -65,8 +71,9 @@ catch(PDOException $e){
         <?php endforeach; ?>
     </table>
 
-    <h4>Total: $<?php se($orderDetails, "total_price") ?></h4>
-    <h4>You Spent: $<?php se($orderDetails, "money_received") ?></h4>
+    <h4>Order Total: $<?php se($orderDetails, "total_price") ?></h4>
+    <h4>Money Received: $<?php se($orderDetails, "money_received") ?></h4>
     <h4>Payment Method: <?php se($orderDetails, "payment_method") ?></h4>
     <h4>Shipping Address: <?php se($orderDetails, "address") ?></h4>
+    <h4>Given Name: <?php se($orderDetails, "customer_name") ?></h4>
 </div>
