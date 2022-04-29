@@ -30,7 +30,17 @@ try{
         $statement->execute([":userID" => $userID]);
     }
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-    $orders = $results;
+    
+    $count = 0;
+    foreach($results as $r){
+        if($count < 10){
+            array_push($orders, $r);
+        }
+        else{
+            break;
+        }
+        $count++;
+    }
 }
 catch(PDOException $e){
     flash("Failure in obtaining purchase history", "warning");
