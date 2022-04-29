@@ -188,9 +188,7 @@ $states = array(
                         </a>
                     </td>
                     
-                    <td>
-                        <?php se($cartItem, "desired_quantity") ?>
-                    </td>
+                    <td><?php se($cartItem, "desired_quantity") ?></td>
                     <td>$<?php se($cartItem, "subtotal") ?></td>
                 </tr>
             <?php endforeach; ?>
