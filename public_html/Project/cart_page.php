@@ -12,6 +12,7 @@ $clear = se($_POST, "clear", "", false);
 $removeItem = se($_GET, "remItem", "", false);
 $increment = se($_GET, "inc", "", false);
 $decrement = se($_GET, "dec", "", false);
+$checkout = se($_POST, "checkout", "", false);
 if(!empty($clear)){//works
     $statement = $db->prepare("DELETE FROM Cart
     WHERE user_id = :userID");
@@ -66,6 +67,10 @@ if(!empty($decrement)){//UCID: jbq2; IT202-010
             flash("<pre>" . var_export($e, true) . "</pre>");
         }
     }
+}
+
+if(!empty($checkout)){
+    die(header("Location: checkout.php"));
 }
 
 $statement = $db->prepare("SELECT C.product_id, C.desired_quantity, P.name, (C.desired_quantity*P.unit_price) as subtotal FROM Cart C INNER JOIN Products P
@@ -125,6 +130,7 @@ foreach($results as $cartItem){
         <h4 style="margin-left:40px">Total: $<?php echo($total) ?></h4>
         <form style="margin-top:30px" class="clearCartForm" method="POST">
             <input type="submit" name="clear" value="Clear Cart" />
+            <input type="submit" name="checkout" value="Checkout" />
         </form>
     <?php else : ?>
         <h4 style="margin-left:30px; margin-top:20px"><i>There is nothing in your cart</i></h4>

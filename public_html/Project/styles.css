@@ -62,8 +62,8 @@ input[input=password]:focus{
     border-color: #31374D;
 }
 input, textarea{
-    background-color: #333437;
-    color: #fee9d4;
+    background-color: white;
+    color: black;
 
 }
 input[type=submit]{
@@ -148,7 +148,14 @@ th, td{
     padding:5px;
 }
 
+label{
+    display:block;
+    margin-bottom:5px;
+}
 
+.visRadio{
+    display:inline-block;
+}
 
 .formFilters div{
     display:inline-block;
@@ -185,8 +192,18 @@ img{
 }
 
 textarea{
-    width:310px;
+    width:350px;
     border-radius:5px;
     padding-left:10px;
     padding-right:10px;
+}
+
+select,option{
+    width:175px;
+}
+
+option{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
