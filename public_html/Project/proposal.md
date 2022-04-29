@@ -87,12 +87,16 @@
 - Milestone 3
   - [ ] \(mm/dd/yyyy of completion) User will be able to purchase items in their Cart
     -  [Link to milestone3.md]()
+    -  Link to Feature Implementation: []()
   - [ ] \(mm/dd/yyyy of completion) Order Confirmation Page
     -  [Link to milestone3.md]()
+    -  Link to Feature Implementation: []()
   - [ ] \(mm/dd/yyyy of completion) User will be able to see their Purchase History
     -  [Link to milestone3.md]()
+    -  Link to Feature Implementation: []()
   - [ ] \(mm/dd/yyyy of completion) Store Owner will be able to see all Purchase History
     -  [Link to milestone3.md]()
+    -  Link to Feature Implementation: []()
 - Milestone 4
   - (duplicate template here for Milestone 1 features)
 ### Intructions
