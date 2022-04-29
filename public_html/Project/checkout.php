@@ -384,7 +384,7 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["address"]) 
 
     if($successOp){
         flash("Purchase operation was successful!", "success");
-        die(header("Location: order_confirmation.php"));
+        redirect("order_confirmation.php");
     }
 }
 
@@ -419,7 +419,6 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["address"]) 
         height:50px
     }
 </style>
-
 <?php 
 require(__DIR__ . "/../../partials/flash.php")
 ?>

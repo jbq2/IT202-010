@@ -1,4 +1,5 @@
-<?php 
+<?php
+//snippet from my functions.php
 function redirect($path)
 { //header headache
     //https://www.php.net/manual/en/function.headers-sent.php#90160
@@ -13,4 +14,3 @@ function redirect($path)
     echo "<noscript><meta http-equiv=\"refresh\" content=\"0;url=" . get_url($path) . "\"/></noscript>";
     die();
 }
-?>
