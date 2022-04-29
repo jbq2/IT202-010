@@ -12,8 +12,7 @@ $statement = "";
 $isStoreOwner = false;
 
 if(has_role("Admin") || has_role("Store Owner")){
-    $statement = $db->prepare("SELECT id, created, total_price, money_received, payment_method
-    FROM Orders");
+    $statement = $db->prepare("SELECT * FROM Orders");
     $isStoreOwner = true;
 }
 else{
@@ -52,9 +51,15 @@ catch(PDOException $e){
             <?php foreach($orders as $order) : ?>
                 <tr>
                     <td>
-                        <a style="display:inline-block; margin:0px; text-decoration:none; color:white;" href="order_details.php?id=<?php se($order, "id") ?>">
-                            <div style="display:inline-block; margin:0px;"><?php se($order, "id") ?></div>
-                        </a>
+                        <?php if(has_role("Admin") || has_role("Store Owner")) : ?>
+                            <a style="display:inline-block; margin:0px; text-decoration:none; color:white;" href="order_details.php?id=<?php se($order, "id") ?>">
+                                <div style="display:inline-block; margin:0px;"><?php se($order, "id") ?> (User ID: <?php se($order, "user_id") ?>)</div>
+                            </a>
+                        <?php else : ?>
+                            <a style="display:inline-block; margin:0px; text-decoration:none; color:white;" href="order_details.php?id=<?php se($order, "id") ?>">
+                                <div style="display:inline-block; margin:0px;"><?php se($order, "id") ?></div>
+                            </a>
+                        <?php endif; ?>
                     </td>
                     <td><?php se($order, "created") ?></td>
                     <td>$<?php se($order, "total_price") ?></td>
