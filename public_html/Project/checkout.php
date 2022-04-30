@@ -200,7 +200,7 @@ $states = array(
 </div>
 
 <script>
-    function validate(form){
+    function validate(form){//UCID: jbq2; IT202-010
         let fn = form.fname.value;
         let ln = form.lname.value;
         let addr = form.address.value;
