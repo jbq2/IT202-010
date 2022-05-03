@@ -412,10 +412,6 @@ if(isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["address"]) 
     .paymentForm{
         margin-left:15px;
     }
-
-    td{
-        height:50px
-    }
 </style>
 <?php 
 require(__DIR__ . "/../../partials/flash.php")

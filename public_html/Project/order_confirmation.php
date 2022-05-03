@@ -22,7 +22,13 @@ try{
     $statement->execute([":userID" => $userID]);
     $results = $statement->fetch(PDO::FETCH_ASSOC);
     $orderDetails = $results;
-    $orderID = $orderDetails["id"];
+    if(is_null($orderDetails["id"])){
+        flash("You do not have a most recent order on file", "info").
+        redirect("shop_page.php");
+    }
+    else{
+        $orderID = $orderDetails["id"];
+    }
 }
 catch(PDOException $e){
     flash("Failure in retrieving most recent order $e", "warning");

@@ -22,7 +22,9 @@ All website links must be from prod (you can assume/infer this by getting your d
 </td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> User will be able to purchase their cart </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot of the Orders table with valid data in it</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="![image](https://user-images.githubusercontent.com/98120760/166053339-8e713205-8f77-4d88-98af-3d2c864576a2.png)">![image](https://user-images.githubusercontent.com/98120760/166053339-8e713205-8f77-4d88-98af-3d2c864576a2.png)</a> </td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/166053339-8e713205-8f77-4d88-98af-3d2c864576a2.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Orders Table Screenshot with Data<br></p></td></tr>
+
 <tr><td> <em>Sub-Task 2: </em> Add a screenshot of OrderItems table with validate data in it</td></tr>
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/166054049-4736e109-f2ee-4582-b090-e0cf5d478511.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>OrderItems Table with Data<br></p>
@@ -71,7 +73,7 @@ All website links must be from prod (you can assume/infer this by getting your d
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 2: </em> Briefly explain how this information is retrieved and displayed from a code logic perspective</td></tr>
-<tr><td> <em>Response:</em> <p>Note that this page is separate from order_details.php.  Order_confirmation.php is specifically reserved<br>for display right after a purchase is completed (if accessed via url directly,<br>then the most recent order details are displayed).  </p><br><p>A query is first<br>made to the Orders table to obtain the order id of the most<br>recent order made by the user.  Since this page is displayed specifically<br>after a user has made a purchase, an MAX order id should exist<br>for the user.  Once this is obtained, the order id is specifically<br>saved to a different variable.  This is because this id is important<br>for gathering the items from the OrderItems table associated with that order. <br>Once a second query is made to gather items from the OrderItems table<br>(on the condition that the row&#39;s order_id equals the order id previously obtained),<br>we have all the necessary information to provide the user with their order<br>details.  The following details are displayed: each item&#39;s name, quantity, and subtotal,<br>the overall total, how much money the user spent, the payment method, and<br>the shipping address.  The name the user gave in the order form<br>is also shown via the thank you message.<br></p><br></td></tr>
+<tr><td> <em>Response:</em> <p>Note that this page is separate from order_details.php.  Order_confirmation.php is specifically reserved<br>for display right after a purchase is completed (if accessed via url directly,<br>then the most recent order details are displayed).  </p><br><p>A query is first<br>made to the Orders table to obtain the order id of the most<br>recent order made by the user.  Since this page is displayed specifically<br>after a user has made a purchase, a MAX order id should exist<br>for the user.  Once this is obtained, the order id is specifically<br>saved to a different variable.  This is because this id is important<br>for gathering the items from the OrderItems table associated with that order. <br>Once a second query is made to gather items from the OrderItems table<br>(on the condition that the row&#39;s order_id equals the order id previously obtained),<br>we have all the necessary information to provide the user with their order<br>details.  The following details are displayed: each item&#39;s name, quantity, and subtotal,<br>the overall total, how much money the user spent, the payment method, and<br>the shipping address.  The name the user gave in the order form<br>is also shown via the thank you message.<br></p><br></td></tr>
 <tr><td> <em>Sub-Task 3: </em> Add related pull request link(s)</td></tr>
 <tr><td> <a rel="noreferrer noopener" target="_blank" href="https://github.com/jbq2/IT202-010/pull/104">https://github.com/jbq2/IT202-010/pull/104</a> </td></tr>
 <tr><td> <em>Sub-Task 4: </em> Add a direct link to heroku prod for this file</td></tr>
@@ -125,7 +127,7 @@ All website links must be from prod (you can assume/infer this by getting your d
 </table></td></tr>
 <table><tr><td> <em>Deliverable 5: </em> Proposal.md </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em>  Add screenshots showing your updated proposal.md file with checkmarks, dates, and link to milestone3.md accordingly and a direct link to the path on Heroku prod (see instructions)</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/166084477-89e4ed69-3849-49f6-81bd-46e33d3db61a.png"/></td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/166507848-ee8fad43-5e20-4c3e-b947-d3f05cc7494d.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>Screenshot of Milestone 3 Complete in proposal.md<br></p>
 </td></tr>
 </table></td></tr>
