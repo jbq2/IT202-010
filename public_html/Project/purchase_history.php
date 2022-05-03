@@ -18,7 +18,8 @@ if(has_role("Admin") || has_role("Store Owner")){
 else{
     $statement = $db->prepare("SELECT id, created, total_price, money_received, payment_method
     FROM Orders
-    WHERE user_id = :userID");
+    WHERE user_id = :userID
+    ORDER BY id DESC");
 }
 
 $orders = [];
