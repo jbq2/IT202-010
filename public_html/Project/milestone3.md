@@ -22,7 +22,9 @@ All website links must be from prod (you can assume/infer this by getting your d
 </td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> User will be able to purchase their cart </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://via.placeholder.com/400x120/009955/fff?text=Complete"></td></tr>
 <tr><td><table><tr><td> <em>Sub-Task 1: </em> Add a screenshot of the Orders table with valid data in it</td></tr>
-<tr><td> <a rel="noreferrer noopener" target="_blank" href="![image](https://user-images.githubusercontent.com/98120760/166053339-8e713205-8f77-4d88-98af-3d2c864576a2.png)">![image](https://user-images.githubusercontent.com/98120760/166053339-8e713205-8f77-4d88-98af-3d2c864576a2.png)</a> </td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/166053339-8e713205-8f77-4d88-98af-3d2c864576a2.png"/></td></tr>
+<tr><td> <em>Caption:</em> <p>Orders Table Screenshot with Data<br></p></td></tr>
+
 <tr><td> <em>Sub-Task 2: </em> Add a screenshot of OrderItems table with validate data in it</td></tr>
 <tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/98120760/166054049-4736e109-f2ee-4582-b090-e0cf5d478511.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>OrderItems Table with Data<br></p>
