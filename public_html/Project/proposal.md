@@ -85,7 +85,20 @@
     -  [Link to milestone2.md](https://github.com/jbq2/IT202-010/blob/Milestone2/public_html/Project/milestone2.md)
     -  Link to Feature Implementation: [cart_page.php](https://jbq2-prod.herokuapp.com/Project/cart_page.php)
 - Milestone 3
-  - (duplicate template here for Milestone 1 features)
+  - [x] \(04/28/2022) User will be able to purchase items in their Cart
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
+    -  Link to Feature Implementation: [checkout.php](https://jbq2-prod.herokuapp.com/Project/checkout.php)
+  - [x] \(04/28/2022) Order Confirmation Page
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
+    -  Link to Feature Implementation: [order_confirmation.php](https://jbq2-prod.herokuapp.com/Project/order_confirmation.php)
+  - [x] \(04/29/2022) User will be able to see their Purchase History
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
+    -  Link to Feature Implementation: [purchase_history.php](https://jbq2-prod.herokuapp.com/Project/purchase_history.php)
+    -  Link to Feature Implementation: [order_details.php](https://jbq2-prod.herokuapp.com/Project/order_details.php?id=17)
+  - [x] \(04/29/2022) Store Owner will be able to see all Purchase History
+    -  [Link to milestone3.md](https://github.com/jbq2/IT202-010/blob/Milestone3/public_html/Project/milestone3.md)
+    -  Link to Feature Implementation: [purchase_history.php](https://jbq2-prod.herokuapp.com/Project/purchase_history.php)
+    -  Link to Feature Implementation: [order_details.php](https://jbq2-prod.herokuapp.com/Project/order_details.php?id=17)
 - Milestone 4
   - (duplicate template here for Milestone 1 features)
 ### Intructions

@@ -1,0 +1,2 @@
+ALTER TABLE `OrderItems`
+MODIFY COLUMN unit_price DECIMAL(8,2) NOT NULL;
