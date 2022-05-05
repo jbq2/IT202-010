@@ -82,7 +82,7 @@ if (isset($_POST["save"])) {
         }
     }
 
-    $public = se($_POST, "pubSetting", "", false);
+    $public = se($_POST, "pubSetting", "", false);//THIS WORKS
     if(!empty($public)){
         $statement = $db->prepare("UPDATE Users
         SET public = :pubSetting
