@@ -81,6 +81,22 @@ if (isset($_POST["save"])) {
             flash("New passwords don't match", "warning");
         }
     }
+
+    $public = se($_POST, "pubSetting", "", false);
+    if(!empty($public)){
+        $statement = $db->prepare("UPDATE Users
+        SET public = :pubSetting
+        WHERE id = :userID");
+        $userID = get_user_id();
+        $pubSetting = ($public == "pub") ? 1 : 0;
+        
+        try{
+            $statement->execute([":pubSetting" => $pubSetting, ":userID" => $userID]);    
+        }
+        catch(PDOException $e){
+            flash("Error updating your profile's publicity setting", "warning");
+        }
+    }
 }
 ?>
 
@@ -113,6 +129,13 @@ $username = get_username();
         <div class="mb-3">
             <label class="form-label" for="conp">Confirm Password</label>
             <input class="form-control" type="password" name="confirmPassword" id="conp" />
+        </div>
+        <div>
+            <input class="radioClass" type="radio" id="pub" name="pubSetting" value="pub" />
+            <label class="radioLabel" for="pub">Public</label>
+            <br>
+            <input class="radioClass" type="radio" id="priv" name="pubSetting" value="priv" />
+            <label class="radioLabel" for="priv">Private</label>
         </div>
         <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
     </form>
@@ -153,9 +176,26 @@ $username = get_username();
             isValid = false;
             flash("Passwords must match", "warning");
         }
+
+        let public = form.pubSetting.value;
+        if(!isset(public)){
+            isValid = false;
+            flash("Please choose a publicity setting for your profile", "warning");
+        }
+
         return isValid;
     }
 </script>
+
+<style>
+.radioClass{
+    display:inline;
+}
+.radioLabel{
+    display:inline;
+}
+</style>
+
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>
