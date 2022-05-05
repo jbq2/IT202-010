@@ -6,7 +6,12 @@ if (!is_logged_in()) {
 }
 ?>
 <?php
-if (isset($_POST["save"])) {
+
+$userid_GET = (isset($_GET["userid"])) ? $_GET["userid"] : get_user_id(); 
+$userID = get_user_id();
+$otherUserDetails = [];
+
+if (isset($_POST["save"]) && $userID == $userid_GET) {
     $email = se($_POST, "email", null, false);
     $username = se($_POST, "username", null, false);
 
@@ -81,6 +86,46 @@ if (isset($_POST["save"])) {
             flash("New passwords don't match", "warning");
         }
     }
+
+    $public = se($_POST, "pubSetting", "", false);//THIS WORKS
+    if(!empty($public)){
+        $statement = $db->prepare("UPDATE Users
+        SET public = :pubSetting
+        WHERE id = :userID");
+        $pubSetting = ($public == "pub") ? 1 : 0;
+        
+        try{
+            $statement->execute([":pubSetting" => $pubSetting, ":userID" => $userID]);    
+        }
+        catch(PDOException $e){
+            flash("Error updating your profile's publicity setting", "warning");
+        }
+    }
+}
+else if($userID != $userid_GET){
+    $db = getDB();
+    $statement = $db->prepare("SELECT * FROM Users
+    WHERE id = :userid");
+    
+    try{
+        $statement->execute([":userid" => $userid_GET]);
+        $results = $statement->fetch(PDO::FETCH_ASSOC);
+        $otherUserDetails = $results;
+        if(!empty($otherUserDetails)){
+            if($otherUserDetails["public"] == 0){
+                flash("This profile is set to private", "info");
+                redirect("profile.php");
+            }
+        }
+        else{
+            flash("This user does not exist", "info");
+            redirect("profile.php");
+        }
+    }
+    catch(PDOException $e){
+        flash("Error fetching user's account details", "warning");
+        redirect("profile.php");
+    }
 }
 ?>
 
@@ -89,33 +134,53 @@ $email = get_user_email();
 $username = get_username();
 ?>
 <div class="container-fluid">
-    <h1>Profile</h1>
-    <form method="POST" onsubmit="return validate(this);">
-        <div class="mb-3">
-            <label class="form-label" for="email">Email</label>
-            <input class="form-control" type="email" name="email" id="email" value="<?php se($email); ?>" />
+    <?php if($userID == $userid_GET) : ?>
+        <h1>Your Profile</h1>
+        <form method="POST" onsubmit="return validate(this);">
+            <div class="mb-3">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" type="email" name="email" id="email" value="<?php se($email); ?>" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="username">Username</label>
+                <input class="form-control" type="text" name="username" id="username" value="<?php se($username); ?>" />
+            </div>
+            <!-- DO NOT PRELOAD PASSWORD -->
+            <h3 style="margin-top:25px; margin-left:40px">Password Reset</h3>
+            <div class="mb-3">
+                <label class="form-label" for="cp">Current Password</label>
+                <input class="form-control" type="password" name="currentPassword" id="cp" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="np">New Password</label>
+                <input class="form-control" type="password" name="newPassword" id="np" />
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="conp">Confirm Password</label>
+                <input class="form-control" type="password" name="confirmPassword" id="conp" />
+            </div>
+            <div>
+                <h3>Profile Publicity Setting</h3>
+                <input class="radioClass" type="radio" id="pub" name="pubSetting" value="pub" />
+                <label class="radioLabel" for="pub">Public</label>
+                <br>
+                <input class="radioClass" type="radio" id="priv" name="pubSetting" value="priv" />
+                <label class="radioLabel" for="priv">Private</label>
+            </div>
+            <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
+        </form>
+    <?php elseif($userID != $userid_GET) : ?>
+        <div>
+            <h1 style="margin-left:0px">Viewing Other Profile</h1>
+            <form>
+                <label class="form-label" for="othUserID" id="otherUserID">User ID</label>
+                <input type="text" class="form-control" value="<?php se($otherUserDetails, "id") ?>" name="othUserID" disabled/>
+                <br>
+                <label class="form-label" for="othUsername" id="otherUsername">Username</label>
+                <input type="text" class="form-control" value="<?php se($otherUserDetails, "username")?>" name="otherUsername" disabled/>
+            </form>
         </div>
-        <div class="mb-3">
-            <label class="form-label" for="username">Username</label>
-            <input class="form-control" type="text" name="username" id="username" value="<?php se($username); ?>" />
-        </div>
-        <!-- DO NOT PRELOAD PASSWORD -->
-        <h3 style="margin-top:25px">Password Reset</h3>
-        <div class="mb-3"></div>
-        <div class="mb-3">
-            <label class="form-label" for="cp">Current Password</label>
-            <input class="form-control" type="password" name="currentPassword" id="cp" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="np">New Password</label>
-            <input class="form-control" type="password" name="newPassword" id="np" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="conp">Confirm Password</label>
-            <input class="form-control" type="password" name="confirmPassword" id="conp" />
-        </div>
-        <input type="submit" class="mt-3 btn btn-primary" value="Update Profile" name="save" />
-    </form>
+    <?php endif; ?>
 </div>
 
 <script>
@@ -153,9 +218,26 @@ $username = get_username();
             isValid = false;
             flash("Passwords must match", "warning");
         }
+
+        let public = form.pubSetting.value;
+        if(!isset(public)){
+            isValid = false;
+            flash("Please choose a publicity setting for your profile", "warning");
+        }
+
         return isValid;
     }
 </script>
+
+<style>
+.radioClass{
+    display:inline;
+}
+.radioLabel{
+    display:inline;
+}
+</style>
+
 <?php
 require_once(__DIR__ . "/../../partials/flash.php");
 ?>

@@ -72,11 +72,11 @@ catch(PDOException $e){
 
         <div>
         <h6>Choose Visiblity:</h6>
-            <input type="radio" name="vis" value="vis"/>
-            <label for="y">Visible</label>
+            <input class="radioClass" type="radio" name="vis" value="vis"/>
+            <label class="radioLabel" for="y">Visible</label>
             <br>
-            <input type="radio" name="vis" value="invis"/>
-            <label for="n">Invisible</label>
+            <input class="radioClass" type="radio" name="vis" value="invis"/>
+            <label class="radioLabel" for="n">Invisible</label>
         </div>
 
         <input type="submit" value="Submit">
@@ -214,6 +214,15 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
     }
 }
 ?>
+
+<style>
+.radioClass{
+    display:inline;
+}
+.radioLabel{
+    display:inline;
+}
+</style>
 
 <?php
 require(__DIR__ . "/../../../partials/flash.php");
