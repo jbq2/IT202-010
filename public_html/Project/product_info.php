@@ -14,6 +14,28 @@ if(isset($_POST["score"]) && isset($_POST["comment"])){
     try{
         $statement->execute([":productID" => $itemID, ":userID" => $userID, ":rating" => $score, ":comment" => $comment]);
         flash("Thank you for reviewing this item!", "success");
+
+        $statement = $db->prepare("SELECT AVG(rating) as avgrating
+        FROM Ratings
+        WHERE product_id = :productID");
+        try{
+            $statement->execute([":productID" => $itemID]);
+            $avgrating = $statement->fetch(PDO::FETCH_ASSOC);
+            
+            $statement = $db->prepare("UPDATE Products
+            SET avgrating = :avgrating
+            WHERE id = :productID");
+            try{
+                $statement->execute([":avgrating" => $avgrating, ":productID" => $itemID]);//TODO make sure this works
+                //TODO might have to do a bind value
+            }
+            catch(PDOException $e){
+                flash("Error updating the product's average rating", "warning");
+            }
+        }
+        catch(PDOException $e){
+            flash("Error fetching the average rating of the product", "warning");
+        }
     }
     catch(PDOException $e){
         flash("Failure processing your rating", "warning");
