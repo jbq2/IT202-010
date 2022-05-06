@@ -20,6 +20,22 @@ if(isset($_POST["score"]) && isset($_POST["comment"])){
     }
 }
 
+$statement = $db->prepare("SELECT O.user_id, OI.product_id
+FROM Orders O INNER JOIN OrderItems OI ON O.id = OI.order_id
+WHERE O.user_id = :userID AND OI.product_id = :prodID");
+$purchased = false;
+try{
+    $userID = get_user_id();
+    $statement->execute([":userID" => $userID, ":prodID" => $itemID]);
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    if(!empty($results)){
+        $purchased = true;
+    }
+}   
+catch(PDOException $e){
+    flash("Failure in determining whether or not this user has purchase this item", "warning");
+}
+
 $statement = $db->prepare("SELECT id, name, description, category, unit_price, stock FROM Products 
 WHERE id = :id");
 try{
@@ -159,6 +175,7 @@ if(isset($_POST["AddToCart"])){
     </div>
 </div>
 
+<?php if($purchased) : ?>
 <div style="margin-left:50px; margin-top:50px">
     <h3>Rate this item!</h3>
     <form method="POST" onsubmit="return validate(this)">
@@ -179,6 +196,7 @@ if(isset($_POST["AddToCart"])){
         <input type="submit" style="margin-left:0px"/>
     </form>
 </div>
+<?php endif; ?>
 
 <script>
     function validate(form){
