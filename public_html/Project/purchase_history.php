@@ -35,7 +35,7 @@ if(has_role("Admin") || has_role("Store Owner")){
     if(array_key_exists("startdate", $filterParams)){
         $startdate = $filterParams["startdate"];
         $enddate = $filterParams["enddate"];
-        $baseQuery = $baseQuery . " AND (created >= :startdate AND created <= :enddate)";
+        $baseQuery = $baseQuery . " AND created >= :startdate AND created <= :enddate";
     }
     if(array_key_exists("total", $filterParams) && array_key_exists("datepurchased", $filterParams)){
         $totalFilter = $filterParams["total"];
@@ -61,7 +61,7 @@ else{
     if(array_key_exists("startdate", $filterParams)){
         $startdate = $filterParams["startdate"];
         $enddate = $filterParams["enddate"];
-        $baseQuery = $baseQuery . " AND (created >= :startdate AND created <= :enddate)";
+        $baseQuery = $baseQuery . " AND created >= :startdate AND created <= :enddate";
     }
     if(array_key_exists("total", $filterParams) && array_key_exists("datepurchased", $filterParams)){
         $totalFilter = $filterParams["total"];
@@ -81,6 +81,7 @@ else{
 }
 
 $orders = [];
+$listedTotal = 0;
 try{
     if($isStoreOwner){
         if(array_key_exists("startdate", $filterParams)){
@@ -108,6 +109,7 @@ try{
         else{
             break;
         }
+        $listedTotal += $r["total_price"];
         $count++;
     }
 }
@@ -183,6 +185,9 @@ catch(PDOException $e){
                 </tr>
             <?php endforeach; ?>
         </table>
+        <?php if($isStoreOwner) : ?>
+            <h4 style="margin-top:15px">Total for Listed Purchases: $<?php se($listedTotal) ?></h4>
+        <?php endif; ?>
     <?php else : ?>
         <h3><i>No purchases</i></h3>
     <?php endif; ?>
