@@ -193,6 +193,7 @@ img{
 
 textarea{
     width:350px;
+    display:inline-block;
 }
 
 select,option{
