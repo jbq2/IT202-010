@@ -51,6 +51,31 @@ catch(PDOException $e){
 <div>
     <h1 style="margin-left:0px; margin-bottom:20px">Purchase History</h1>
     <?php if(count($orders) > 0) : ?>
+        <h3>Filters</h3>
+        <form method="GET">
+            <label for="startdate">Start Date</label>
+            <input type="date" name="startdate" />
+            <label for="enddate">End Date</label>
+            <input type="date" name="enddate" />
+
+            <label for="category">Category</label>
+            <select name="category">
+                <option>opt 1</option>
+            </select>
+
+            <label for="total">Total</label>
+            <select name="total">
+                <option value="inc">Increasing</option>
+                <option value="dec">Decreasing</option>
+            </select>
+
+            <label for="datepurchased">Date Purchased</label>
+            <select>
+                <option value="mostrecent">Most Recent</option>
+                <option value="leastrecent">Least Recent</option>
+            </select>
+        </form>
+
         <table style="width:98%">
             <tr>
                 <td>Order ID (click for more details)</td>
