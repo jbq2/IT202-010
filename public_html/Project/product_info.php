@@ -14,6 +14,20 @@ if(isset($_POST["score"]) && isset($_POST["comment"])){
     try{
         $statement->execute([":productID" => $itemID, ":userID" => $userID, ":rating" => $score, ":comment" => $comment]);
         flash("Thank you for reviewing this item!", "success");
+
+        $statement = $db->prepare("UPDATE Products P
+        SET P.avgrating = (
+            SELECT AVG(rating)
+            FROM Ratings
+            WHERE product_id = P.id
+        )
+        WHERE P.id = :productID");
+        try{
+            $statement->execute([":productID" => $itemID]);
+        }
+        catch(PDOException $e){
+            flash("Failure to update average rating of the product", "warning");
+        }
     }
     catch(PDOException $e){
         flash("Failure processing your rating", "warning");
@@ -135,7 +149,7 @@ if(isset($_POST["AddToCart"])){
             <li>
                 <p style="display:inline-block; font-size:20px">Average Rating:</p>
                 <?php if(!empty($ratings)) : ?>
-                    <p style="display:inline-block"><?php se($average)?></p>
+                    <p style="display:inline-block"><?php se($average)?>/5 &#9733</p>
                 <?php else : ?>
                     <p style="display:inline-block"><i>No ratings</i></p>
                 <?php endif; ?>
