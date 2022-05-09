@@ -117,7 +117,7 @@ catch(PDOException $e){
     <?php foreach($toDisplay as $item) : ?>
         <div class="itemCard">
             <a href="product_info.php?id=<?php se($item, "id") ?>" style="text-decoration:none; color:white" value="<?php se($item, "name") ?>">
-                <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
+                <img src="<?php se($item, "picurl") ?>" alt="item">
                 <div class="itemContainer">
                     <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
                     <p>$<?php se($item, "unit_price") ?></p>
