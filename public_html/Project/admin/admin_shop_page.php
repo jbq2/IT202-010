@@ -41,6 +41,10 @@ if(isset($_GET["catFilter"]) && $_GET["catFilter"] != "none"){
     $baseQuery = $baseQuery . "AND category = :category ";
     $params[":category"] = $category;
 }
+if(isset($_GET["stockFilter"]) && $_GET["stockFilter"] != "none"){
+    $stock = se($_GET, "stockFilter", "", false);
+    $baseQuery = ($stock == "in") ? $baseQuery . "AND stock != 0 " : $baseQuery . "AND stock = 0 " ;
+}
 if(isset($_GET["priceFilter"])){
     $price = se($_GET, "priceFilter", "", false);
     $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
@@ -66,11 +70,11 @@ catch(PDOException $e){
 <h1>List of Products (Admin/Shop Owner View)</h1>
 <form onsubmit="return validate(this)" class="formFilters" method="GET">
     <div class="filterSearch">
-        <label for="search">Search: </label>
+        <label for="search">Search </label>
         <input type="text" name="search" value="">
     </div>
     <div class="filterDrop">
-        <label for="catFilter">Filter By Category: </label>
+        <label for="catFilter">Category </label>
         <select name="catFilter">
             <option id="none" value="none">All</option>
             <?php foreach ($categories as $cat) : ?>
@@ -79,10 +83,18 @@ catch(PDOException $e){
         </select>
     </div>
     <div class="filterDrop">
-        <label for="priceFilter">Filter By Price: </label>
+        <label for="priceFilter">Price </label>
         <select name="priceFilter">
             <option value="ASC">Increasing</option>
             <option value="DESC">Decreasing</option>
+        </select>
+    </div>
+    <div class="filterDrop">
+        <label for="stockFilter">Stock </label>
+        <select name="stockFilter">
+            <option value="none">All</option>
+            <option value="in">In Stock</option>
+            <option value="out">Out of Stock</option>
         </select>
     </div>
     <div><input type="submit" value="Submit"></div>
@@ -115,6 +127,10 @@ catch(PDOException $e){
                 <p style="margin-left:10px;display:inline-block"><i>(Visible)</i></p>
             <?php else : ?>
                 <p style="margin-left:10px;display:inline-block"><i>(Invisible)</i></p>
+            <?php endif; ?>
+            <?php if($item["stock"] == 0) : ?>
+                <br>
+                <p style="margin-left:20px;">OUT OF STOCK</p>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
