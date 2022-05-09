@@ -56,7 +56,6 @@ try{
         $statement->bindValue(":lowerbound", $params[":lowerbound"], PDO::PARAM_INT);
         $statement->bindValue(":upperbound", $params[":upperbound"], PDO::PARAM_INT);
     }
-    flash($baseQuery, "info");
     $statement->execute();
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $toDisplay = $results;
