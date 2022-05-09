@@ -147,7 +147,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
         flash("Price must not be empty", "warning");
         $hasError = true;
     }
-    if(empty($stock)){
+    if(is_null($stock)){
         flash("Stock must not be empty", "warning");
         $hasError = true;
     }
