@@ -23,7 +23,7 @@ $toDisplay = [];
 
 $baseQuery = "SELECT * From Products
 WHERE visibility = 1 ";
-if(isset($_GET["search"])){
+if(isset($_GET["search"]) && $_GET["search"] != ""){
     $search = se($_GET, "search", "", false);
     $baseQuery = $baseQuery . "AND name LIKE :search ";
     $params[":search"] = "%" . $search . "%";
@@ -39,7 +39,7 @@ if(isset($_GET["ratingFilter"]) && $_GET["ratingFilter"] != "none"){
     $params[":lowerbound"] = intval($rating);
     $params[":upperbound"] = intval($rating) + 1;
 }
-if(isset($_GET["priceFilter"])){
+if(isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
     $price = se($_GET, "priceFilter", "", false);
     $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
 }
@@ -83,6 +83,7 @@ catch(PDOException $e){
     <div class="filterDrop">
         <label for="priceFilter">Filter By Price </label>
         <select name="priceFilter">
+            <option value="none">None</option>
             <option value="ASC">Increasing</option>
             <option value="DESC">Decreasing</option>
         </select>
@@ -121,7 +122,11 @@ catch(PDOException $e){
                 <div class="itemContainer">
                     <h5 style="margin-top:10px" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
                     <p>$<?php se($item, "unit_price") ?></p>
-                    <p><?php se($item, "avgrating") ?>/5 &#9733</p>
+                    <?php if(se($item, "avgrating", "", false) == 0) : ?>
+                        <p>No Ratings</p>
+                    <?php else : ?>
+                        <p><?php se($item, "avgrating") ?>/5 &#9733</p>
+                    <?php endif; ?>
                 </div>
             </a>
             <?php if(is_logged_in() && (has_role("Admin") || has_role("Shop Owner"))) : ?>

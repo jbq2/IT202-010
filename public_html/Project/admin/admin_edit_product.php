@@ -25,7 +25,7 @@ catch(PDOException $e){
 }
 
 $itemID = $_GET["id"];
-$statement = $db->prepare("SELECT id, name, description, category, unit_price, stock, visibility FROM Products 
+$statement = $db->prepare("SELECT * FROM Products 
 WHERE id = :id");
 try{
     $statement->execute(["id" => $itemID]);
@@ -67,6 +67,12 @@ catch(PDOException $e){
         <div class="textbox" >
             <label for="stock">Stock:</label>
             <input type="text" name="stock" value="<?php se($item, "stock")?>" />
+            <!-- require that the input is a number -->
+        </div>
+
+        <div class="textbox" id="picurlDiv">
+            <label for="picurl">Picture URL</label>
+            <input type="text" id="picurl" name="picurl" value="<?php se($item, "picurl")?>" />
             <!-- require that the input is a number -->
         </div>
 
@@ -141,6 +147,10 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
     $price = se($_POST, "price", "", false);
     $stock = se($_POST, "stock", "", false);
     $vis = se($_POST, "vis", "", false);
+    $picurl = "https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png";
+    if(isset($_POST["picurl"])){
+        $picurl = se($_POST, "picurl", "", false);
+    }
     $hasError = false;
 
     if(empty($name)){
@@ -199,12 +209,11 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
             $vis = 0;
         }
 
-        $db = getDB();
         $statement = $db->prepare("UPDATE Products 
-        SET name = :name, description = :desc, category = :category, unit_price = :price, stock = :stock, visibility = :vis
+        SET name = :name, description = :desc, category = :category, unit_price = :price, stock = :stock, visibility = :vis, picurl = :picurl
         WHERE id = :id");
         try{
-            $statement->execute([":name" => $name, ":desc" => $desc, ":category" => $cate, ":price" => $price, ":stock" => $stock, ":vis" => $vis, ":id" => $itemID]);
+            $statement->execute([":name" => $name, ":desc" => $desc, ":category" => $cate, ":price" => $price, ":stock" => $stock, ":vis" => $vis, ":id" => $itemID, ":picurl" => $picurl]);
             flash("Successfully edited product $name!", "success");
         }
         catch(PDOException $e){
