@@ -45,7 +45,7 @@ if(isset($_GET["stockFilter"]) && $_GET["stockFilter"] != "none"){
     $stock = se($_GET, "stockFilter", "", false);
     $baseQuery = ($stock == "in") ? $baseQuery . "AND stock != 0 " : $baseQuery . "AND stock = 0 " ;
 }
-if(isset($_GET["priceFilter"])){
+if(isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
     $price = se($_GET, "priceFilter", "", false);
     $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
 }
@@ -85,6 +85,7 @@ catch(PDOException $e){
     <div class="filterDrop">
         <label for="priceFilter">Price </label>
         <select name="priceFilter">
+            <option value="none">None</option>
             <option value="ASC">Increasing</option>
             <option value="DESC">Decreasing</option>
         </select>
@@ -129,8 +130,7 @@ catch(PDOException $e){
                 <p style="margin-left:10px;display:inline-block"><i>(Invisible)</i></p>
             <?php endif; ?>
             <?php if($item["stock"] == 0) : ?>
-                <br>
-                <p style="margin-left:20px;">OUT OF STOCK</p>
+                <p style="margin-left:10px;display:inline-block"><b>(NO STOCK)</b></p>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>

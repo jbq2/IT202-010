@@ -50,7 +50,7 @@ catch(PDOException $e){
     flash("Failure in determining whether or not this user has purchase this item", "warning");
 }
 
-$statement = $db->prepare("SELECT id, name, description, category, unit_price, stock FROM Products 
+$statement = $db->prepare("SELECT * FROM Products 
 WHERE id = :id");
 try{
     $statement->execute(["id" => $itemID]);
@@ -124,7 +124,7 @@ if(isset($_POST["AddToCart"])){
 
 <h1 style="margin-top:25px; margin-bottom:35px">Product Details</h1>
 <div class="flex-container" id="topHalfDiv">
-    <div class="InnerPartitionDiv" id="prodPic"><img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png"></div>
+    <div class="InnerPartitionDiv" id="prodPic"><img src="<?php se($item, "picurl") ?>"></div>
 
     <div class="InnerPartitionDiv" id="prodInfo">
         <!-- product info -->
