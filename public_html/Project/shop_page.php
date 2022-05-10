@@ -3,6 +3,7 @@ require(__DIR__ . "/../../partials/nav.php");
 ?>
 
 <?php
+
 $categories = [];
 $db = getDB();
 $statement = $db->prepare("SELECT * FROM Category");
@@ -17,34 +18,41 @@ catch(PDOException $e){
     flash(var_export($e->errorInfo, true), "danger");
 }
 
-//TODO apply filters
 $params = [];
 $toDisplay = [];
 
+$numrowsQuery = "SELECT COUNT(*) AS numrows FROM Products
+WHERE visibility = 1 AND stock > 0 ";
 $baseQuery = "SELECT * From Products
-WHERE visibility = 1 ";
+WHERE visibility = 1 AND stock > 0 ";
+
 if(isset($_GET["search"]) && $_GET["search"] != ""){
     $search = se($_GET, "search", "", false);
     $baseQuery = $baseQuery . "AND name LIKE :search ";
+    $numrowsQuery = $numrowsQuery . "AND name LIKE :search ";
     $params[":search"] = "%" . $search . "%";
 }
 if(isset($_GET["catFilter"]) && $_GET["catFilter"] != "none"){
     $category = $category = se($_GET, "catFilter", "", false);
     $baseQuery = $baseQuery . "AND category = :category ";
+    $numrowsQuery = $numrowsQuery . "AND category = :category ";
     $params[":category"] = $category;
 }
 if(isset($_GET["ratingFilter"]) && $_GET["ratingFilter"] != "none"){
     $rating = se($_GET, "ratingFilter", "", false);
     $baseQuery = $baseQuery . "AND avgrating >= :lowerbound AND avgrating < :upperbound ";
+    $numrowsQuery = $numrowsQuery . "AND avgrating >= :lowerbound AND avgrating < :upperbound ";
     $params[":lowerbound"] = intval($rating);
     $params[":upperbound"] = intval($rating) + 1;
 }
 if(isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
     $price = se($_GET, "priceFilter", "", false);
     $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
+    $params[":price"] = $price;
 }
 
-$statement = $db->prepare($baseQuery . "LIMIT 10");
+$per_page = 8;
+$statement = $db->prepare($numrowsQuery);
 try{
     if(array_key_exists(":search", $params)){
         $statement->bindValue(":search", $params[":search"], PDO::PARAM_STR);
@@ -56,6 +64,37 @@ try{
         $statement->bindValue(":lowerbound", $params[":lowerbound"], PDO::PARAM_INT);
         $statement->bindValue(":upperbound", $params[":upperbound"], PDO::PARAM_INT);
     }
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+}
+catch(PDOException $e){
+    flash("Failure in fetching total number of products", "warning");
+}
+
+$pages = ceil($result["numrows"]/$per_page);
+$page = 1;
+if(isset($_GET["page"])){
+    $page = $_GET["page"];
+}
+$offset = (intval($page) - 1) * $per_page;
+
+$params[":offset"] = $offset;
+$params[":perpage"] = $per_page;
+
+$statement = $db->prepare($baseQuery . "LIMIT :offset, :perpage ");
+try{
+    if(array_key_exists(":search", $params)){
+        $statement->bindValue(":search", $params[":search"], PDO::PARAM_STR);
+    }
+    if(array_key_exists(":category", $params)){
+        $statement->bindValue(":category", $params[":category"], PDO::PARAM_STR);
+    }
+    if(array_key_exists(":lowerbound", $params)){
+        $statement->bindValue(":lowerbound", $params[":lowerbound"], PDO::PARAM_INT);
+        $statement->bindValue(":upperbound", $params[":upperbound"], PDO::PARAM_INT);
+    }
+    $statement->bindValue(":offset", $params[":offset"], PDO::PARAM_INT);
+    $statement->bindValue(":perpage", $params[":perpage"], PDO::PARAM_INT);
     $statement->execute();
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $toDisplay = $results;
@@ -157,6 +196,27 @@ catch(PDOException $e){
         return isValid;
     }
 </script>
+
+<div id="Pages">
+    <?php for($page=1; $page <= $pages; $page++) : ?>
+        <?php 
+        $hreflink = "shop_page.php?page=$page";
+        if(array_key_exists(":search", $params)){
+            $hreflink = $hreflink . "&search=" . substr($params[":search"], 1, -1);
+        }
+        if(array_key_exists(":category", $params)){
+            $hreflink = $hreflink . "&catFilter=" . $params[":category"] . "+";
+        }
+        if(array_key_exists(":lowerbound", $params)){
+            $hreflink = $hreflink . "&ratingFilter=" . $params[":lowerbound"];
+        }
+        if(array_key_exists(":price", $params)){
+            $hreflink = $hreflink . "&priceFilter=" . $params[":price"];
+        }
+        ?>
+        <a class="PageNumbers" href="<?php se($hreflink) ?>"><?php se($page) ?></a>
+    <?php endfor; ?>
+</div>
 
 <?php
 require(__DIR__ . "/../../partials/flash.php");
