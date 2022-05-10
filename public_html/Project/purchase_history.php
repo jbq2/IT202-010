@@ -27,15 +27,19 @@ if(isset($_GET["datepurchased"])){
 }
 
 $statement = "";
+$numrowsQuery = "";
 $baseQuery = "";
 $startdate = "";
 $enddate = "";
 if(has_role("Admin") || has_role("Store Owner")){
+    $numrowsQuery = "SELECT COUNT(*) AS numrows FROM Orders 
+    WHERE 1=1";
     $baseQuery = "SELECT * FROM Orders WHERE 1=1";
     if(array_key_exists("startdate", $filterParams)){
         $startdate = $filterParams["startdate"];
         $enddate = $filterParams["enddate"];
         $baseQuery = $baseQuery . " AND created >= :startdate AND created <= :enddate";
+        $numrowsQuery = $numrowsQuery . " AND created >= :startdate AND created <= :enddate";
     }
     if(array_key_exists("total", $filterParams) && array_key_exists("datepurchased", $filterParams)){
         $totalFilter = $filterParams["total"];
@@ -55,13 +59,15 @@ if(has_role("Admin") || has_role("Store Owner")){
     $isStoreOwner = true;
 }
 else{
-    $baseQuery = "SELECT id, created, total_price, money_received, payment_method
-    FROM Orders
+    $numrowsQuery = "SELECT COUNT(*) as numrows FROM Orders
+    WHERE user_id = :userID";
+    $baseQuery = "SELECT * FROM Orders
     WHERE user_id = :userID";
     if(array_key_exists("startdate", $filterParams)){
         $startdate = $filterParams["startdate"];
         $enddate = $filterParams["enddate"];
         $baseQuery = $baseQuery . " AND created >= :startdate AND created <= :enddate";
+        $numrowsQuery = $numrowsQuery . " AND created >= :startdate AND created <= :enddate";
     }
     if(array_key_exists("total", $filterParams) && array_key_exists("datepurchased", $filterParams)){
         $totalFilter = $filterParams["total"];
@@ -76,41 +82,70 @@ else{
         $datePurchased = $filterParams["datepurchased"];
         $baseQuery = $baseQuery . " ORDER BY created $datePurchased";
     }
-
-    $statement = $db->prepare($baseQuery);
 }
 
+$per_page = 10;
+$statement = $db->prepare($numrowsQuery);
+$result = [];
+try{
+    if(array_key_exists("startdate", $filterParams)){
+        $statement->execute([":startdate" => $startdate, ":enddate" => $enddate]);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+    }
+    else{
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+    }
+}
+catch(PDOException $e){
+    flash("Failure in fetching total orders", "warning");
+}
+
+$pages = ceil($result["numrows"]/$per_page);
+$page = 1;
+if(isset($_GET["page"])){
+    $page = $_GET["page"];
+}
+$offset = (intval($page) - 1) * $per_page;
+
+$statement = $db->prepare($baseQuery . " LIMIT :offset, :perpage");
 $orders = [];
 $listedTotal = 0;
 try{
     if($isStoreOwner){
         if(array_key_exists("startdate", $filterParams)){
-            $statement->execute([":startdate" => $startdate, ":enddate" => $enddate]);
+            $statement->bindValue(":startdate", $startdate, PDO::PARAM_STR);
+            $statement->bindValue(":enddate", $enddate, PDO::PARAM_STR);
+            $statement->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $statement->bindValue(":perpage", $per_page, PDO::PARAM_INT);
         }
         else{
-            $statement->execute();
+            $statement->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $statement->bindValue(":perpage", $per_page, PDO::PARAM_INT);
         }
+        $statement->execute();
     }
     else{
         if(array_key_exists("startdate", $filterParams)){
-            $statement->execute([":userID" => $userID, ":startdate" => $startdate, ":enddate" => $enddate]);
+            $statement->bindValue(":userID", $userID, PDO::PARAM_STR);
+            $statement->bindValue(":startdate", $startdate, PDO::PARAM_STR);
+            $statement->bindValue(":enddate", $enddate, PDO::PARAM_STR);
+            $statement->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $statement->bindValue(":perpage", $per_page, PDO::PARAM_INT);
         }
         else{
-            $statement->execute([":userID" => $userID]);
+            $statement->bindValue(":userID", $userID, PDO::PARAM_STR);
+            $statement->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $statement->bindValue(":perpage", $per_page, PDO::PARAM_INT);
         }
+        $statement->execute();
     }
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $orders = $results;
     
     $count = 0;
     foreach($results as $r){
-        if($count < 10){
-            array_push($orders, $r);
-        }
-        else{
-            break;
-        }
         $listedTotal += $r["total_price"];
-        $count++;
     }
 }
 catch(PDOException $e){
@@ -207,6 +242,28 @@ catch(PDOException $e){
         return isValid;
     }
 </script>
+
+<div id="Pages">
+    <?php for($page=1; $page <= $pages; $page++) : ?>
+        <?php 
+        $hreflink = "purchase_history.php?page=$page";
+        if(array_key_exists("startdate", $filterParams)){
+            $sd = $filterParams["startdate"];
+            $ed = $filterParams["enddate"];
+            $hreflink = $hreflink . "&startdate=$sd&enddate=$ed";
+        }
+        if(array_key_exists("total", $filterParams)){
+            $total = $filterParams["total"];
+            $hreflink = $hreflink . "&total=$total";
+        }
+        if(array_key_exists("datepurchased", $filterParams)){
+            $dp = $filterParams["datepurchased"];
+            $hreflink = $hreflink . "&datepurchased=$dp";
+        }
+        ?>
+        <a class="PageNumbers" href="<?php se($hreflink) ?>"><?php se($page) ?></a>
+    <?php endfor; ?>
+</div>
 
 <?php
 require(__DIR__ . "/../../partials/flash.php");
