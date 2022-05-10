@@ -57,27 +57,41 @@ try{
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $item = $results[0];
 
-    $statement = $db->prepare("SELECT R.id, R.product_id, R.user_id, U.username, R.comment, R.rating 
-    FROM Ratings R INNER JOIN Users U on R.user_id = U.id  
-    WHERE product_id = :id
-    GROUP BY id");
-    $ratings = [];
-    $average = 0.0;
-    $count = 0;
+    $per_page = 5;
+    $numrowsQuery = "SELECT COUNT(*) AS numrows, AVG(rating) AS avgrating FROM Ratings
+    WHERE product_id = :id";
+    $statement = $db->prepare($numrowsQuery);
     try{
         $statement->execute([":id" => $itemID]);
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+    }
+    catch(PDOException $e){
+        flash("Failure in fetching total number of reviews for this product", "warning");
+    }
 
-        if(!empty($results)){
-            foreach($results as $rating){
-                if($count < 10){
-                    array_push($ratings, $rating);
-                }
-                $average += $rating["rating"];
-                $count++;
-            }
-            $average = round($average/$count, 2);
-        }
+    $pages = ceil($result["numrows"]/$per_page);
+    $page = 1;
+    if(isset($_GET["page"])){
+        $page = $_GET["page"];
+    }
+    $offset = (intval($page) - 1) * $per_page;
+
+    $baseQuery = "SELECT R.id, R.product_id, R.user_id, U.username, R.comment, R.rating 
+    FROM Ratings R INNER JOIN Users U on R.user_id = U.id  
+    WHERE product_id = :id ";
+
+    $statement = $db->prepare($baseQuery . "LIMIT :offset, :perpage");
+    $ratings = [];
+    $average = round($result["avgrating"], 2);
+    $count = 0;
+    try{
+        $statement->bindValue(":id", $itemID, PDO::PARAM_STR);
+        $statement->bindValue(":offset", $offset, PDO::PARAM_INT);
+        $statement->bindValue(":perpage", $per_page, PDO::PARAM_INT);
+
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $ratings = $results;
     }
     catch(PDOException $e){
         flash("Failure in fetching ratings for this item $e", "warning");
@@ -186,31 +200,40 @@ if(isset($_POST["AddToCart"])){
                 <h5><i>There are no reviews for this item</i></h5>
             <?php endif; ?>
         </table>
+
+        <div id="Pages">
+            <?php for($page=1; $page <= $pages; $page++) : ?>
+                <?php 
+                $hreflink = "product_info.php?id=$itemID&page=$page";
+                ?>
+                <a class="PageNumbers" href="<?php se($hreflink) ?>"><?php se($page) ?></a>
+            <?php endfor; ?>
+        </div>
+
+        <?php if($purchased) : ?>
+            <div style="margin-left:0px;margin-top:20px">
+                <h3>Rate this item!</h3>
+                <form method="POST" onsubmit="return validate(this)">
+                    <label for="score">Score</label>
+                    <select name="score">
+                        <option value=""></option>
+                        <option value="5">5</option>
+                        <option value="4">4</option>
+                        <option value="3">3</option>
+                        <option value="2">2</option>
+                        <option value="1">1</option>
+                        <option value="0">0</option>
+                    </select>
+                    <br><br>
+                    <label for="comment">Comment</label>
+                    <textarea name="comment"></textarea>
+                    <br><br>
+                    <input type="submit" style="margin-left:0px"/>
+                </form>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
-
-<?php if($purchased) : ?>
-<div style="margin-left:50px; margin-top:50px">
-    <h3>Rate this item!</h3>
-    <form method="POST" onsubmit="return validate(this)">
-        <label for="score">Score</label>
-        <select name="score">
-            <option value=""></option>
-            <option value="5">5</option>
-            <option value="4">4</option>
-            <option value="3">3</option>
-            <option value="2">2</option>
-            <option value="1">1</option>
-            <option value="0">0</option>
-        </select>
-        <br><br>
-        <label for="comment">Comment</label>
-        <textarea name="comment"></textarea>
-        <br><br>
-        <input type="submit" style="margin-left:0px"/>
-    </form>
-</div>
-<?php endif; ?>
 
 <script>
     function validate(form){
