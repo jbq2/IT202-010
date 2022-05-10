@@ -89,13 +89,14 @@ $statement = $db->prepare($numrowsQuery);
 $result = [];
 try{
     if(array_key_exists("startdate", $filterParams)){
-        $statement->execute([":startdate" => $startdate, ":enddate" => $enddate]);
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement->bindValue(":startdate", $startdate, PDO::PARAM_STR);
+        $statement->bindValue(":enddate", $enddate, PDO::PARAM_STR);
     }
-    else{
-        $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+    if(!(has_role("Admin") || has_role("Store Owner"))){
+        $statement->bindValue(":userID", $userID, PDO::PARAM_STR);
     }
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
 }
 catch(PDOException $e){
     flash("Failure in fetching total orders", "warning");
