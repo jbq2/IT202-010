@@ -82,7 +82,10 @@ try{
 
     $statement = $db->prepare($baseQuery . "LIMIT :offset, :perpage");
     $ratings = [];
-    $average = round($result["avgrating"], 2);
+    $average = 0.0;
+    if(!is_null($result["avgrating"])){
+        $average = round($result["avgrating"], 2);
+    }
     $count = 0;
     try{
         $statement->bindValue(":id", $itemID, PDO::PARAM_STR);
