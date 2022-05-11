@@ -104,6 +104,7 @@
 - Milestone 4
   - [x] \(05/05/2022) User can set their profile to be public or private (will need another column in Users table)
     -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php?userid=36)
     -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php)
   - [x] \(05/10/2022) User will be able to rate a product they purchased
     -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
