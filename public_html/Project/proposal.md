@@ -102,7 +102,30 @@
     -  Link to Feature Implementation: [order_details.php](https://jbq2-prod.herokuapp.com/Project/order_details.php?id=17)
       - NOTE: for the order_details.php link, an order with id 17 is used solely as an example
 - Milestone 4
-  - (duplicate template here for Milestone 1 features)
+  - [x] \(05/05/2022) User can set their profile to be public or private (will need another column in Users table)
+    -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php?userid=36)
+    -  Link to Feature Implementation: [profile.php](https://jbq2-prod.herokuapp.com/Project/profile.php)
+  - [x] \(05/10/2022) User will be able to rate a product they purchased
+    -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [product_info.php](https://jbq2-prod.herokuapp.com/Project/product_info.php?id=1)
+    -  NOTE: the comment and score fields will appear only if you have purchased the product
+  - [x] \(05/10/2022) User’s Purchase History Changes
+    -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [purchase_history.php](https://jbq2-prod.herokuapp.com/Project/purchase_history.php)
+  - [x] \(05/10/2022) Store Owner Purchase History Changes
+    -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [purchase_history.php](https://jbq2-prod.herokuapp.com/Project/purchase_history.php)
+    -  NOTE: admin/shop owner view is accessed upon signing in as an admin/shop owner
+  - [x] \(05/10/2022) Add pagination to Shop Page (and any other product lists not yet mentioned)
+    -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [shop_page.php](https://jbq2-prod.herokuapp.com/Project/shop_page.php)
+  - [x] \(05/10/2022) Store Owner will be able to see all products out of stock
+    -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [admin_shop_page.php](https://jbq2-prod.herokuapp.com/Project/admin/admin_shop_page.php)
+  - [x] \(05/09/2022) User can sort products by average rating on the Shop Page
+    -  [Link to milestone4.md](https://github.com/jbq2/IT202-010/blob/Milestone4/public_html/Project/milestone4.md)
+    -  Link to Feature Implementation: [shop_page.php](https://jbq2-prod.herokuapp.com/Project/shop_page.php)
 ### Intructions
 #### Don't delete this
 1. Pick one project type

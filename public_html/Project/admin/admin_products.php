@@ -30,19 +30,19 @@ catch(PDOException $e){
 
     <form onsubmit="return validate(this)" method="POST">
         <div class="textbox" id="nameDiv">
-            <label for="name">Name:</label>
+            <label for="name">Name</label>
             <input type="text" id="name" name="name" />
             <!--  value="<?php echo isset($_POST['name']) ? $_POST['name'] : '' ?>" -->
         </div>
 
         <div class="textbox" id="descDiv">
-            <label for="desc">Description:</label>
+            <label for="desc">Description</label>
             <textarea id="desc" name="desc" ></textarea>
             <!-- value="<?php echo isset($_POST['desc']) ? $_POST['desc'] : '' ?>" -->
         </div>
 
         <div class="textbox" id="categoryDiv">
-            <label for="cate">Category:</label>
+            <label for="cate">Category</label>
             <select id="cate" name="cate" >
                 <?php foreach ($categories as $cat) : ?>
                     <option id="<?php se($cat, "name") ?>" name="categories[]" value="<?php se($cat, "name") ?> "> <?php se($cat, "name") ?> </option>
@@ -51,14 +51,20 @@ catch(PDOException $e){
         </div>
 
         <div class="textbox" id="priceDiv">
-            <label for="price">Price:</label>
+            <label for="price">Price</label>
             <input type="text" id="price" name="price" />
             <!-- require that the input is a number -->
         </div>
 
         <div class="textbox" id="stockDiv">
-            <label for="stock">Stock:</label>
+            <label for="stock">Stock</label>
             <input type="text" id="stock" name="stock" />
+            <!-- require that the input is a number -->
+        </div>
+
+        <div class="textbox" id="picurlDiv">
+            <label for="picurl">Picture URL</label>
+            <input type="text" id="picurl" name="picurl" />
             <!-- require that the input is a number -->
         </div>
 
@@ -85,6 +91,7 @@ catch(PDOException $e){
         let price = form.price.value;
         let stock = form.stock.value;
         let vis = form.vis.value;
+        let picurl = form.picurl.value;
         let isValid = true;
 
         if(name == ""){
@@ -133,6 +140,10 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
     $price = se($_POST, "price", "", false);
     $stock = se($_POST, "stock", "", false);
     $vis = se($_POST, "vis", "", false);
+    $picurl = "";
+    if(isset($_POST["picurl"])){
+        $picurl = se($_POST, "picurl", "", false);
+    }
     $hasError = false;
 
     if(empty($name)){
@@ -147,7 +158,7 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
         flash("Price must not be empty", "warning");
         $hasError = true;
     }
-    if(empty($stock)){
+    if(is_null($stock)){
         flash("Stock must not be empty", "warning");
         $hasError = true;
     }
@@ -192,10 +203,24 @@ if(isset($_POST["name"]) && isset($_POST["desc"])  && isset($_POST["price"]) && 
         }
 
         $db = getDB();
-        $statement = $db->prepare("INSERT INTO Products(name, description, category, stock, unit_price, visibility)
-        VALUES (:name, :desc, :cate, :stock, :price, :vis)");
+        $baseQuery = "";
+        if($picurl == ""){
+            $baseQuery = "INSERT INTO Products(name, description, category, stock, unit_price, visibility, picurl)
+            VALUES (:name, :desc, :cate, :stock, :price, :vis)";
+        }
+        else{
+            $baseQuery = "INSERT INTO Products(name, description, category, stock, unit_price, visibility, picurl)
+            VALUES (:name, :desc, :cate, :stock, :price, :vis, :picurl)";
+        }
+
+        $statement = $db->prepare($baseQuery);
         try{
-            $statement->execute([":name" => $name, ":desc" => $desc, ":cate" => $cate, ":stock" => $stock, ":price" => $price, ":vis" => $vis]);
+            if($picurl == ""){
+                $statement->execute([":name" => $name, ":desc" => $desc, ":cate" => $cate, ":stock" => $stock, ":price" => $price, ":vis" => $vis]);
+            }
+            else{
+                $statement->execute([":name" => $name, ":desc" => $desc, ":cate" => $cate, ":stock" => $stock, ":price" => $price, ":vis" => $vis, ":picurl" => $picurl]);
+            }
             flash("Successfully added product $name!", "success");
         }
         catch(PDOException $e){
