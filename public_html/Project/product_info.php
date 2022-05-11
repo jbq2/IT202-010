@@ -194,7 +194,7 @@ if(isset($_POST["AddToCart"])){
                     <?php foreach($ratings as $rating) : ?>
                         <tr>
                             <td><?php se($rating, "rating") ?></td>
-                            <td><?php se($rating, "username") ?></td>
+                            <td><a href="profile.php?userid=<?php se($rating, "user_id") ?>"><?php se($rating, "username") ?></a></td>
                             <td><?php se($rating, "comment") ?></td>
                         </tr>
                     <?php endforeach; ?>
