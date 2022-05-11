@@ -26,183 +26,112 @@ catch(PDOException $e){
 }
 
 //TODO apply filters
-$filterList = ["applySearch" => false, "applyCategory" => false, "applyPrice" => false];
-$search = se($_GET, "search", "", false);
-$category = se($_GET, "catFilter", "", false);
-$price = se($_GET, "priceFilter", "", false);
+$params = [];
 $toDisplay = [];
 
-if(empty($empty) && empty($category) && empty($price)){
-    $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products");
-    try{
-        $statement->execute();
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $toDisplay = $results;
-    }
-    catch(PDOException $e){
-        flash(var_export($e->errorInfo,true), "danger");
-    }
+$numrowsQuery = "SELECT COUNT(*) AS numrows FROM Products
+WHERE 1=1 ";
+$baseQuery = "SELECT * From Products
+WHERE 1=1 ";
+if(isset($_GET["search"])){
+    $search = se($_GET, "search", "", false);
+    $baseQuery = $baseQuery . "AND name LIKE :search ";
+    $numrowsQuery = $numrowsQuery . "AND name LIKE :search ";
+    $params[":search"] = "%" . $search . "%";
 }
-else if(!empty($search)){
-    if($category != "none"){
-        if($price != "none"){//all 3 filers
-            if($price == "ASC"){
-                $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-                WHERE category = :category AND name LIKE :name
-                ORDER BY unit_price ASC");
-            }
-            else if($price == "DESC"){
-                $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-                WHERE category = :category AND name LIKE :name
-                ORDER BY unit_price DESC");
-            }
-
-            try{
-                $statement->execute([":category" => $category, ":name" => "%" . $search . "%"]);
-                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $toDisplay = $results;
-            }
-            catch(PDOException $e){
-                flash(var_export($e->errorInfo,true), "danger");
-            }
-        }
-        else{//only category and search
-            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-            WHERE category = :category AND name LIKE :name");
-        
-            try{
-                $statement->execute([":category" => $category, ":name" => "%" . $search . "%"]);
-                $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-                $toDisplay = $results;
-            }
-            catch(PDOException $e){
-                flash(var_export($e->errorInfo,true), "danger");
-            }
-        }
-    }
-    else if($price != "none"){//only search and price
-        if($price == "ASC"){
-            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-            WHERE name LIKE :name
-            ORDER BY unit_price ASC");
-        }
-        else if($price == "DESC"){
-            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-            WHERE name LIKE :name
-            ORDER BY unit_price DESC");
-        }
-
-        try{
-            $statement->execute([":name" => "%" . $search . "%"]);
-            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-            $toDisplay = $results;
-        }
-        catch(PDOException $e){
-            flash(var_export($e->errorInfo,true), "danger");
-        }
-    }
-    else{//only search
-        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-        WHERE name LIKE :name");
-    
-        try{
-            $statement->execute([":name" => "%" . $search . "%"]);
-            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-            $toDisplay = $results;
-        }
-        catch(PDOException $e){
-            flash(var_export($e->errorInfo,true), "danger");
-        }
-    }
+if(isset($_GET["catFilter"]) && $_GET["catFilter"] != "none"){
+    $category = $category = se($_GET, "catFilter", "", false);
+    $baseQuery = $baseQuery . "AND category = :category ";
+    $numrowsQuery = $numrowsQuery . "AND category = :category ";
+    $params[":category"] = $category;
 }
-else if($category != "none"){
-    if($price != "none"){//only category and price
-        if($price == "ASC"){
-            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-            WHERE category = :category
-            ORDER BY unit_price ASC");
-        }
-        else{
-            $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-            WHERE category = :category
-            ORDER BY unit_price DESC");
-        }
-
-        try{
-            $statement->execute([":category" => $category]);
-            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-            $toDisplay = $results;
-        }
-        catch(PDOException $e){
-            flash(var_export($e->errorInfo,true), "danger");
-        }
-    }
-    else{//only category
-        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products 
-        WHERE category = :category");
-        try{
-            $statement->execute([":category" => $category]);
-            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-            $toDisplay = $results;
-        }
-        catch(PDOException $e){
-            flash(var_export($e->errorInfo,true), "danger");
-        }
-    }
+if(isset($_GET["stockFilter"]) && $_GET["stockFilter"] != "none"){
+    $stock = se($_GET, "stockFilter", "", false);
+    $baseQuery = ($stock == "in") ? $baseQuery . "AND stock != 0 " : $baseQuery . "AND stock = 0 " ;
+    $numrowsQuery = ($stock == "in") ? $numrowsQuery . "AND stock != 0 " : $numrowsQuery . "AND stock = 0 " ;
+    $params[":stock"] = $stock;
 }
-else if($price != "none"){//only price
-    if($price == "ASC"){
-        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-        ORDER BY unit_price ASC");
+if(isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
+    $price = se($_GET, "priceFilter", "", false);
+    $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
+    $params[":price"] = $price;
+}
+
+$per_page = 8;
+$statement = $db->prepare($numrowsQuery);
+try{
+    if(array_key_exists(":search", $params)){
+        $statement->bindValue(":search", $params[":search"], PDO::PARAM_STR);
     }
-    else if($price == "DESC"){
-        $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products
-        ORDER BY unit_price DESC");
+    if(array_key_exists(":category", $params)){
+        $statement->bindValue(":category", $params[":category"], PDO::PARAM_STR);
     }
 
-    try{
-        $statement->execute();
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $toDisplay = $results;
-    }
-    catch(PDOException $e){
-        flash(var_export($e->errorInfo,true), "danger");
-    }
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
 }
-else{
-    $statement = $db->prepare("SELECT id, name, description, category, stock, unit_price, visibility FROM Products");
-    try{
-        $statement->execute();
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $toDisplay = $results;
+catch(PDOException $e){
+    flash("Failure in fetching total number of products", "warning");
+}
+
+$pages = ceil($result["numrows"]/$per_page);
+$page = 1;
+if(isset($_GET["page"])){
+    $page = $_GET["page"];
+}
+$offset = (intval($page) - 1) * $per_page;
+
+$params[":offset"] = $offset;
+$params[":perpage"] = $per_page;
+
+$statement = $db->prepare($baseQuery . "LIMIT :offset, :perpage");
+try{
+    if(array_key_exists(":search", $params)){
+        $statement->bindValue(":search", $params[":search"], PDO::PARAM_STR);
     }
-    catch(PDOException $e){
-        flash(var_export($e->errorInfo,true), "danger");
+    if(array_key_exists(":category", $params)){
+        $statement->bindValue(":category", $params[":category"], PDO::PARAM_STR);
     }
+    $statement->bindValue(":offset", $params[":offset"], PDO::PARAM_INT);
+    $statement->bindValue(":perpage", $params[":perpage"], PDO::PARAM_INT);
+    $statement->execute();
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $toDisplay = $results;
+}
+catch(PDOException $e){
+    flash("Failed to fetch shop items $e", "warning");
 }
 ?>
 
 <h1>List of Products (Admin/Shop Owner View)</h1>
 <form onsubmit="return validate(this)" class="formFilters" method="GET">
     <div class="filterSearch">
-        <label for="search">Search: </label>
+        <label for="search">Search </label>
         <input type="text" name="search" value="">
     </div>
     <div class="filterDrop">
-        <label for="catFilter">Filter By Category: </label>
+        <label for="catFilter">Category </label>
         <select name="catFilter">
-            <option id="none" value="none">None</option>
+            <option id="none" value="none">All</option>
             <?php foreach ($categories as $cat) : ?>
                 <option id="<?php se($cat, "name") ?>" name="categories[]" value="<?php se($cat, "name") ?> "> <?php se($cat, "name") ?> </option>
             <?php endforeach; ?>
         </select>
     </div>
     <div class="filterDrop">
-        <label for="priceFilter">Filter By Price: </label>
+        <label for="priceFilter">Price </label>
         <select name="priceFilter">
-            <option id="none" value="none">None</option>
+            <option value="none">None</option>
             <option value="ASC">Increasing</option>
             <option value="DESC">Decreasing</option>
+        </select>
+    </div>
+    <div class="filterDrop">
+        <label for="stockFilter">Stock </label>
+        <select name="stockFilter">
+            <option value="none">All</option>
+            <option value="in">In Stock</option>
+            <option value="out">Out of Stock</option>
         </select>
     </div>
     <div><input type="submit" value="Submit"></div>
@@ -224,17 +153,20 @@ else{
     <?php foreach($toDisplay as $item) : ?>
         <div class="itemCard">
             <a href="/Project/product_info.php?id=<?php se($item, "id") ?>" style="display:inline-block;text-decoration:none; color:white" value="<?php se($item, "name") ?>">
-                <img src="https://blog.focusinfotech.com/wp-content/uploads/2017/12/default-placeholder-300x300.png" alt="item">
                 <div class="itemContainer">
                     <h5 style="margin-top:10px; display:inline-block" class="itemCardTitle"><b><?php se($item, "name") ?></b></h5>
                     <p>$<?php se($item, "unit_price") ?></p>
                 </div>
             </a>
+            <br>
             <button style="margin-left:20px;display:inline-block" class="editButton" type="submit" name="Edit" onclick="location.href='admin_edit_product.php?id=<?php se($item, 'id') ?>'">Edit</button>
             <?php if($item["visibility"] == 1) : ?>
                 <p style="margin-left:10px;display:inline-block"><i>(Visible)</i></p>
             <?php else : ?>
                 <p style="margin-left:10px;display:inline-block"><i>(Invisible)</i></p>
+            <?php endif; ?>
+            <?php if($item["stock"] == 0) : ?>
+                <p style="margin-left:10px;display:inline-block"><b>(NO STOCK)</b></p>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
@@ -261,6 +193,27 @@ else{
         return isValid;
     }
 </script>
+
+<div id="Pages">
+    <?php for($page=1; $page <= $pages; $page++) : ?>
+        <?php 
+        $hreflink = "admin_shop_page.php?page=$page";
+        if(array_key_exists(":search", $params)){
+            $hreflink = $hreflink . "&search=" . substr($params[":search"], 1, -1);
+        }
+        if(array_key_exists(":category", $params)){
+            $hreflink = $hreflink . "&catFilter=" . $params[":category"] . "+";
+        }
+        if(array_key_exists(":stock", $params)){
+            $hreflink = $hreflink . "&stockFilter=" . $params[":stock"];
+        }
+        if(array_key_exists(":price", $params)){
+            $hreflink = $hreflink . "&priceFilter=" . $params[":price"];
+        }
+        ?>
+        <a class="PageNumbers" href="<?php se($hreflink) ?>"><?php se($page) ?></a>
+    <?php endfor; ?>
+</div>
 
 <?php
 require(__DIR__ . "/../../../partials/flash.php");
