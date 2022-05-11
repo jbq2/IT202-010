@@ -245,9 +245,11 @@ if(isset($_POST["AddToCart"])){
         let isValid = true;
 
         if(score == ""){
+            flash("Please choose a score", "info");
             isValid = false;
         }
         if(comment == ""){
+            flash("Please enter a comment", "info");
             isValid = false;
         }
 

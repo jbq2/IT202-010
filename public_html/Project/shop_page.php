@@ -58,8 +58,6 @@ if(isset($_GET["priceFilter"]) || isset($_GET["ratingFilter"])){
     }
 }
 
-flash($baseQuery, "info");
-
 $per_page = 8;
 $statement = $db->prepare($numrowsQuery);
 try{
