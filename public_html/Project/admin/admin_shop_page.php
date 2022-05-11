@@ -29,28 +29,36 @@ catch(PDOException $e){
 $params = [];
 $toDisplay = [];
 
+$numrowsQuery = "SELECT COUNT(*) AS numrows FROM Products
+WHERE 1=1 ";
 $baseQuery = "SELECT * From Products
 WHERE 1=1 ";
 if(isset($_GET["search"])){
     $search = se($_GET, "search", "", false);
     $baseQuery = $baseQuery . "AND name LIKE :search ";
+    $numrowsQuery = $numrowsQuery . "AND name LIKE :search ";
     $params[":search"] = "%" . $search . "%";
 }
 if(isset($_GET["catFilter"]) && $_GET["catFilter"] != "none"){
     $category = $category = se($_GET, "catFilter", "", false);
     $baseQuery = $baseQuery . "AND category = :category ";
+    $numrowsQuery = $numrowsQuery . "AND category = :category ";
     $params[":category"] = $category;
 }
 if(isset($_GET["stockFilter"]) && $_GET["stockFilter"] != "none"){
     $stock = se($_GET, "stockFilter", "", false);
     $baseQuery = ($stock == "in") ? $baseQuery . "AND stock != 0 " : $baseQuery . "AND stock = 0 " ;
+    $numrowsQuery = ($stock == "in") ? $numrowsQuery . "AND stock != 0 " : $numrowsQuery . "AND stock = 0 " ;
+    $params[":stock"] = $stock;
 }
 if(isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
     $price = se($_GET, "priceFilter", "", false);
     $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
+    $params[":price"] = $price;
 }
 
-$statement = $db->prepare($baseQuery);
+$per_page = 8;
+$statement = $db->prepare($numrowsQuery);
 try{
     if(array_key_exists(":search", $params)){
         $statement->bindValue(":search", $params[":search"], PDO::PARAM_STR);
@@ -58,6 +66,34 @@ try{
     if(array_key_exists(":category", $params)){
         $statement->bindValue(":category", $params[":category"], PDO::PARAM_STR);
     }
+
+    $statement->execute();
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+}
+catch(PDOException $e){
+    flash("Failure in fetching total number of products", "warning");
+}
+
+$pages = ceil($result["numrows"]/$per_page);
+$page = 1;
+if(isset($_GET["page"])){
+    $page = $_GET["page"];
+}
+$offset = (intval($page) - 1) * $per_page;
+
+$params[":offset"] = $offset;
+$params[":perpage"] = $per_page;
+
+$statement = $db->prepare($baseQuery . "LIMIT :offset, :perpage");
+try{
+    if(array_key_exists(":search", $params)){
+        $statement->bindValue(":search", $params[":search"], PDO::PARAM_STR);
+    }
+    if(array_key_exists(":category", $params)){
+        $statement->bindValue(":category", $params[":category"], PDO::PARAM_STR);
+    }
+    $statement->bindValue(":offset", $params[":offset"], PDO::PARAM_INT);
+    $statement->bindValue(":perpage", $params[":perpage"], PDO::PARAM_INT);
     $statement->execute();
     $results = $statement->fetchAll(PDO::FETCH_ASSOC);
     $toDisplay = $results;
@@ -157,6 +193,27 @@ catch(PDOException $e){
         return isValid;
     }
 </script>
+
+<div id="Pages">
+    <?php for($page=1; $page <= $pages; $page++) : ?>
+        <?php 
+        $hreflink = "admin_shop_page.php?page=$page";
+        if(array_key_exists(":search", $params)){
+            $hreflink = $hreflink . "&search=" . substr($params[":search"], 1, -1);
+        }
+        if(array_key_exists(":category", $params)){
+            $hreflink = $hreflink . "&catFilter=" . $params[":category"] . "+";
+        }
+        if(array_key_exists(":stock", $params)){
+            $hreflink = $hreflink . "&stockFilter=" . $params[":stock"];
+        }
+        if(array_key_exists(":price", $params)){
+            $hreflink = $hreflink . "&priceFilter=" . $params[":price"];
+        }
+        ?>
+        <a class="PageNumbers" href="<?php se($hreflink) ?>"><?php se($page) ?></a>
+    <?php endfor; ?>
+</div>
 
 <?php
 require(__DIR__ . "/../../../partials/flash.php");

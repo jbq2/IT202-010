@@ -209,4 +209,21 @@ option{
 img {
     width: 300px;
     height: 300px;
-  }
+}
+
+#Pages{
+    text-align: center;
+    padding:30px;
+}
+
+.PageNumbers{
+    margin: 10px;
+    padding:5px 15px 5px 15px;
+    background-color:white;
+    border-radius:5px;
+}
+
+.productsListDiv{
+    text-align:center;
+    margin-left:0px;
+}
