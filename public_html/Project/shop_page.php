@@ -38,18 +38,27 @@ if(isset($_GET["catFilter"]) && $_GET["catFilter"] != "none"){
     $numrowsQuery = $numrowsQuery . "AND category = :category ";
     $params[":category"] = $category;
 }
-if(isset($_GET["ratingFilter"]) && $_GET["ratingFilter"] != "none"){
-    $rating = se($_GET, "ratingFilter", "", false);
-    $baseQuery = $baseQuery . "AND avgrating >= :lowerbound AND avgrating < :upperbound ";
-    $numrowsQuery = $numrowsQuery . "AND avgrating >= :lowerbound AND avgrating < :upperbound ";
-    $params[":lowerbound"] = intval($rating);
-    $params[":upperbound"] = intval($rating) + 1;
+if(isset($_GET["priceFilter"]) || isset($_GET["ratingFilter"])){
+    if(isset($_GET["ratingFilter"]) && $_GET["ratingFilter"] != "none" && isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
+        $price = se($_GET, "priceFilter", "", false);
+        $rating = se($_GET, "ratingFilter", "", false);
+        $baseQuery = $baseQuery . "ORDER BY avgrating $rating, unit_price $price ";
+        $params[":rating"] = $rating;
+        $params[":price"] = $price;
+    }
+    else if(isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
+        $price = se($_GET, "priceFilter", "", false);
+        $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
+        $params[":price"] = $price;
+    }
+    else if(isset($_GET["ratingFilter"]) && $_GET["ratingFilter"] != "none"){
+        $rating = se($_GET, "ratingFilter", "", false);
+        $baseQuery = $baseQuery . "ORDER BY avgrating $rating ";
+        $params[":rating"] = $rating;
+    }
 }
-if(isset($_GET["priceFilter"]) && $_GET["priceFilter"] != "none"){
-    $price = se($_GET, "priceFilter", "", false);
-    $baseQuery = $baseQuery . "ORDER BY unit_price $price ";
-    $params[":price"] = $price;
-}
+
+flash($baseQuery, "info");
 
 $per_page = 8;
 $statement = $db->prepare($numrowsQuery);
@@ -59,10 +68,6 @@ try{
     }
     if(array_key_exists(":category", $params)){
         $statement->bindValue(":category", $params[":category"], PDO::PARAM_STR);
-    }
-    if(array_key_exists(":lowerbound", $params)){
-        $statement->bindValue(":lowerbound", $params[":lowerbound"], PDO::PARAM_INT);
-        $statement->bindValue(":upperbound", $params[":upperbound"], PDO::PARAM_INT);
     }
     $statement->execute();
     $result = $statement->fetch(PDO::FETCH_ASSOC);
@@ -89,10 +94,7 @@ try{
     if(array_key_exists(":category", $params)){
         $statement->bindValue(":category", $params[":category"], PDO::PARAM_STR);
     }
-    if(array_key_exists(":lowerbound", $params)){
-        $statement->bindValue(":lowerbound", $params[":lowerbound"], PDO::PARAM_INT);
-        $statement->bindValue(":upperbound", $params[":upperbound"], PDO::PARAM_INT);
-    }
+    
     $statement->bindValue(":offset", $params[":offset"], PDO::PARAM_INT);
     $statement->bindValue(":perpage", $params[":perpage"], PDO::PARAM_INT);
     $statement->execute();
@@ -120,7 +122,7 @@ catch(PDOException $e){
         </select>
     </div>
     <div class="filterDrop">
-        <label for="priceFilter">Filter By Price </label>
+        <label for="priceFilter">Sort By Price </label>
         <select name="priceFilter">
             <option value="none">None</option>
             <option value="ASC">Increasing</option>
@@ -128,14 +130,11 @@ catch(PDOException $e){
         </select>
     </div>
     <div class="filterDrop">
-        <label for="ratingFilter">Filter by Rating</label>
+        <label for="ratingFilter">Sort by Rating</label>
         <select name="ratingFilter">
-            <option id="none" value="none">All</option>
-            <option value="5">5 &#9733</option>
-            <option value="4">4 &#9733</option>
-            <option value="3">3 &#9733</option>
-            <option value="2">2 &#9733</option>
-            <option value="1">1 &#9733</option>
+            <option id="none" value="none">None</option>
+            <option value="ASC">Increasing</option>
+            <option value="DESC">Decreasing</option>
         </select>
     </div>
     <div><input type="submit" value="Submit"></div>
@@ -207,8 +206,8 @@ catch(PDOException $e){
         if(array_key_exists(":category", $params)){
             $hreflink = $hreflink . "&catFilter=" . $params[":category"] . "+";
         }
-        if(array_key_exists(":lowerbound", $params)){
-            $hreflink = $hreflink . "&ratingFilter=" . $params[":lowerbound"];
+        if(array_key_exists(":rating", $params)){
+            $hreflink = $hreflink . "&ratingFilter=" . $params[":rating"];
         }
         if(array_key_exists(":price", $params)){
             $hreflink = $hreflink . "&priceFilter=" . $params[":price"];
