@@ -92,7 +92,7 @@ try{
         $statement->bindValue(":startdate", $startdate, PDO::PARAM_STR);
         $statement->bindValue(":enddate", $enddate, PDO::PARAM_STR);
     }
-    if(!(has_role("Admin") || has_role("Store Owner"))){
+    if(!(has_role("Admin") || has_role("Shop Owner"))){
         $statement->bindValue(":userID", $userID, PDO::PARAM_STR);
     }
     $statement->execute();
@@ -204,7 +204,7 @@ catch(PDOException $e){
             <?php foreach($orders as $order) : ?>
                 <tr>
                     <td>
-                        <?php if(has_role("Admin") || has_role("Store Owner")) : ?>
+                        <?php if(has_role("Admin") || has_role("Shop Owner")) : ?>
                             <a style="display:inline-block; margin:0px; text-decoration:none; color:white;" href="order_details.php?id=<?php se($order, "id") ?>">
                                 <div style="display:inline-block; margin:0px;"><?php se($order, "id") ?> (User ID: <?php se($order, "user_id") ?>)</div>
                             </a>
