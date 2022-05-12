@@ -31,7 +31,7 @@ $numrowsQuery = "";
 $baseQuery = "";
 $startdate = "";
 $enddate = "";
-if(has_role("Admin") || has_role("Store Owner")){
+if(has_role("Admin") || has_role("Shop Owner")){
     $numrowsQuery = "SELECT COUNT(*) AS numrows FROM Orders 
     WHERE 1=1";
     $baseQuery = "SELECT * FROM Orders WHERE 1=1";
