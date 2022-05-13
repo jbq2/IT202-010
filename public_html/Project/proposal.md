@@ -4,6 +4,8 @@
 ## Project Board Link: https://github.com/jbq2/IT202-010/projects/1
 ## Website Link: https://jbq2-prod.herokuapp.com/Project
 ## Your Name: Joshua Quizon
+## Project Demo Pt 1 Video Link: https://youtu.be/oiUitI2AnUI
+## Project Demo Pt 2 Video Link: https://youtu.be/SgGk9tCTqfU
 
 <!-- Line item / Feature template (use this for each bullet point) -- DO NOT DELETE THIS SECTION
 
